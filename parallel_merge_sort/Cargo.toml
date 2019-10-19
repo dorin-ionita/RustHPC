@@ -1,0 +1,9 @@
+[package]
+name = "parallel_merge_sort"
+version = "0.1.0"
+authors = ["Dorin Ionita <dorin.marian.ionita@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
