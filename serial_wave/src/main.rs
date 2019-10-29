@@ -83,16 +83,46 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
                                 sim.scenaries.push(Scenario{..Default::default()});
 
                         },
-                        "[SIZEX]"         => println!("sizex"),
-                        "[SIZEY]"         => println!("sizey"),
-                        "[H]"             => println!("h"),
-                        "[MAX_TIME]"      => println!("max_time"),
-                        "[TIME_STEP]"     => println!("time step"),
-                        "[SAVE_TIME]"     => println!("save time"),
-                        "[SRC_X]"         => println!("src x"),
-                        "[SRC_Y]"         => println!("src y"),
-                        "[SRC_RADIUS]"    => println!("src radius"),
-                        "[SRC_AMPLITUDE]" => println!("src ampl"),
+                        "[SIZEX]"         => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].nx = value.parse::<i32>().unwrap();
+                        }
+                        "[SIZEY]"         => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].ny = value.parse::<i32>().unwrap();
+                        }
+                        "[H]"             => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].dx = value.parse::<f64>().unwrap();
+                        }
+                        "[MAX_TIME]"     => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].max_time = value.parse::<f64>().unwrap();
+                        }
+                        "[TIME_STEP]"     => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].dt = value.parse::<f64>().unwrap();
+                        }
+                        "[SAVE_TIME]"     => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].save_time = value.parse::<i32>().unwrap();
+                        }
+                        "[SRC_X]"         => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].source.x = value.parse::<i32>().unwrap();
+                        }
+                        "[SRC_Y]"         => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].source.y = value.parse::<i32>().unwrap();
+                        }
+                        "[SRC_RADIUS]"    => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].source.radius = value.parse::<i32>().unwrap();
+                        }
+                        "[SRC_AMPLITUDE]" => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].source.p_amp = value.parse::<f64>().unwrap();
+                        },
                         "[NUM_STRUCTURES]"=> println!("num structures"),
                         "[STRUCTURE]"     => println!("structure"),
                         "[P1]"            => println!("p1"),
