@@ -26,6 +26,27 @@ struct Scenario {
     dt          : f64
 }
 
+impl Default for Scenario {
+    fn default() -> Scenario{
+        Scenario{
+            nx : 0,
+            ny : 0,
+            save_time : 0,
+            nr_struct : 0,
+            structures : Vec::new(),
+            source : Source {
+                x : 0,
+                y : 0,
+                radius : 0,
+                p_amp : 0.,
+            },
+            dx : 0.,
+            max_time : 0.,
+            dt : 0.,
+        }
+    }
+}
+
 struct Simulation {
     scenaries   : Vec<Scenario>,
     scenario_idx: i32,
@@ -56,7 +77,12 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
                                 sim.num_scenarios = if num_value  > MAX_SCENARIOS { MAX_SCENARIOS } else { num_value };
                                 println!("Managed to parse");
                         },
-                        "[SCENARIO]"      => println!("Scenario"),
+                        "[SCENARIO]"      => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenario_idx           = value.parse::<i32>().unwrap();
+                                sim.scenaries.push(Scenario{..Default::default()});
+
+                        },
                         "[SIZEX]"         => println!("sizex"),
                         "[SIZEY]"         => println!("sizey"),
                         "[H]"             => println!("h"),
