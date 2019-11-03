@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 
+#[derive(Debug)]
 struct Source {
     x       : i32,  // linia sursei acustice
     y       : i32,  // coloane sursei acustice
@@ -8,22 +9,40 @@ struct Source {
     p_amp   : f64,  // valoarea pulsatiei sursei acustice
 }
 
+#[derive(Debug)]
 struct Point(i32, i32);
 
+#[derive(Debug)]
 struct Structure {
-    corners     : Vec<Point>,
+    corner0    : Point,
+    corner1    : Point,
+    corner2    : Point,
+    corner3    : Point,
 }
 
+#[derive(Debug)]
 struct Scenario {
     nx          : i32,
     ny          : i32,
     save_time   : i32,
     nr_struct   : i32,
     structures  : Vec<Structure>,
+    struct_idx  : i32,
     source      : Source,
     dx          : f64,
     max_time    : f64,
     dt          : f64
+}
+
+impl Default for Structure {
+    fn default() -> Structure {
+        Structure {
+            corner0 : Point(-1, -1),
+            corner1 : Point(-1, -1),
+            corner2 : Point(-1, -1),
+            corner3 : Point(-1, -1),
+        }
+    }
 }
 
 impl Default for Scenario {
@@ -34,6 +53,7 @@ impl Default for Scenario {
             save_time : 0,
             nr_struct : 0,
             structures : Vec::new(),
+            struct_idx : 0,
             source : Source {
                 x : 0,
                 y : 0,
@@ -47,6 +67,7 @@ impl Default for Scenario {
     }
 }
 
+#[derive(Debug)]
 struct Simulation {
     scenaries   : Vec<Scenario>,
     scenario_idx: i32,
@@ -54,6 +75,7 @@ struct Simulation {
 }
 
 static MAX_SCENARIOS : i32 = 10;
+static MAX_STRUCTURES : i32 = 10;
 
 fn import_data(filename : String, mut sim : Simulation) -> Simulation 
 {
@@ -109,11 +131,13 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
                         }
                         "[SRC_X]"         => {
                                 let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
-                                sim.scenaries[sim.scenario_idx as usize].source.x = value.parse::<i32>().unwrap();
+                                sim.scenaries[sim.scenario_idx as usize].source.x = (value.parse::<f64>().unwrap() *
+                                    (sim.scenaries[sim.scenario_idx as usize].ny as f64)) as i32;
                         }
                         "[SRC_Y]"         => {
                                 let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
-                                sim.scenaries[sim.scenario_idx as usize].source.y = value.parse::<i32>().unwrap();
+                                sim.scenaries[sim.scenario_idx as usize].source.y = (value.parse::<f64>().unwrap() *
+                                    (sim.scenaries[sim.scenario_idx as usize].nx as f64)) as i32;
                         }
                         "[SRC_RADIUS]"    => {
                                 let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
@@ -123,12 +147,45 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
                                 let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
                                 sim.scenaries[sim.scenario_idx as usize].source.p_amp = value.parse::<f64>().unwrap();
                         },
-                        "[NUM_STRUCTURES]"=> println!("num structures"),
-                        "[STRUCTURE]"     => println!("structure"),
-                        "[P1]"            => println!("p1"),
-                        "[P2]"            => println!("p2"),
-                        "[P3]"            => println!("p3"),
-                        "[P4]"            => println!("p4"),
+                        "[NUM_STRUCTURES]"=> {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                let num_value : i32 = value.parse::<i32>().unwrap();
+                                sim.scenaries[sim.scenario_idx as usize].nr_struct =  if num_value  > MAX_STRUCTURES { MAX_STRUCTURES } else { num_value };
+                                // println!("Managed to parse");
+                        },
+                        "[STRUCTURE]"     => {
+                                let value : String         = value.chars().filter(|c| !c.is_whitespace()).collect();
+                                sim.scenaries[sim.scenario_idx as usize].struct_idx            = value.parse::<i32>().unwrap();
+                                sim.scenaries[sim.scenario_idx as usize].structures.push(Structure{..Default::default()});
+                        },
+                        "[P1]"            => {
+                                let vals_split = value.split(" ").filter_map(|s| s.parse::<f64>().ok()).collect::<Vec<_>>();
+                                let struct_idx = sim.scenaries[sim.scenario_idx as usize].struct_idx;
+                                sim.scenaries[sim.scenario_idx as usize].structures[struct_idx as usize].corner0 = 
+                                    Point((vals_split[0] * sim.scenaries[sim.scenario_idx as usize].ny as f64) as i32,
+                                          (vals_split[1] * sim.scenaries[sim.scenario_idx as usize].nx as f64) as i32);
+                        },
+                        "[P2]"            => {
+                                let vals_split = value.split(" ").filter_map(|s| s.parse::<f64>().ok()).collect::<Vec<_>>();
+                                let struct_idx = sim.scenaries[sim.scenario_idx as usize].struct_idx;
+                                sim.scenaries[sim.scenario_idx as usize].structures[struct_idx as usize].corner1 = 
+                                    Point((vals_split[0] * sim.scenaries[sim.scenario_idx as usize].ny as f64) as i32,
+                                          (vals_split[1] * sim.scenaries[sim.scenario_idx as usize].nx as f64) as i32);
+                        },
+                        "[P3]"            => {
+                                let vals_split = value.split(" ").filter_map(|s| s.parse::<f64>().ok()).collect::<Vec<_>>();
+                                let struct_idx = sim.scenaries[sim.scenario_idx as usize].struct_idx;
+                                sim.scenaries[sim.scenario_idx as usize].structures[struct_idx as usize].corner2 = 
+                                    Point((vals_split[0] * sim.scenaries[sim.scenario_idx as usize].ny as f64) as i32,
+                                          (vals_split[1] * sim.scenaries[sim.scenario_idx as usize].nx as f64) as i32);
+                        },
+                        "[P4]"            => {
+                                let vals_split = value.split(" ").filter_map(|s| s.parse::<f64>().ok()).collect::<Vec<_>>();
+                                let struct_idx = sim.scenaries[sim.scenario_idx as usize].struct_idx;
+                                sim.scenaries[sim.scenario_idx as usize].structures[struct_idx as usize].corner3 = 
+                                    Point((vals_split[0] * sim.scenaries[sim.scenario_idx as usize].ny as f64) as i32,
+                                          (vals_split[1] * sim.scenaries[sim.scenario_idx as usize].nx as f64) as i32);
+                        },
                         _                 => (),
                     }
             },
@@ -136,21 +193,19 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
         }
     }
 
+    println!("Data read {:?}",sim);
+
     sim
-    // println!("File content is {}", file_content);
-    // for line in file_contents.lines(){
-        
-    // }
 }
 
 fn main()
 {
-    let path = String::from("/home/dorin/rust/serial_wave/input");
+    let path = String::from("/home/dorin/temapp/serial_wave/input");
     let mut sim = Simulation {
         scenaries : Vec::new(),
         scenario_idx : 0,
         num_scenarios : 0,
     };
     import_data(path, sim);
-    println!("/home/dorin/rust/serial_wave/input");
+    println!("/home/dorin/temapp/serial_wave/input");
 }
