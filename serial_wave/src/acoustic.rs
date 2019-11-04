@@ -222,3 +222,70 @@ fn pulse_source(radius : i32, step : i32, amp : f64, s : Scenario, uc : &mut Vec
         }
     }
 }
+
+fn s_compute_acoustics(s : Scenario, 
+                        uc : &mut Vec<Vec<f64>>,
+                        ub : &mut Vec<Vec<f64>>,
+                        ua : &mut Vec<Vec<f64>>)
+{
+    let step : i32 = 0;
+    let mut source_active : bool = true;
+    let place : i32;
+    let radius : i32 = s.source.radius;
+
+    let n_x = s.nx;
+    let n_y = s.ny;
+
+    while (step < (s.max_time as f64 / s.dt) as i32)
+    {
+        let copy_p_amp = s.source.p_amp;
+        let copy_s = s.clone();
+        
+        if step < (s.max_time as f64 / s.dt) as i32 / 2{
+            pulse_source(radius, step, copy_p_amp, copy_s, uc);
+        } else if source_active{
+            for i in 0..n_x{
+                for j in 0..n_y{
+                    let source_active_copy = source_active.clone();
+                    let copy_2s = s.clone();
+
+                    if is_source(Point(i, j), radius, source_active_copy, copy_2s).0{
+                        (*ua)[i as usize][j as usize] = 0 as f64;
+                        (*ub)[i as usize][j as usize] = 0 as f64;
+                        (*uc)[i as usize][j as usize] = 0 as f64;
+                        // (*uc)[i as usize][j as usize] = (*ub)[i as usize][j as usize] = (*ua)[i as usize][j as usize];
+                    }
+                }
+            }
+
+            source_active = false;
+        }
+
+
+        for i in 0..n_x{
+            for j in 0..n_y{
+                let copy_s = s.clone();
+                let copy_s2 = s.clone();
+                let copy_s3 = s.clone();
+                let copy_s4 = s.clone();
+                let copy_s5 = s.clone();
+                let copy_s6 = s.clone();
+                let source_active_copy = source_active.clone();
+
+                let on_corner_res = on_corner(Point(i, j), copy_s);
+                let on_edge_res = on_edge(Point(i, j), copy_s2);
+                let on_structure_edge_res = on_structure_edge(Point(i, j), copy_s3);
+                let on_structure_corner_res = on_structure_corner(Point(i, j), copy_s4);
+                let in_structure_res = in_structure(Point(i, j), copy_s5);
+
+                let is_source_res = is_source(Point(i, j), radius, source_active_copy, copy_s6).0;
+                
+                match (on_corner_res, on_edge_res, on_structure_corner_res,
+                         on_structure_edge_res, in_structure_res, is_source_res){
+                    (None, None, None, None, None, false) => {
+                        (*uc)[i as usize][j as usize] = compute_node(Point(i, j), )
+                }
+            }
+        }
+    }
+}
