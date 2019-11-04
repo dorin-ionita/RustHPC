@@ -3,7 +3,7 @@ mod acoustic;
 use std::env;
 use std::fs;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Source {
     x       : i32,  // linia sursei acustice
     y       : i32,  // coloane sursei acustice
@@ -11,10 +11,10 @@ struct Source {
     p_amp   : f64,  // valoarea pulsatiei sursei acustice
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Point(i32, i32);
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Structure {
     corner0    : Point,
     corner1    : Point,
@@ -22,7 +22,7 @@ struct Structure {
     corner3    : Point,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct Scenario {
     nx          : i32,
     ny          : i32,

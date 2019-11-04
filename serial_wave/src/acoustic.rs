@@ -185,7 +185,7 @@ fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, ub : Vec<Vec<f
     }
 }
 
-fn is_source(p : Point, radius : i32, source_active : bool, s : &[Scenario]) -> bool
+fn is_source(p : Point, radius : i32, source_active : bool, s : Scenario) -> (bool, Scenario)
 {  
     let Point(x, y) = p;
     let mut val : f64;
@@ -206,12 +206,15 @@ fn is_source(p : Point, radius : i32, source_active : bool, s : &[Scenario]) -> 
 fn pulse_source(radius : i32, step : i32, amp : f64, s : Scenario, uc : &mut Vec<Vec<f64>>)
 {
     // Note -> this should modify the argument
-    let n_x = (*s).nx;
-    let n_y = (*s).ny;
+    let n_x = s.nx;
+    let n_y = s.ny;
+
 
     for i in 0..n_x{
         for j in 0..n_y{
-            is_src = is_source(Point(i as i32, j as i32), radius, true, &s);
+            let new_s = s.clone();
+
+            let (is_src, _) = is_source(Point(i as i32, j as i32), radius, true, new_s);
             // s = t;
             if is_src{
                 uc[i as usize][j as usize] = amp * ((step as f64) * PI / 4.).sin();
