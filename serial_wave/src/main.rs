@@ -202,12 +202,12 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
 
 fn main()
 {
-    let path = String::from("/home/dorin/temapp/serial_wave/input");
+    let path = String::from("/home/dorin/rust/serial_wave/input");
     let mut sim = Simulation {
         scenaries : Vec::new(),
         scenario_idx : 0,
         num_scenarios : 0,
     };
     import_data(path, sim);
-    println!("/home/dorin/temapp/serial_wave/input");
+    println!("/home/dorin/rust/serial_wave/input");
 }
