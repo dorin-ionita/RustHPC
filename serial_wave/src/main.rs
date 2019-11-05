@@ -1,4 +1,5 @@
 mod acoustic;
+use acoustic::s_compute_acoustics;
 
 use std::env;
 use std::fs;
@@ -208,6 +209,17 @@ fn main()
         scenario_idx : 0,
         num_scenarios : 0,
     };
-    import_data(path, sim);
+    sim = import_data(path, sim);
+
+    let mut uc : Vec<Vec<f64>> = vec![vec![0.;100]; 100];
+    let mut ub : Vec<Vec<f64>> = vec![vec![0.;100]; 100];
+    let mut ua : Vec<Vec<f64>> = vec![vec![0.;100]; 100];
+
+
+    s_compute_acoustics(sim.scenaries[0], &mut uc, &mut ub, &mut ua);
+    // fn s_compute_acoustics(s : Scenario, 
+    //                     uc : &mut Vec<Vec<f64>>,
+    //                     ub : &mut Vec<Vec<f64>>,
+    //                     ua : &mut Vec<Vec<f64>>)
     println!("/home/dorin/rust/serial_wave/input");
 }
