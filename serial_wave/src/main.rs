@@ -5,7 +5,7 @@ use std::env;
 use std::fs;
 
 #[derive(Debug, Clone)]
-struct Source {
+pub struct Source {
     x       : i32,  // linia sursei acustice
     y       : i32,  // coloane sursei acustice
     radius  : i32,  // raza sursei sferice
@@ -13,10 +13,10 @@ struct Source {
 }
 
 #[derive(Debug, Clone)]
-struct Point(i32, i32);
+pub struct Point(i32, i32);
 
 #[derive(Debug, Clone)]
-struct Structure {
+pub struct Structure {
     corner0    : Point,
     corner1    : Point,
     corner2    : Point,
@@ -24,7 +24,7 @@ struct Structure {
 }
 
 #[derive(Debug, Clone)]
-struct Scenario {
+pub struct Scenario {
     nx          : i32,
     ny          : i32,
     save_time   : i32,
@@ -71,7 +71,7 @@ impl Default for Scenario {
 }
 
 #[derive(Debug)]
-struct Simulation {
+pub struct Simulation {
     scenaries   : Vec<Scenario>,
     scenario_idx: i32,
     num_scenarios: i32,
@@ -211,12 +211,12 @@ fn main()
     };
     sim = import_data(path, sim);
 
-    let mut uc : Vec<Vec<f64>> = vec![vec![0.;100]; 100];
-    let mut ub : Vec<Vec<f64>> = vec![vec![0.;100]; 100];
-    let mut ua : Vec<Vec<f64>> = vec![vec![0.;100]; 100];
+    let mut uc : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
+    let mut ub : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
+    let mut ua : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
 
 
-    s_compute_acoustics(sim.scenaries[0], &mut uc, &mut ub, &mut ua);
+    s_compute_acoustics(&sim.scenaries[0], &mut uc, &mut ub, &mut ua);
     // fn s_compute_acoustics(s : Scenario, 
     //                     uc : &mut Vec<Vec<f64>>,
     //                     ub : &mut Vec<Vec<f64>>,

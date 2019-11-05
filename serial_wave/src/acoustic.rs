@@ -223,7 +223,7 @@ fn pulse_source(radius : i32, step : i32, amp : f64, s : Scenario, uc : &mut Vec
     }
 }
 
-pub fn s_compute_acoustics(s : Scenario, 
+pub fn s_compute_acoustics(s : &Scenario, 
                         uc : &mut Vec<Vec<f64>>,
                         ub : &mut Vec<Vec<f64>>,
                         ua : &mut Vec<Vec<f64>>)
