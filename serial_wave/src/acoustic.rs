@@ -272,6 +272,18 @@ fn s_compute_acoustics(s : Scenario,
                 let copy_s6 = s.clone();
                 let source_active_copy = source_active.clone();
 
+                let copy_ua = (*ua).clone();
+                let copy_ub = (*ub).clone();
+                let copy_uc = (*uc).clone();
+
+                let copy_ua2 = (*ua).clone();
+                let copy_ub2 = (*ub).clone();
+                let copy_uc2 = (*uc).clone();
+
+                let copy_ub3 = (*ub).clone();
+                let copy_ub4 = (*ub).clone();
+                let copy_ub5 = (*ub).clone();
+
                 let on_corner_res = on_corner(Point(i, j), copy_s);
                 let on_edge_res = on_edge(Point(i, j), copy_s2);
                 let on_structure_edge_res = on_structure_edge(Point(i, j), copy_s3);
@@ -280,11 +292,23 @@ fn s_compute_acoustics(s : Scenario,
 
                 let is_source_res = is_source(Point(i, j), radius, source_active_copy, copy_s6).0;
                 
+                let gain = (s.dx * s.dx) / (s.dt * s.dt);
                 match (on_corner_res, on_edge_res, on_structure_corner_res,
                          on_structure_edge_res, in_structure_res, is_source_res){
-                    (None, None, None, None, None, false) => {
-                        (*uc)[i as usize][j as usize] = compute_node(Point(i, j), )
+                    (None, None, None, None, false, false) =>
+                        (*uc)[i as usize][j as usize] = compute_node(Point(i, j), copy_ub, copy_ua, gain),
+                    (_, Some(t), _, _, _, _) =>
+                        (*uc)[i as usize][j as usize] = compute_edge_node(i, j, t, copy_ub2),
+                    (Some(t), _, _, _, _, _) =>
+                        (*uc)[i as usize][j as usize] = compute_corner_node(i, j, t, copy_ub3),
+                    (_, _, _, Some(t), _, _) =>
+                        (*uc)[i as usize][j as usize] = compute_structure_edge_node(i, j, t, copy_ub4),
+                    (_, _, Some(t), _, _, _) =>
+                        (*uc)[i as usize][j as usize] = compute_structure_corner_node(i, j, t, copy_ub5),
+                    _ => (),
                 }
+
+                (*ua)[i as usize][j as usize] = 0.;
             }
         }
     }
