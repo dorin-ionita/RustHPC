@@ -228,7 +228,7 @@ fn s_compute_acoustics(s : Scenario,
                         ub : &mut Vec<Vec<f64>>,
                         ua : &mut Vec<Vec<f64>>)
 {
-    let step : i32 = 0;
+    let mut step : i32 = 0;
     let mut source_active : bool = true;
     let place : i32;
     let radius : i32 = s.source.radius;
@@ -311,5 +311,22 @@ fn s_compute_acoustics(s : Scenario,
                 (*ua)[i as usize][j as usize] = 0.;
             }
         }
+
+        if (step % s.save_time == 0){
+            //
+        }
+
+        let xchg = (*ua).clone();
+        (*ua) = (*ub).clone();
+        (*ub) = (*uc).clone();
+        (*uc) = xchg; 
+        // std::mem::swap(&mut ua, &mut ub);
+        // std::mem::swap(&mut ub, &mut uc);
+        // let xchg : &mut Vec<Vec<f64>> = ua;
+        // let ua = ub;
+        // let ub = uc;
+        // let uc = xchg;
+
+        step += 1;
     }
 }
