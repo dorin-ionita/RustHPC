@@ -203,7 +203,8 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
 
 fn main()
 {
-    let path = String::from("/home/dorin/rust/serial_wave/input");
+    // let path = String::from("/home/dorin/rust/serial_wave/input");
+    let path = String::from("/home/dorin/temapp/serial_wave/input");
     let mut sim = Simulation {
         scenaries : Vec::new(),
         scenario_idx : 0,
@@ -217,9 +218,9 @@ fn main()
 
 
     s_compute_acoustics(&sim.scenaries[0], &mut uc, &mut ub, &mut ua);
+
     // fn s_compute_acoustics(s : Scenario, 
     //                     uc : &mut Vec<Vec<f64>>,
     //                     ub : &mut Vec<Vec<f64>>,
     //                     ua : &mut Vec<Vec<f64>>)
-    println!("/home/dorin/rust/serial_wave/input");
 }

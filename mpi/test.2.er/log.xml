@@ -1,0 +1,77 @@
+<experiment version="10.1">
+<collector>Sun Analyzer 7.7 Linux_i386 2009/06/03</collector>
+</experiment>
+<system hostname="fep-53-2.grid.pub.ro" arch="x86_64" os="Linux 2.6.18-128.1.14.el5xen">
+  <cpu id="0" clk="3000"/>
+  <cpu id="1" clk="3000"/>
+</system>
+<process pid="28206" ppid="27001" pgrp="28206" sid="27001" cwd="/export/home/stud/mihai.trascau/implementare/mpi" pagesz="4096" wsize="64" stackbase="0x0">mpirun -np 4 acoustics input </process>
+<event kind="cwarn" id="202">10000 -> 20000</event>
+<profile name="profile" ptimer="20000" numstates="1">
+  <profdata fname="profile"/>
+  <profpckt kind="1">
+    <field name="LWPID" offset="8" type="INT64"/>
+    <field name="THRID" offset="16" type="INT64"/>
+    <field name="CPUID" offset="24" type="INT32"/>
+    <field name="TSTAMP" offset="32" type="INT64"/>
+    <field name="FRINFO" offset="40" type="INT64"/>
+    <field name="UCPU" offset="48" type="INT32"/>
+  </profpckt>
+</profile>
+<setting blksz="16384"/>
+<dataptr name="frameinfo" format="binary"/>
+<setting sample_period="1"/>
+<setting limit="2000"/>
+<event kind="run" tstamp="301474144.058483968" time="1247554145"/>
+<event kind="sample" tstamp="1.320915008" id="0" label="collector_open_experiment"/>
+<event kind="sample" tstamp="2.968730048" id="1" label="periodic"/>
+<event kind="desc_start" tstamp="3.111501056" variant="grantpt" lineage="_c1" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.113290048" id="2" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.117419008" id="3" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.120297024" variant="grantpt" lineage="_c1" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.133646016" variant="grantpt" lineage="_c2" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.146362048" id="4" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.149410048" id="5" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.153500032" variant="grantpt" lineage="_c2" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.166382016" variant="fork" lineage="_f1" follow="0"/>
+<event kind="sample" tstamp="3.178315008" id="6" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.191221056" id="7" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.195318016" variant="fork" lineage="_f1" follow="0" msg="pid=28282"/>
+<event kind="desc_start" tstamp="3.208879040" variant="grantpt" lineage="_c3" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.221596032" id="8" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.225610048" id="9" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.229261056" variant="grantpt" lineage="_c3" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.242411008" variant="grantpt" lineage="_c4" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.254550016" id="10" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.258396032" id="11" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.262251008" variant="grantpt" lineage="_c4" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.275469056" variant="fork" lineage="_f2" follow="0"/>
+<event kind="sample" tstamp="3.287381056" id="12" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.297649024" id="13" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.301357056" variant="fork" lineage="_f2" follow="0" msg="pid=28283"/>
+<event kind="desc_start" tstamp="3.314702016" variant="grantpt" lineage="_c5" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.328408064" id="14" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.332361024" id="15" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.336260032" variant="grantpt" lineage="_c5" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.349406016" variant="grantpt" lineage="_c6" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.362417024" id="16" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.366327040" id="17" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.370268032" variant="grantpt" lineage="_c6" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.383374016" variant="fork" lineage="_f3" follow="0"/>
+<event kind="sample" tstamp="3.396341056" id="18" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.406501056" id="19" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.410390016" variant="fork" lineage="_f3" follow="0" msg="pid=28284"/>
+<event kind="desc_start" tstamp="3.423758016" variant="grantpt" lineage="_c7" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.436417024" id="20" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.440299008" id="21" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.444251008" variant="grantpt" lineage="_c7" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.457373056" variant="grantpt" lineage="_c8" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.470538048" id="22" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.474379008" id="23" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.478270016" variant="grantpt" lineage="_c8" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.490446016" variant="fork" lineage="_f4" follow="0"/>
+<event kind="sample" tstamp="3.503317056" id="24" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.513569024" id="25" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.517385024" variant="fork" lineage="_f4" follow="0" msg="pid=28285"/>
+<event kind="sample" tstamp="32.826812032" id="26" label="collector_close_experiment"/>
+<event kind="exit" tstamp="32.832504064"/>

@@ -1,0 +1,215 @@
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x0000000000400000" size="81920" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/bin/orterun"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x0000000000613000" size="8192" pagesz="4096" foffset="+0x00013000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/bin/orterun"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038C8C00000" size="114688" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/ld-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038C8E1B000" size="4096" pagesz="4096" foffset="+0x0001B000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/ld-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038C8E1C000" size="4096" pagesz="4096" foffset="+0x0001C000" modes="0x007" chksum="0x0" name="/lib64/ld-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038C9C00000" size="1359872" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libc-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038C9D4C000" size="2097152" pagesz="4096" foffset="+0x0014C000" modes="0x000" chksum="0x0" name="/lib64/libc-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038C9F4C000" size="16384" pagesz="4096" foffset="+0x0014C000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libc-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038C9F50000" size="4096" pagesz="4096" foffset="+0x00150000" modes="0x007" chksum="0x0" name="/lib64/libc-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA000000" size="532480" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libm-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA082000" size="2093056" pagesz="4096" foffset="+0x00082000" modes="0x000" chksum="0x0" name="/lib64/libm-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA281000" size="4096" pagesz="4096" foffset="+0x00081000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libm-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA282000" size="4096" pagesz="4096" foffset="+0x00082000" modes="0x007" chksum="0x0" name="/lib64/libm-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA400000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libdl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA402000" size="2097152" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/lib64/libdl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA602000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libdl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA603000" size="4096" pagesz="4096" foffset="+0x00003000" modes="0x007" chksum="0x0" name="/lib64/libdl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA800000" size="90112" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libpthread-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CA816000" size="2093056" pagesz="4096" foffset="+0x00016000" modes="0x000" chksum="0x0" name="/lib64/libpthread-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CAA15000" size="4096" pagesz="4096" foffset="+0x00015000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libpthread-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038CAA16000" size="4096" pagesz="4096" foffset="+0x00016000" modes="0x007" chksum="0x0" name="/lib64/libpthread-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D1A00000" size="86016" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libnsl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D1A15000" size="2093056" pagesz="4096" foffset="+0x00015000" modes="0x000" chksum="0x0" name="/lib64/libnsl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D1C14000" size="4096" pagesz="4096" foffset="+0x00014000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libnsl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D1C15000" size="4096" pagesz="4096" foffset="+0x00015000" modes="0x007" chksum="0x0" name="/lib64/libnsl-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D8600000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libutil-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D8602000" size="2093056" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/lib64/libutil-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D8801000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x005" chksum="0xFFFFFFFF" name="/lib64/libutil-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00000038D8802000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/lib64/libutil-2.5.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA9100000" size="229376" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/sun/sunstudio12.1/prod/lib/amd64/dbxruntime/libcollector.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA9138000" size="1048576" pagesz="4096" foffset="+0x00038000" modes="0x000" chksum="0x0" name="/opt/sun/sunstudio12.1/prod/lib/amd64/dbxruntime/libcollector.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA9238000" size="40960" pagesz="4096" foffset="+0x00038000" modes="0x007" chksum="0x0" name="/opt/sun/sunstudio12.1/prod/lib/amd64/dbxruntime/libcollector.so"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA9260000" size="299008" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/libopen-rte.so.0.0.0"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA92A9000" size="2097152" pagesz="4096" foffset="+0x00049000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/libopen-rte.so.0.0.0"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA94A9000" size="12288" pagesz="4096" foffset="+0x00049000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/libopen-rte.so.0.0.0"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA94AD000" size="360448" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/libopen-pal.so.0.0.0"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA9505000" size="2097152" pagesz="4096" foffset="+0x00058000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/libopen-pal.so.0.0.0"/>
+<event kind="map" object="segment" tstamp="0.236805952" vaddr="0x00002AEAA9705000" size="12288" pagesz="4096" foffset="+0x00058000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/libopen-pal.so.0.0.0"/>
+<event kind="map" object="segment" tstamp="1.345444992" vaddr="0x00002AEAAA886000" size="20480" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_paffinity_linux.so"/>
+<event kind="map" object="segment" tstamp="1.345444992" vaddr="0x00002AEAAA88B000" size="2093056" pagesz="4096" foffset="+0x00005000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_paffinity_linux.so"/>
+<event kind="map" object="segment" tstamp="1.345444992" vaddr="0x00002AEAAAA8A000" size="4096" pagesz="4096" foffset="+0x00004000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_paffinity_linux.so"/>
+<event kind="map" object="segment" tstamp="1.388806976" vaddr="0x00002AEAAAA8B000" size="16384" pagesz="4096" foffset="+0x00000000" modes="0x00F" chksum="0x0" name="/export/home/stud/mihai.trascau/implementare/mpi/test.1.er/data.frameinfo"/>
+<event kind="map" object="segment" tstamp="1.388806976" vaddr="0x00002AEAAAACB000" size="16384" pagesz="4096" foffset="+0x00000000" modes="0x00F" chksum="0x0" name="/export/home/stud/mihai.trascau/implementare/mpi/test.1.er/profile"/>
+<event kind="map" object="segment" tstamp="1.388806976" vaddr="0x00002AEAAAB0B000" size="4096" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_carto_auto_detect.so"/>
+<event kind="map" object="segment" tstamp="1.388806976" vaddr="0x00002AEAAAB0C000" size="2093056" pagesz="4096" foffset="+0x00001000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_carto_auto_detect.so"/>
+<event kind="map" object="segment" tstamp="1.388806976" vaddr="0x00002AEAAAD0B000" size="4096" pagesz="4096" foffset="+0x00000000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_carto_auto_detect.so"/>
+<event kind="map" object="segment" tstamp="1.442944000" vaddr="0x00002AEAAAD0C000" size="20480" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_carto_file.so"/>
+<event kind="map" object="segment" tstamp="1.442944000" vaddr="0x00002AEAAAD11000" size="2093056" pagesz="4096" foffset="+0x00005000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_carto_file.so"/>
+<event kind="map" object="segment" tstamp="1.442944000" vaddr="0x00002AEAAAF10000" size="4096" pagesz="4096" foffset="+0x00004000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_carto_file.so"/>
+<event kind="unmap" tstamp="1.482836992" vaddr="0x00002AEAAAD0C000"/>
+<event kind="unmap" tstamp="1.482836992" vaddr="0x00002AEAAAD11000"/>
+<event kind="unmap" tstamp="1.482836992" vaddr="0x00002AEAAAF10000"/>
+<event kind="map" object="segment" tstamp="1.524252992" vaddr="0x00002AEAAAD0C000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_env.so"/>
+<event kind="map" object="segment" tstamp="1.524252992" vaddr="0x00002AEAAAD0E000" size="2097152" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_env.so"/>
+<event kind="map" object="segment" tstamp="1.524252992" vaddr="0x00002AEAAAF0E000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_env.so"/>
+<event kind="map" object="segment" tstamp="1.563870976" vaddr="0x00002AEAAAF0F000" size="16384" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_hnp.so"/>
+<event kind="map" object="segment" tstamp="1.563870976" vaddr="0x00002AEAAAF13000" size="2093056" pagesz="4096" foffset="+0x00004000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_hnp.so"/>
+<event kind="map" object="segment" tstamp="1.563870976" vaddr="0x00002AEAAB112000" size="4096" pagesz="4096" foffset="+0x00003000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_hnp.so"/>
+<event kind="map" object="segment" tstamp="1.602987008" vaddr="0x00002AEAAB113000" size="12288" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_singleton.so"/>
+<event kind="map" object="segment" tstamp="1.602987008" vaddr="0x00002AEAAB116000" size="2093056" pagesz="4096" foffset="+0x00003000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_singleton.so"/>
+<event kind="map" object="segment" tstamp="1.602987008" vaddr="0x00002AEAAB315000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_singleton.so"/>
+<event kind="map" object="segment" tstamp="1.641937984" vaddr="0x00002AEAAB316000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_slurm.so"/>
+<event kind="map" object="segment" tstamp="1.641937984" vaddr="0x00002AEAAB318000" size="2097152" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_slurm.so"/>
+<event kind="map" object="segment" tstamp="1.641937984" vaddr="0x00002AEAAB518000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_slurm.so"/>
+<event kind="map" object="segment" tstamp="1.682953984" vaddr="0x00002AEAAB519000" size="4096" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_tool.so"/>
+<event kind="map" object="segment" tstamp="1.682953984" vaddr="0x00002AEAAB51A000" size="2097152" pagesz="4096" foffset="+0x00001000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_tool.so"/>
+<event kind="map" object="segment" tstamp="1.682953984" vaddr="0x00002AEAAB71A000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ess_tool.so"/>
+<event kind="unmap" tstamp="1.721896960" vaddr="0x00002AEAAAD0C000"/>
+<event kind="unmap" tstamp="1.721896960" vaddr="0x00002AEAAAD0E000"/>
+<event kind="unmap" tstamp="1.721896960" vaddr="0x00002AEAAAF0E000"/>
+<event kind="unmap" tstamp="1.759843968" vaddr="0x00002AEAAB113000"/>
+<event kind="unmap" tstamp="1.759843968" vaddr="0x00002AEAAB116000"/>
+<event kind="unmap" tstamp="1.759843968" vaddr="0x00002AEAAB315000"/>
+<event kind="unmap" tstamp="1.798849984" vaddr="0x00002AEAAB316000"/>
+<event kind="unmap" tstamp="1.798849984" vaddr="0x00002AEAAB318000"/>
+<event kind="unmap" tstamp="1.798849984" vaddr="0x00002AEAAB518000"/>
+<event kind="unmap" tstamp="1.837800960" vaddr="0x00002AEAAB519000"/>
+<event kind="unmap" tstamp="1.837800960" vaddr="0x00002AEAAB51A000"/>
+<event kind="unmap" tstamp="1.837800960" vaddr="0x00002AEAAB71A000"/>
+<event kind="map" object="segment" tstamp="1.877888000" vaddr="0x00002AEAAB113000" size="28672" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_plm_rsh.so"/>
+<event kind="map" object="segment" tstamp="1.877888000" vaddr="0x00002AEAAB11A000" size="2093056" pagesz="4096" foffset="+0x00007000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_plm_rsh.so"/>
+<event kind="map" object="segment" tstamp="1.877888000" vaddr="0x00002AEAAB319000" size="4096" pagesz="4096" foffset="+0x00006000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_plm_rsh.so"/>
+<event kind="map" object="segment" tstamp="1.917112000" vaddr="0x00002AEAAB31A000" size="12288" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_plm_slurm.so"/>
+<event kind="map" object="segment" tstamp="1.917112000" vaddr="0x00002AEAAB31D000" size="2093056" pagesz="4096" foffset="+0x00003000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_plm_slurm.so"/>
+<event kind="map" object="segment" tstamp="1.917112000" vaddr="0x00002AEAAB51C000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_plm_slurm.so"/>
+<event kind="unmap" tstamp="1.956914944" vaddr="0x00002AEAAB31A000"/>
+<event kind="unmap" tstamp="1.956914944" vaddr="0x00002AEAAB31D000"/>
+<event kind="unmap" tstamp="1.956914944" vaddr="0x00002AEAAB51C000"/>
+<event kind="map" object="segment" tstamp="1.997849984" vaddr="0x00002AEAAB31A000" size="24576" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rml_oob.so"/>
+<event kind="map" object="segment" tstamp="1.997849984" vaddr="0x00002AEAAB320000" size="2093056" pagesz="4096" foffset="+0x00006000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rml_oob.so"/>
+<event kind="map" object="segment" tstamp="1.997849984" vaddr="0x00002AEAAB51F000" size="4096" pagesz="4096" foffset="+0x00005000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rml_oob.so"/>
+<event kind="map" object="segment" tstamp="2.038838976" vaddr="0x00002AEAAB520000" size="61440" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_oob_tcp.so"/>
+<event kind="map" object="segment" tstamp="2.038838976" vaddr="0x00002AEAAB52F000" size="2093056" pagesz="4096" foffset="+0x0000F000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_oob_tcp.so"/>
+<event kind="map" object="segment" tstamp="2.038838976" vaddr="0x00002AEAAB72E000" size="8192" pagesz="4096" foffset="+0x0000E000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_oob_tcp.so"/>
+<event kind="map" object="segment" tstamp="2.081563968" vaddr="0x00002AEAAB730000" size="16384" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_binomial.so"/>
+<event kind="map" object="segment" tstamp="2.081563968" vaddr="0x00002AEAAB734000" size="2093056" pagesz="4096" foffset="+0x00004000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_binomial.so"/>
+<event kind="map" object="segment" tstamp="2.081563968" vaddr="0x00002AEAAB933000" size="4096" pagesz="4096" foffset="+0x00003000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_binomial.so"/>
+<event kind="map" object="segment" tstamp="2.122128000" vaddr="0x00002AEAAB934000" size="12288" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_direct.so"/>
+<event kind="map" object="segment" tstamp="2.122128000" vaddr="0x00002AEAAB937000" size="2093056" pagesz="4096" foffset="+0x00003000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_direct.so"/>
+<event kind="map" object="segment" tstamp="2.122128000" vaddr="0x00002AEAABB36000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_direct.so"/>
+<event kind="map" object="segment" tstamp="2.162955008" vaddr="0x00002AEAABB37000" size="12288" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_linear.so"/>
+<event kind="map" object="segment" tstamp="2.162955008" vaddr="0x00002AEAABB3A000" size="2097152" pagesz="4096" foffset="+0x00003000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_linear.so"/>
+<event kind="map" object="segment" tstamp="2.162955008" vaddr="0x00002AEAABD3A000" size="4096" pagesz="4096" foffset="+0x00003000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_routed_linear.so"/>
+<event kind="unmap" tstamp="2.202141952" vaddr="0x00002AEAAB934000"/>
+<event kind="unmap" tstamp="2.202141952" vaddr="0x00002AEAAB937000"/>
+<event kind="unmap" tstamp="2.202141952" vaddr="0x00002AEAABB36000"/>
+<event kind="unmap" tstamp="2.241713984" vaddr="0x00002AEAABB37000"/>
+<event kind="unmap" tstamp="2.241713984" vaddr="0x00002AEAABB3A000"/>
+<event kind="unmap" tstamp="2.241713984" vaddr="0x00002AEAABD3A000"/>
+<event kind="map" object="segment" tstamp="2.280770944" vaddr="0x00002AEAAB934000" size="12288" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_grpcomm_bad.so"/>
+<event kind="map" object="segment" tstamp="2.280770944" vaddr="0x00002AEAAB937000" size="2093056" pagesz="4096" foffset="+0x00003000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_grpcomm_bad.so"/>
+<event kind="map" object="segment" tstamp="2.280770944" vaddr="0x00002AEAABB36000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_grpcomm_bad.so"/>
+<event kind="map" object="segment" tstamp="2.320002944" vaddr="0x00002AEAABB37000" size="12288" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_grpcomm_basic.so"/>
+<event kind="map" object="segment" tstamp="2.320002944" vaddr="0x00002AEAABB3A000" size="2093056" pagesz="4096" foffset="+0x00003000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_grpcomm_basic.so"/>
+<event kind="map" object="segment" tstamp="2.320002944" vaddr="0x00002AEAABD39000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_grpcomm_basic.so"/>
+<event kind="unmap" tstamp="2.359912960" vaddr="0x00002AEAABB37000"/>
+<event kind="unmap" tstamp="2.359912960" vaddr="0x00002AEAABB3A000"/>
+<event kind="unmap" tstamp="2.359912960" vaddr="0x00002AEAABD39000"/>
+<event kind="map" object="segment" tstamp="2.400972992" vaddr="0x00002AEAABB37000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ras_gridengine.so"/>
+<event kind="map" object="segment" tstamp="2.400972992" vaddr="0x00002AEAABB39000" size="2093056" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ras_gridengine.so"/>
+<event kind="map" object="segment" tstamp="2.400972992" vaddr="0x00002AEAABD38000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ras_gridengine.so"/>
+<event kind="map" object="segment" tstamp="2.442187008" vaddr="0x00002AEAABD39000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ras_slurm.so"/>
+<event kind="map" object="segment" tstamp="2.442187008" vaddr="0x00002AEAABD3B000" size="2093056" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ras_slurm.so"/>
+<event kind="map" object="segment" tstamp="2.442187008" vaddr="0x00002AEAABF3A000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_ras_slurm.so"/>
+<event kind="unmap" tstamp="2.470174976" vaddr="0x00002AEAABB37000"/>
+<event kind="unmap" tstamp="2.470174976" vaddr="0x00002AEAABB39000"/>
+<event kind="unmap" tstamp="2.470174976" vaddr="0x00002AEAABD38000"/>
+<event kind="unmap" tstamp="2.509827968" vaddr="0x00002AEAABD39000"/>
+<event kind="unmap" tstamp="2.509827968" vaddr="0x00002AEAABD3B000"/>
+<event kind="unmap" tstamp="2.509827968" vaddr="0x00002AEAABF3A000"/>
+<event kind="map" object="segment" tstamp="2.550972992" vaddr="0x00002AEAABB37000" size="24576" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_rank_file.so"/>
+<event kind="map" object="segment" tstamp="2.550972992" vaddr="0x00002AEAABB3D000" size="2093056" pagesz="4096" foffset="+0x00006000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_rank_file.so"/>
+<event kind="map" object="segment" tstamp="2.550972992" vaddr="0x00002AEAABD3C000" size="4096" pagesz="4096" foffset="+0x00005000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_rank_file.so"/>
+<event kind="map" object="segment" tstamp="2.590955008" vaddr="0x00002AEAABD3D000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_round_robin.so"/>
+<event kind="map" object="segment" tstamp="2.590955008" vaddr="0x00002AEAABD3F000" size="2093056" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_round_robin.so"/>
+<event kind="map" object="segment" tstamp="2.590955008" vaddr="0x00002AEAABF3E000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_round_robin.so"/>
+<event kind="map" object="segment" tstamp="2.630965952" vaddr="0x00002AEAABF3F000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_seq.so"/>
+<event kind="map" object="segment" tstamp="2.630965952" vaddr="0x00002AEAABF41000" size="2093056" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_seq.so"/>
+<event kind="map" object="segment" tstamp="2.630965952" vaddr="0x00002AEAAC140000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_rmaps_seq.so"/>
+<event kind="unmap" tstamp="2.669970944" vaddr="0x00002AEAABB37000"/>
+<event kind="unmap" tstamp="2.669970944" vaddr="0x00002AEAABB3D000"/>
+<event kind="unmap" tstamp="2.669970944" vaddr="0x00002AEAABD3C000"/>
+<event kind="unmap" tstamp="2.709843968" vaddr="0x00002AEAABF3F000"/>
+<event kind="unmap" tstamp="2.709843968" vaddr="0x00002AEAABF41000"/>
+<event kind="unmap" tstamp="2.709843968" vaddr="0x00002AEAAC140000"/>
+<event kind="map" object="segment" tstamp="2.750878976" vaddr="0x00002AEAABB37000" size="4096" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_errmgr_default.so"/>
+<event kind="map" object="segment" tstamp="2.750878976" vaddr="0x00002AEAABB38000" size="2097152" pagesz="4096" foffset="+0x00001000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_errmgr_default.so"/>
+<event kind="map" object="segment" tstamp="2.750878976" vaddr="0x00002AEAABD38000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_errmgr_default.so"/>
+<event kind="map" object="segment" tstamp="2.792774976" vaddr="0x00002AEAABF3F000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_odls_default.so"/>
+<event kind="map" object="segment" tstamp="2.792774976" vaddr="0x00002AEAABF41000" size="2097152" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_odls_default.so"/>
+<event kind="map" object="segment" tstamp="2.792774976" vaddr="0x00002AEAAC141000" size="4096" pagesz="4096" foffset="+0x00002000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_odls_default.so"/>
+<event kind="map" object="segment" tstamp="2.835952960" vaddr="0x00002AEAAC142000" size="217088" pagesz="4096" foffset="+0x00000000" modes="0x00D" chksum="0xFFFFFFFF" name="/var/db/nscd/passwd"/>
+<event kind="map" object="segment" tstamp="2.835952960" vaddr="0x00002AEAAC177000" size="20480" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_hnp.so"/>
+<event kind="map" object="segment" tstamp="2.835952960" vaddr="0x00002AEAAC17C000" size="2093056" pagesz="4096" foffset="+0x00005000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_hnp.so"/>
+<event kind="map" object="segment" tstamp="2.835952960" vaddr="0x00002AEAAC37B000" size="4096" pagesz="4096" foffset="+0x00004000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_hnp.so"/>
+<event kind="map" object="segment" tstamp="2.889032960" vaddr="0x00002AEAAC37C000" size="16384" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_orted.so"/>
+<event kind="map" object="segment" tstamp="2.889032960" vaddr="0x00002AEAAC380000" size="2093056" pagesz="4096" foffset="+0x00004000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_orted.so"/>
+<event kind="map" object="segment" tstamp="2.889032960" vaddr="0x00002AEAAC57F000" size="4096" pagesz="4096" foffset="+0x00003000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_orted.so"/>
+<event kind="map" object="segment" tstamp="2.928987968" vaddr="0x00002AEAAC580000" size="8192" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_tool.so"/>
+<event kind="map" object="segment" tstamp="2.928987968" vaddr="0x00002AEAAC582000" size="2093056" pagesz="4096" foffset="+0x00002000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_tool.so"/>
+<event kind="map" object="segment" tstamp="2.928987968" vaddr="0x00002AEAAC781000" size="4096" pagesz="4096" foffset="+0x00001000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_iof_tool.so"/>
+<event kind="unmap" tstamp="2.968925952" vaddr="0x00002AEAAC37C000"/>
+<event kind="unmap" tstamp="2.968925952" vaddr="0x00002AEAAC380000"/>
+<event kind="unmap" tstamp="2.968925952" vaddr="0x00002AEAAC57F000"/>
+<event kind="unmap" tstamp="3.007875968" vaddr="0x00002AEAAC580000"/>
+<event kind="unmap" tstamp="3.007875968" vaddr="0x00002AEAAC582000"/>
+<event kind="unmap" tstamp="3.007875968" vaddr="0x00002AEAAC781000"/>
+<event kind="map" object="segment" tstamp="3.047904000" vaddr="0x00002AEAAC37C000" size="24576" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_filem_rsh.so"/>
+<event kind="map" object="segment" tstamp="3.047904000" vaddr="0x00002AEAAC382000" size="2093056" pagesz="4096" foffset="+0x00006000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_filem_rsh.so"/>
+<event kind="map" object="segment" tstamp="3.047904000" vaddr="0x00002AEAAC581000" size="4096" pagesz="4096" foffset="+0x00005000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_filem_rsh.so"/>
+<event kind="map" object="segment" tstamp="3.089980992" vaddr="0x00002AEAAC582000" size="4096" pagesz="4096" foffset="+0x00000000" modes="0x005" chksum="0xFFFFFFFF" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_notifier_syslog.so"/>
+<event kind="map" object="segment" tstamp="3.089980992" vaddr="0x00002AEAAC583000" size="2093056" pagesz="4096" foffset="+0x00001000" modes="0x000" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_notifier_syslog.so"/>
+<event kind="map" object="segment" tstamp="3.089980992" vaddr="0x00002AEAAC782000" size="4096" pagesz="4096" foffset="+0x00000000" modes="0x007" chksum="0x0" name="/opt/libs/openmpi/openmpi-1.3.2_sunstudio12.1/lib/openmpi/mca_notifier_syslog.so"/>
+<event kind="unmap" tstamp="3.129922944" vaddr="0x00002AEAAC582000"/>
+<event kind="unmap" tstamp="3.129922944" vaddr="0x00002AEAAC583000"/>
+<event kind="unmap" tstamp="3.129922944" vaddr="0x00002AEAAC782000"/>
+<event kind="unmap" tstamp="33.247368000" vaddr="0x00002AEAAC37C000"/>
+<event kind="unmap" tstamp="33.247368000" vaddr="0x00002AEAAC382000"/>
+<event kind="unmap" tstamp="33.247368000" vaddr="0x00002AEAAC581000"/>
+<event kind="unmap" tstamp="33.277981952" vaddr="0x00002AEAABF3F000"/>
+<event kind="unmap" tstamp="33.277981952" vaddr="0x00002AEAABF41000"/>
+<event kind="unmap" tstamp="33.277981952" vaddr="0x00002AEAAC141000"/>
+<event kind="unmap" tstamp="33.317953984" vaddr="0x00002AEAAC177000"/>
+<event kind="unmap" tstamp="33.317953984" vaddr="0x00002AEAAC17C000"/>
+<event kind="unmap" tstamp="33.317953984" vaddr="0x00002AEAAC37B000"/>
+<event kind="unmap" tstamp="33.357641984" vaddr="0x00002AEAABD3D000"/>
+<event kind="unmap" tstamp="33.357641984" vaddr="0x00002AEAABD3F000"/>
+<event kind="unmap" tstamp="33.357641984" vaddr="0x00002AEAABF3E000"/>
+<event kind="unmap" tstamp="33.396768960" vaddr="0x00002AEAAB113000"/>
+<event kind="unmap" tstamp="33.396768960" vaddr="0x00002AEAAB11A000"/>
+<event kind="unmap" tstamp="33.396768960" vaddr="0x00002AEAAB319000"/>
+<event kind="unmap" tstamp="33.435896000" vaddr="0x00002AEAABB37000"/>
+<event kind="unmap" tstamp="33.435896000" vaddr="0x00002AEAABB38000"/>
+<event kind="unmap" tstamp="33.435896000" vaddr="0x00002AEAABD38000"/>
+<event kind="unmap" tstamp="33.474875008" vaddr="0x00002AEAAB934000"/>
+<event kind="unmap" tstamp="33.474875008" vaddr="0x00002AEAAB937000"/>
+<event kind="unmap" tstamp="33.474875008" vaddr="0x00002AEAABB36000"/>
+<event kind="unmap" tstamp="33.529835968" vaddr="0x00002AEAAB730000"/>
+<event kind="unmap" tstamp="33.529835968" vaddr="0x00002AEAAB734000"/>
+<event kind="unmap" tstamp="33.529835968" vaddr="0x00002AEAAB933000"/>
+<event kind="unmap" tstamp="33.568812992" vaddr="0x00002AEAAB520000"/>
+<event kind="unmap" tstamp="33.568812992" vaddr="0x00002AEAAB52F000"/>
+<event kind="unmap" tstamp="33.568812992" vaddr="0x00002AEAAB72E000"/>
+<event kind="unmap" tstamp="33.606888000" vaddr="0x00002AEAAB31A000"/>
+<event kind="unmap" tstamp="33.606888000" vaddr="0x00002AEAAB320000"/>
+<event kind="unmap" tstamp="33.606888000" vaddr="0x00002AEAAB51F000"/>
+<event kind="unmap" tstamp="33.645870976" vaddr="0x00002AEAAAF0F000"/>
+<event kind="unmap" tstamp="33.645870976" vaddr="0x00002AEAAAF13000"/>
+<event kind="unmap" tstamp="33.645870976" vaddr="0x00002AEAAB112000"/>
+<event kind="unmap" tstamp="33.683854976" vaddr="0x00002AEAAAB0B000"/>
+<event kind="unmap" tstamp="33.683854976" vaddr="0x00002AEAAAB0C000"/>
+<event kind="unmap" tstamp="33.683854976" vaddr="0x00002AEAAAD0B000"/>
+<event kind="unmap" tstamp="33.722541952" vaddr="0x00002AEAAA886000"/>
+<event kind="unmap" tstamp="33.722541952" vaddr="0x00002AEAAA88B000"/>
+<event kind="unmap" tstamp="33.722541952" vaddr="0x00002AEAAAA8A000"/>

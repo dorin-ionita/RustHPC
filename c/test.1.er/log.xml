@@ -1,0 +1,54 @@
+<experiment version="10.1">
+<collector>Sun Analyzer 7.7 Linux_i386 2009/06/03</collector>
+</experiment>
+<system hostname="quad-wn03.grid.pub.ro" arch="x86_64" os="Linux 2.6.18-128.1.1.el5">
+  <cpu id="0" clk="2000"/>
+  <cpu id="1" clk="2000"/>
+  <cpu id="2" clk="2000"/>
+  <cpu id="3" clk="2000"/>
+  <cpu id="4" clk="2000"/>
+  <cpu id="5" clk="2000"/>
+  <cpu id="6" clk="2000"/>
+  <cpu id="7" clk="2000"/>
+</system>
+<process pid="21334" ppid="21286" pgrp="21286" sid="21286" cwd="/export/home/stud/mihai.trascau/implementare/serial" pagesz="4096" wsize="64" stackbase="0x0">/export/home/stud/mihai.trascau/implementare/serial/acoustics /export/home/stud/mihai.trascau/implementare/serial/input </process>
+<event kind="comment" id="202">10000 -> 10998</event>
+<profile name="profile" ptimer="10998" numstates="1">
+  <profdata fname="profile"/>
+  <profpckt kind="1">
+    <field name="LWPID" offset="8" type="INT64"/>
+    <field name="THRID" offset="16" type="INT64"/>
+    <field name="CPUID" offset="24" type="INT32"/>
+    <field name="TSTAMP" offset="32" type="INT64"/>
+    <field name="FRINFO" offset="40" type="INT64"/>
+    <field name="UCPU" offset="48" type="INT32"/>
+  </profpckt>
+</profile>
+<setting blksz="16384"/>
+<dataptr name="frameinfo" format="binary"/>
+<setting sample_period="1"/>
+<setting limit="2000"/>
+<event kind="run" tstamp="301324049.345460992" time="1247404050"/>
+<event kind="sample" tstamp="1.046316032" id="0" label="collector_open_experiment"/>
+<event kind="sample" tstamp="1.052715008" id="1" label="periodic"/>
+<event kind="sample" tstamp="2.002710016" id="2" label="periodic"/>
+<event kind="sample" tstamp="3.022710016" id="3" label="periodic"/>
+<event kind="sample" tstamp="4.003705984" id="4" label="periodic"/>
+<event kind="sample" tstamp="5.008702016" id="5" label="periodic"/>
+<event kind="sample" tstamp="6.008699008" id="6" label="periodic"/>
+<event kind="sample" tstamp="7.002695040" id="7" label="periodic"/>
+<event kind="sample" tstamp="8.006692032" id="8" label="periodic"/>
+<event kind="sample" tstamp="9.006702976" id="9" label="periodic"/>
+<event kind="sample" tstamp="10.005684992" id="10" label="periodic"/>
+<event kind="sample" tstamp="11.004684992" id="11" label="periodic"/>
+<event kind="sample" tstamp="12.001680000" id="12" label="periodic"/>
+<event kind="sample" tstamp="13.008676992" id="13" label="periodic"/>
+<event kind="sample" tstamp="14.002673984" id="14" label="periodic"/>
+<event kind="sample" tstamp="15.008668992" id="15" label="periodic"/>
+<event kind="sample" tstamp="16.003665984" id="16" label="periodic"/>
+<event kind="sample" tstamp="17.006665024" id="17" label="periodic"/>
+<event kind="sample" tstamp="18.059662976" id="18" label="periodic"/>
+<event kind="sample" tstamp="19.020660032" id="19" label="periodic"/>
+<event kind="sample" tstamp="20.001655040" id="20" label="periodic"/>
+<event kind="sample" tstamp="21.137174016" id="21" label="collector_close_experiment"/>
+<event kind="exit" tstamp="21.138696000"/>

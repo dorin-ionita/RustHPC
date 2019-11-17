@@ -1,0 +1,730 @@
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+9 scenarii incarcate
+[Rank 0]
+Scenariul 0:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+9 scenarii incarcate
+[Rank 1]
+Scenariul 0:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		200 x 200
+	Durata simulare:	30.000000
+	Dimesiuni: 		200 x 200
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+9 scenarii incarcate
+[Rank 3]
+Scenariul 0:
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.200000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(60,80)
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		200 x 200
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.200000
+	Durate de interes:	10
+	Pas discretizare:	0.200000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(60,80)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(80,40) (80,74) (120,74) (120,40)
+	Structura [1]:		(80,86) (80,120) (120,120) (120,86)
+	Structura [2]:		(20,40) (20,44) (50,44) (50,40)
+	Structura [3]:		(20,115) (20,120) (50,120) (50,115)
+	Structura [4]:		(20,50) (20,110) (24,110) (24,50)
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(80,40) (80,74) (120,74) (120,40)
+	Structura [1]:		(80,86) (80,120) (120,120) (120,86)
+ >> Sursa <<
+	Coordonate sursa:	(60,80)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(80,40) (80,74) (120,74) (120,40)
+
+Scenariul 1:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		300 x 300
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+9 scenarii incarcate
+[Rank 2]
+Scenariul 0:
+ >> Generale <<
+	Structura [2]:		(20,40) (20,44) (50,44) (50,40)
+	Structura [3]:		(20,115) (20,120) (50,120) (50,115)
+	Structura [4]:		(20,50) (20,110) (24,110) (24,50)
+
+Scenariul 1:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Structura [1]:		(80,86) (80,120) (120,120) (120,86)
+	Structura [2]:		(20,40) (20,44) (50,44) (50,40)
+	Structura [3]:		(20,115) (20,120) (50,120) (50,115)
+	Structura [4]:		(20,50) (20,110) (24,110) (24,50)
+
+Scenariul 1:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		300 x 300
+	Durata simulare:	30.000000
+	Dimesiuni: 		300 x 300
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(90,120)
+	Raza sursei:		4
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		200 x 200
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(90,120)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(120,60) (120,111) (180,111) (180,60)
+	Structura [1]:		(120,129) (120,180) (180,180) (180,129)
+	Structura [2]:		(30,60) (30,66) (75,66) (75,60)
+	Structura [3]:		(30,174) (30,180) (75,180) (75,174)
+	Structura [4]:		(30,75) (30,165) (36,165) (36,75)
+
+Scenariul 2:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		400 x 400
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(90,120)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(120,60) (120,111) (180,111) (180,60)
+	Structura [1]:		(120,129) (120,180) (180,180) (180,129)
+	Structura [2]:		(30,60) (30,66) (75,66) (75,60)
+	Structura [3]:		(30,174) (30,180) (75,180) (75,174)
+	Structura [4]:		(30,75) (30,165) (36,165) (36,75)
+
+Scenariul 2:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		400 x 400
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.200000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(60,80)
+	Raza sursei:		4
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Structura [0]:		(120,60) (120,111) (180,111) (180,60)
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Coordonate sursa:	(120,160)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(160,80) (160,148) (240,148) (240,80)
+	Structura [1]:		(160,172) (160,240) (240,240) (240,172)
+	Structura [2]:		(40,80) (40,88) (100,88) (100,80)
+	Structura [3]:		(40,231) (40,240) (100,240) (100,231)
+	Structura [4]:		(40,100) (40,220) (48,220) (48,100)
+
+Scenariul 3:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(120,160)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(160,80) (160,148) (240,148) (240,80)
+	Structura [1]:		(160,172) (160,240) (240,240) (240,172)
+	Structura [2]:		(40,80) (40,88) (100,88) (100,80)
+	Structura [3]:		(40,231) (40,240) (100,240) (100,231)
+	Structura [4]:		(40,100) (40,220) (48,220) (48,100)
+
+Scenariul 3:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		500 x 500
+	Structura [1]:		(120,129) (120,180) (180,180) (180,129)
+	Structura [2]:		(30,60) (30,66) (75,66) (75,60)
+	Structura [3]:		(30,174) (30,180) (75,180) (75,174)
+	Structura [4]:		(30,75) (30,165) (36,165) (36,75)
+
+Scenariul 2:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		400 x 400
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Dimesiuni: 		500 x 500
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Structura [0]:		(80,40) (80,74) (120,74) (120,40)
+	Structura [1]:		(80,86) (80,120) (120,120) (120,86)
+	Structura [2]:		(20,40) (20,44) (50,44) (50,40)
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(120,160)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(160,80) (160,148) (240,148) (240,80)
+	Structura [1]:		(160,172) (160,240) (240,240) (240,172)
+	Structura [2]:		(40,80) (40,88) (100,88) (100,80)
+	Structura [3]:		(40,231) (40,240) (100,240) (100,231)
+	Structura [4]:		(40,100) (40,220) (48,220) (48,100)
+
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(150,200)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(200,100) (200,185) (300,185) (300,100)
+	Coordonate sursa:	(150,200)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Structura [3]:		(20,115) (20,120) (50,120) (50,115)
+	Structura [4]:		(20,50) (20,110) (24,110) (24,50)
+
+Scenariul 1:
+ >> Generale <<
+Scenariul 3:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		500 x 500
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+	Structura [1]:		(200,215) (200,300) (300,300) (300,215)
+	Structura [2]:		(50,100) (50,110) (125,110) (125,100)
+	Structura [3]:		(50,290) (50,300) (125,300) (125,290)
+	Structura [4]:		(50,125) (50,275) (60,275) (60,125)
+
+Scenariul 4:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		600 x 600
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Numar structuri:	5
+	Structura [0]:		(200,100) (200,185) (300,185) (300,100)
+	Structura [1]:		(200,215) (200,300) (300,300) (300,215)
+	Structura [2]:		(50,100) (50,110) (125,110) (125,100)
+	Structura [3]:		(50,290) (50,300) (125,300) (125,290)
+	Structura [4]:		(50,125) (50,275) (60,275) (60,125)
+
+Scenariul 4:
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		300 x 300
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(180,240)
+	Raza sursei:		4
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		600 x 600
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+ >> Sursa <<
+	Coordonate sursa:	(90,120)
+	Coordonate sursa:	(150,200)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(200,100) (200,185) (300,185) (300,100)
+	Structura [1]:		(200,215) (200,300) (300,300) (300,215)
+	Structura [2]:		(50,100) (50,110) (125,110) (125,100)
+	Structura [3]:		(50,290) (50,300) (125,300) (125,290)
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(240,120) (240,222) (360,222) (360,120)
+	Structura [1]:		(240,258) (240,360) (360,360) (360,258)
+	Structura [2]:		(60,120) (60,132) (150,132) (150,120)
+	Structura [3]:		(60,348) (60,360) (150,360) (150,348)
+	Structura [4]:		(60,150) (60,330) (72,330) (72,150)
+
+Scenariul 5:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		700 x 700
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Structura [4]:		(50,125) (50,275) (60,275) (60,125)
+
+Scenariul 4:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		600 x 600
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(180,240)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(120,60) (120,111) (180,111) (180,60)
+	Structura [1]:		(120,129) (120,180) (180,180) (180,129)
+	Structura [2]:		(30,60) (30,66) (75,66) (75,60)
+	Coordonate sursa:	(210,280)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(280,140) (280,259) (420,259) (420,140)
+	Structura [3]:		(30,174) (30,180) (75,180) (75,174)
+	Structura [4]:		(30,75) (30,165) (36,165) (36,75)
+
+Scenariul 2:
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(180,240)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(240,120) (240,222) (360,222) (360,120)
+	Structura [0]:		(240,120) (240,222) (360,222) (360,120)
+	Structura [1]:		(240,258) (240,360) (360,360) (360,258)
+	Structura [2]:		(60,120) (60,132) (150,132) (150,120)
+	Structura [3]:		(60,348) (60,360) (150,360) (150,348)
+	Structura [4]:		(60,150) (60,330) (72,330) (72,150)
+
+Scenariul 5:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		700 x 700
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Structura [1]:		(280,301) (280,420) (420,420) (420,301)
+	Structura [2]:		(70,140) (70,154) (175,154) (175,140)
+	Structura [3]:		(70,406) (70,420) (175,420) (175,406)
+	Structura [4]:		(70,175) (70,385) (84,385) (84,175)
+
+Scenariul 6:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		800 x 800
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(210,280)
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		400 x 400
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(120,160)
+	Raza sursei:		4
+	Structura [1]:		(240,258) (240,360) (360,360) (360,258)
+	Structura [2]:		(60,120) (60,132) (150,132) (150,120)
+	Structura [3]:		(60,348) (60,360) (150,360) (150,348)
+	Structura [4]:		(60,150) (60,330) (72,330) (72,150)
+
+Scenariul 5:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		700 x 700
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(240,320)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(320,160) (320,296) (480,296) (480,160)
+	Structura [1]:		(320,344) (320,480) (480,480) (480,344)
+	Structura [2]:		(80,160) (80,176) (200,176) (200,160)
+	Structura [3]:		(80,463) (80,480) (200,480) (200,463)
+	Structura [4]:		(80,200) (80,440) (96,440) (96,200)
+
+Scenariul 7:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		900 x 900
+	Durata simulare:	30.000000
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(280,140) (280,259) (420,259) (420,140)
+	Structura [1]:		(280,301) (280,420) (420,420) (420,301)
+	Structura [2]:		(70,140) (70,154) (175,154) (175,140)
+	Structura [3]:		(70,406) (70,420) (175,420) (175,406)
+	Structura [4]:		(70,175) (70,385) (84,385) (84,175)
+
+Scenariul 6:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		800 x 800
+	Durata simulare:	30.000000
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(160,80) (160,148) (240,148) (240,80)
+	Structura [1]:		(160,172) (160,240) (240,240) (240,172)
+	Structura [2]:		(40,80) (40,88) (100,88) (100,80)
+	Structura [3]:		(40,231) (40,240) (100,240) (100,231)
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(210,280)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(280,140) (280,259) (420,259) (420,140)
+	Structura [1]:		(280,301) (280,420) (420,420) (420,301)
+	Structura [2]:		(70,140) (70,154) (175,154) (175,140)
+	Structura [3]:		(70,406) (70,420) (175,420) (175,406)
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(270,360)
+	Raza sursei:		4
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(240,320)
+	Raza sursei:		4
+	Structura [4]:		(40,100) (40,220) (48,220) (48,100)
+
+Scenariul 3:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		500 x 500
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+	Structura [4]:		(70,175) (70,385) (84,385) (84,175)
+
+Scenariul 6:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		800 x 800
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(360,180) (360,333) (540,333) (540,180)
+	Structura [1]:		(360,387) (360,540) (540,540) (540,387)
+	Structura [2]:		(90,180) (90,198) (225,198) (225,180)
+	Structura [3]:		(90,522) (90,540) (225,540) (225,522)
+	Structura [4]:		(90,225) (90,495) (108,495) (108,225)
+
+Scenariul 8:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(320,160) (320,296) (480,296) (480,160)
+	Structura [1]:		(320,344) (320,480) (480,480) (480,344)
+	Structura [2]:		(80,160) (80,176) (200,176) (200,160)
+	Structura [3]:		(80,463) (80,480) (200,480) (200,463)
+	Structura [4]:		(80,200) (80,440) (96,440) (96,200)
+
+Scenariul 7:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		900 x 900
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Dimesiuni: 		1000 x 1000
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+ >> Sursa <<
+	Coordonate sursa:	(240,320)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(270,360)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(360,180) (360,333) (540,333) (540,180)
+	Structura [1]:		(360,387) (360,540) (540,540) (540,387)
+	Structura [2]:		(90,180) (90,198) (225,198) (225,180)
+	Structura [3]:		(90,522) (90,540) (225,540) (225,522)
+	Structura [4]:		(90,225) (90,495) (108,495) (108,225)
+
+Scenariul 8:
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(300,400)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(400,200) (400,370) (600,370) (600,200)
+	Structura [1]:		(400,430) (400,600) (600,600) (600,430)
+	Structura [2]:		(100,200) (100,220) (250,220) (250,200)
+	Structura [3]:		(100,580) (100,600) (250,600) (250,580)
+	Structura [4]:		(100,250) (100,550) (120,550) (120,250)
+	Coordonate sursa:	(150,200)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(320,160) (320,296) (480,296) (480,160)
+	Structura [1]:		(320,344) (320,480) (480,480) (480,344)
+	Structura [2]:		(80,160) (80,176) (200,176) (200,160)
+	Structura [3]:		(80,463) (80,480) (200,480) (200,463)
+	Structura [4]:		(80,200) (80,440) (96,440) (96,200)
+
+Scenariul 7:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		900 x 900
+
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(270,360)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(360,180) (360,333) (540,333) (540,180)
+	Structura [1]:		(360,387) (360,540) (540,540) (540,387)
+	Structura [2]:		(90,180) (90,198) (225,198) (225,180)
+	Structura [3]:		(90,522) (90,540) (225,540) (225,522)
+	Structura [4]:		(90,225) (90,495) (108,495) (108,225)
+
+Scenariul 8:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		1000 x 1000
+	Durata simulare:	30.000000
+	Structura [0]:		(200,100) (200,185) (300,185) (300,100)
+	Structura [1]:		(200,215) (200,300) (300,300) (300,215)
+	Structura [2]:		(50,100) (50,110) (125,110) (125,100)
+	Structura [3]:		(50,290) (50,300) (125,300) (125,290)
+	Structura [4]:		(50,125) (50,275) (60,275) (60,125)
+
+Scenariul 4:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		600 x 600
+	Durata simulare:	30.000000
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		1000 x 1000
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(300,400)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(400,200) (400,370) (600,370) (600,200)
+	Structura [1]:		(400,430) (400,600) (600,600) (600,430)
+	Structura [2]:		(100,200) (100,220) (250,220) (250,200)
+	Structura [3]:		(100,580) (100,600) (250,600) (250,580)
+	Structura [4]:		(100,250) (100,550) (120,550) (120,250)
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(300,400)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(400,200) (400,370) (600,370) (600,200)
+	Structura [1]:		(400,430) (400,600) (600,600) (600,430)
+	Structura [2]:		(100,200) (100,220) (250,220) (250,200)
+	Structura [3]:		(100,580) (100,600) (250,600) (250,580)
+	Structura [4]:		(100,250) (100,550) (120,550) (120,250)
+
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(180,240)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(240,120) (240,222) (360,222) (360,120)
+	Structura [1]:		(240,258) (240,360) (360,360) (360,258)
+	Structura [2]:		(60,120) (60,132) (150,132) (150,120)
+	Structura [3]:		(60,348) (60,360) (150,360) (150,348)
+	Structura [4]:		(60,150) (60,330) (72,330) (72,150)
+
+Scenariul 5:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		700 x 700
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(210,280)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(280,140) (280,259) (420,259) (420,140)
+	Structura [1]:		(280,301) (280,420) (420,420) (420,301)
+	Structura [2]:		(70,140) (70,154) (175,154) (175,140)
+	Structura [3]:		(70,406) (70,420) (175,420) (175,406)
+	Structura [4]:		(70,175) (70,385) (84,385) (84,175)
+
+Scenariul 6:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		800 x 800
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(240,320)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(320,160) (320,296) (480,296) (480,160)
+	Structura [1]:		(320,344) (320,480) (480,480) (480,344)
+	Structura [2]:		(80,160) (80,176) (200,176) (200,160)
+	Structura [3]:		(80,463) (80,480) (200,480) (200,463)
+	Structura [4]:		(80,200) (80,440) (96,440) (96,200)
+
+Scenariul 7:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		900 x 900
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(270,360)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(360,180) (360,333) (540,333) (540,180)
+	Structura [1]:		(360,387) (360,540) (540,540) (540,387)
+	Structura [2]:		(90,180) (90,198) (225,198) (225,180)
+	Structura [3]:		(90,522) (90,540) (225,540) (225,522)
+	Structura [4]:		(90,225) (90,495) (108,495) (108,225)
+
+Scenariul 8:
+ >> Generale <<
+	Numar thread-uri OMP:	2
+	Dimesiuni: 		1000 x 1000
+	Durata simulare:	30.000000
+	Pasul de timp:		0.050000
+	Pas discretizare:	0.250000
+	Durate de interes:	10
+ >> Sursa <<
+	Coordonate sursa:	(300,400)
+	Raza sursei:		4
+	Amplitudine:		200.000000
+ >> Structuri <<
+	Numar structuri:	5
+	Structura [0]:		(400,200) (400,370) (600,370) (600,200)
+	Structura [1]:		(400,430) (400,600) (600,600) (600,430)
+	Structura [2]:		(100,200) (100,220) (250,220) (250,200)
+	Structura [3]:		(100,580) (100,600) (250,600) (250,580)
+	Structura [4]:		(100,250) (100,550) (120,550) (120,250)
+

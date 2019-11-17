@@ -1,0 +1,78 @@
+<experiment version="10.1">
+<collector>Sun Analyzer 7.7 Linux_i386 2009/06/03</collector>
+</experiment>
+<system hostname="fep-53-2.grid.pub.ro" arch="x86_64" os="Linux 2.6.18-128.1.14.el5xen">
+  <cpu id="0" clk="3000"/>
+  <cpu id="1" clk="3000"/>
+</system>
+<process pid="28541" ppid="27001" pgrp="28541" sid="27001" cwd="/export/home/stud/mihai.trascau/implementare/mpi" pagesz="4096" wsize="64" stackbase="0x0">mpirun -np 4 acoustics input </process>
+<event kind="cwarn" id="202">10000 -> 20000</event>
+<profile name="profile" ptimer="20000" numstates="1">
+  <profdata fname="profile"/>
+  <profpckt kind="1">
+    <field name="LWPID" offset="8" type="INT64"/>
+    <field name="THRID" offset="16" type="INT64"/>
+    <field name="CPUID" offset="24" type="INT32"/>
+    <field name="TSTAMP" offset="32" type="INT64"/>
+    <field name="FRINFO" offset="40" type="INT64"/>
+    <field name="UCPU" offset="48" type="INT32"/>
+  </profpckt>
+</profile>
+<setting blksz="16384"/>
+<dataptr name="frameinfo" format="binary"/>
+<setting sample_period="1"/>
+<setting limit="2000"/>
+<event kind="run" tstamp="301474296.936048000" time="1247554298"/>
+<event kind="sample" tstamp="1.345555008" id="0" label="collector_open_experiment"/>
+<event kind="sample" tstamp="1.352668992" id="1" label="periodic"/>
+<event kind="desc_start" tstamp="3.186220032" variant="grantpt" lineage="_c1" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.187888000" id="2" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.192014016" id="3" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.195745024" variant="grantpt" lineage="_c1" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.209059968" variant="grantpt" lineage="_c2" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="3.221006016" id="4" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="3.225052992" id="5" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="3.247022976" variant="grantpt" lineage="_c2" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="3.262075008" variant="fork" lineage="_f1" follow="0"/>
+<event kind="sample" tstamp="4.949342976" id="6" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="4.963513024" id="7" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="4.967105024" variant="fork" lineage="_f1" follow="0" msg="pid=28618"/>
+<event kind="desc_start" tstamp="4.980414976" variant="grantpt" lineage="_c3" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="4.993836032" id="8" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="4.997897984" id="9" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.001745984" variant="grantpt" lineage="_c3" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="5.014097024" variant="grantpt" lineage="_c4" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="5.026867968" id="10" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.030817024" id="11" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.034755008" variant="grantpt" lineage="_c4" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="5.047894976" variant="fork" lineage="_f2" follow="0"/>
+<event kind="sample" tstamp="5.060790016" id="12" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.071820992" id="13" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.076812992" variant="fork" lineage="_f2" follow="0" msg="pid=28619"/>
+<event kind="desc_start" tstamp="5.090246016" variant="grantpt" lineage="_c5" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="5.102908032" id="14" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.106891008" id="15" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.112739968" variant="grantpt" lineage="_c5" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="5.125945984" variant="grantpt" lineage="_c6" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="5.138889024" id="16" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.141761024" id="17" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.145819008" variant="grantpt" lineage="_c6" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="5.159988992" variant="fork" lineage="_f3" follow="0"/>
+<event kind="sample" tstamp="5.172868992" id="18" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.182905024" id="19" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.186891008" variant="fork" lineage="_f3" follow="0" msg="pid=28620"/>
+<event kind="desc_start" tstamp="5.200086976" variant="grantpt" lineage="_c7" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="5.212926976" id="20" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.216798016" id="21" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.220940992" variant="grantpt" lineage="_c7" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="5.233793984" variant="grantpt" lineage="_c8" follow="0" msg="/usr/lib/pt_chmod"/>
+<event kind="sample" tstamp="5.246968000" id="22" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.250796992" id="23" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.254748032" variant="grantpt" lineage="_c8" follow="0" msg="rc=0"/>
+<event kind="desc_start" tstamp="5.267851008" variant="fork" lineage="_f4" follow="0"/>
+<event kind="sample" tstamp="5.281088000" id="24" label="collector_suspend_experiment"/>
+<event kind="sample" tstamp="5.290452992" id="25" label="collector_resume_experiment"/>
+<event kind="desc_started" tstamp="5.294852992" variant="fork" lineage="_f4" follow="0" msg="pid=28621"/>
+<event kind="comment" id="202">20000 -> 19000</event>
+<event kind="sample" tstamp="294.282222016" id="26" label="collector_close_experiment"/>
+<event kind="exit" tstamp="294.286412032"/>

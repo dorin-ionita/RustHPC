@@ -1,0 +1,9 @@
+CC = cc
+CFLAGS = -xO3 -lm -g
+OBJ = import_data.o export_data.o acoustics_alg.o utils.o
+
+all: acoustics
+	@mkdir -p export
+acoustics: $(OBJ)
+clean:
+	rm -f *~ *.o acoustics

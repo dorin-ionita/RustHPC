@@ -1,0 +1,4 @@
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+WARNING: Linux-64-bit, 8 CPUs, RH_UNK system "quad-wn13" is not supported by the Performance tools.
+Creating experiment database test.2.er ...
