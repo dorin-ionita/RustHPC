@@ -40,11 +40,11 @@ fn export_to_vtk(s : &Scenario,
     result_string.push_str(&((nx + 1) * (ny + 1)).to_string());
     result_string.push_str(" double\n");
 
-    for i in 0..ny{
-        for j in 0..nx{
-            let formated_fl1 = format!{"{:.2}", (i as f64) / (ny as f64)};
-            let formated_fl2 = format!{"{:.2}", (j as f64) / (nx as f64)};
-            let formated_fl3 = format!{"{:.2}", 0.0f64};
+    for i in 0..ny+1{
+        for j in 0..nx+1{
+            let formated_fl1 = format!{"{:.20}", (i as f64) / (ny as f64)};
+            let formated_fl2 = format!{"{:.20}", (j as f64) / (nx as f64)};
+            let formated_fl3 = format!{"{:.20}", 0.0f64};
 
             result_string.push_str(&formated_fl1);
             result_string.push_str(" ");
@@ -55,15 +55,20 @@ fn export_to_vtk(s : &Scenario,
         }
     }
 
+    let formated_str = format!{"{:.20} {:.20}", (nx * ny).to_string(), (5 * (nx * ny)).to_string()};
+    result_string.push_str("\nCELLS ");
+    result_string.push_str(&formated_str);
+    result_string.push_str("\n");
+
     for i in 0..ny{
         for j in 0..nx{
-            result_string.push_str("4 ");
+            result_string.push_str("4  ");
             result_string.push_str(&(j + i * nx + i).to_string());
-            result_string.push_str(" ");
+            result_string.push_str("  ");
             result_string.push_str(&(j + i * nx + i + 1).to_string());
-            result_string.push_str(" ");
+            result_string.push_str("  ");
             result_string.push_str(&(j + (i + 1) * nx + i + 2).to_string());
-            result_string.push_str(" ");
+            result_string.push_str("  ");
             result_string.push_str(&(j + (i + 1) * nx + i + 1).to_string());
             result_string.push_str("\n");
         }
@@ -88,10 +93,10 @@ fn export_to_vtk(s : &Scenario,
         for j in 0..nx{
             // let copy_s = s.clone();
             if !in_structure(Point(i, j), &s){
-                let formated = format!{"{:.2}\n", (*uc)[i as usize][j as usize]};
+                let formated = format!{"{:.20}\n", (*uc)[i as usize][j as usize]};
                 result_string.push_str(&formated);
             } else {
-                let formated = format!{"{:.2}\n", s.source.p_amp};
+                let formated = format!{"{:.20}\n", s.source.p_amp};
                 result_string.push_str(&formated);
             }
         } 
