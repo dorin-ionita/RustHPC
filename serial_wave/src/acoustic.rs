@@ -1,10 +1,107 @@
 use crate::Point;
 use crate::Scenario;
+use std::fs::File;
+use std::path::Path;
+use std::io::Write;
+use std::error::Error;
 
-mod vtk;
-use vtk::export_to_vdk;
+// mod vtk;
+// mod vtk;
+// use vtk::export_to_vdk;
 
 use std::f64::consts::PI;
+
+fn export_to_vtk(s : &Scenario,
+                    nx : i32, ny : i32,
+                    uc : &mut Vec<Vec<f64>>,
+                    step : i32)
+{
+    let mut result_string = String::new();
+
+    let mut new_str = String::new();
+    new_str.push_str("out");
+    new_str.push_str(&step.to_string());
+    new_str.push_str(".vtk");
+    // let path = Path::new("out.vtk" + &step.to_string());
+    let path = Path::new(&new_str);
+    let display = path.display();
+
+    let mut file = match File::create(&path) {
+        Err(why) => panic!("couldn't create {}", display),
+        Ok(file) => file,
+    };
+
+    result_string.push_str("# vtk DataFile Version 2.0\n");
+    result_string.push_str("This is a test file for the vtk format file export\n");
+    result_string.push_str("ASCII\n");
+    result_string.push_str("DATASET UNSTRUCTURED_GRID\n\n");
+
+    result_string.push_str("POINTS ");
+    result_string.push_str(&((nx + 1) * (ny + 1)).to_string());
+    result_string.push_str(" double\n");
+
+    for i in 0..ny{
+        for j in 0..nx{
+            let formated_fl1 = format!{"{:.2}", (i as f64) / (ny as f64)};
+            let formated_fl2 = format!{"{:.2}", (j as f64) / (nx as f64)};
+            let formated_fl3 = format!{"{:.2}", 0.0f64};
+
+            result_string.push_str(&formated_fl1);
+            result_string.push_str(" ");
+            result_string.push_str(&formated_fl2);
+            result_string.push_str(" ");
+            result_string.push_str(&formated_fl3);
+            result_string.push_str("\n");
+        }
+    }
+
+    for i in 0..ny{
+        for j in 0..nx{
+            result_string.push_str("4 ");
+            result_string.push_str(&(j + i * nx + i).to_string());
+            result_string.push_str(" ");
+            result_string.push_str(&(j + i * nx + i + 1).to_string());
+            result_string.push_str(" ");
+            result_string.push_str(&(j + (i + 1) * nx + i + 2).to_string());
+            result_string.push_str(" ");
+            result_string.push_str(&(j + (i + 1) * nx + i + 1).to_string());
+            result_string.push_str("\n");
+        }
+    }
+
+    result_string.push_str("\nCELL_TYPES   ");
+    result_string.push_str(&(nx * ny).to_string());
+    result_string.push_str("\n");
+
+    for i in 0..ny * nx {
+        result_string.push_str("9 ");
+    }
+
+    result_string.push_str("\nCELL_DATA   ");
+    result_string.push_str(&(nx * ny).to_string());
+    result_string.push_str("\n");
+
+    result_string.push_str("SCALARS u FLOAT\n");
+    result_string.push_str("LOOKUP_TABLE values_table\n");
+
+    for i in 0..ny{
+        for j in 0..nx{
+            // let copy_s = s.clone();
+            if !in_structure(Point(i, j), &s){
+                let formated = format!{"{:.2}\n", (*uc)[i as usize][j as usize]};
+                result_string.push_str(&formated);
+            } else {
+                let formated = format!{"{:.2}\n", s.source.p_amp};
+                result_string.push_str(&formated);
+            }
+        } 
+    }
+
+    match file.write_all(result_string.as_bytes()) {
+        Err(why) => panic!("couldn't write to {}: {}", display, why.description()),
+        Ok(_) => println!("successfully wrote to {}", display),
+    }
+}
 
 enum EdgeType {
     North,
@@ -20,7 +117,7 @@ enum CornerType {
     SouthEast
 }
 
-fn on_edge(p : Point, s : Scenario) -> Option<EdgeType>{
+fn on_edge(p : Point, s : &Scenario) -> Option<EdgeType>{
     let Point(x, y) = p;
 
     let check_y = || y != 0 && y != s.nx - 1;
@@ -44,7 +141,7 @@ fn on_edge(p : Point, s : Scenario) -> Option<EdgeType>{
     None
 }
 
-fn on_corner(p : Point, s : Scenario) -> Option<CornerType>{
+fn on_corner(p : Point, s : &Scenario) -> Option<CornerType>{
     let Point(x, y) = p;
     let s_nx = s.nx - 1;
     let s_ny = s.ny - 1;
@@ -58,7 +155,7 @@ fn on_corner(p : Point, s : Scenario) -> Option<CornerType>{
     }
 }
 
-fn on_structure_edge(p : Point, s : Scenario) -> Option<EdgeType> {
+fn on_structure_edge(p : Point, s : &Scenario) -> Option<EdgeType> {
     let Point(x, y) = p;
     for i in 0..s.nr_struct{
         let p00 = s.structures[i as usize].corner0.0;
@@ -84,7 +181,7 @@ fn on_structure_edge(p : Point, s : Scenario) -> Option<EdgeType> {
     None
 }
 
-fn on_structure_corner(p : Point, s : Scenario) -> Option<CornerType> {
+fn on_structure_corner(p : Point, s : &Scenario) -> Option<CornerType> {
     let Point(x, y) = p;
 
     for i in 0..s.nr_struct{
@@ -111,7 +208,7 @@ fn on_structure_corner(p : Point, s : Scenario) -> Option<CornerType> {
     None
 }
 
-fn in_structure(p : Point, s : Scenario) -> bool
+fn in_structure(p : Point, s : &Scenario) -> bool
 {
     let Point(x, y) = p;
 
@@ -133,7 +230,7 @@ fn in_structure(p : Point, s : Scenario) -> bool
     return false;
 }
 
-fn compute_node(p : Point, ub : Vec<Vec<f64>>, ua : Vec<Vec<f64>>, gain : f64) -> f64
+fn compute_node(p : Point, ub : &Vec<Vec<f64>>, ua : &Vec<Vec<f64>>, gain : f64) -> f64
 {
     let Point(x, y) = p;
 
@@ -148,7 +245,7 @@ fn compute_node(p : Point, ub : Vec<Vec<f64>>, ua : Vec<Vec<f64>>, gain : f64) -
     aux
 }
 
-fn compute_edge_node(i : i32, j : i32, side : EdgeType, ub : Vec<Vec<f64>>) -> f64
+fn compute_edge_node(i : i32, j : i32, side : EdgeType, ub : &Vec<Vec<f64>>) -> f64
 {
     match side{
         North    => return ub[(i + 1) as usize][j as usize],
@@ -158,7 +255,7 @@ fn compute_edge_node(i : i32, j : i32, side : EdgeType, ub : Vec<Vec<f64>>) -> f
     }
 }
 
-fn compute_corner_node(i : i32, j : i32, corner : CornerType, ub : Vec<Vec<f64>>) -> f64
+fn compute_corner_node(i : i32, j : i32, corner : CornerType, ub : &Vec<Vec<f64>>) -> f64
 {
     match corner{
         NorthWest   => return ub[i as usize][(j + 1) as usize] + ub[(i + 1) as usize][j as usize] / 2.,
@@ -168,7 +265,7 @@ fn compute_corner_node(i : i32, j : i32, corner : CornerType, ub : Vec<Vec<f64>>
     }
 }
 
-fn compute_structure_corner_node(i : i32, j : i32, corner : CornerType, ub: Vec<Vec<f64>>) -> f64
+fn compute_structure_corner_node(i : i32, j : i32, corner : CornerType, ub: &Vec<Vec<f64>>) -> f64
 {
     match corner{
         NorthWest   => return ub[i as usize][(j - 1) as usize] + ub[(i - 1) as usize][j as usize] / 2.,
@@ -178,7 +275,7 @@ fn compute_structure_corner_node(i : i32, j : i32, corner : CornerType, ub: Vec<
     }
 }
 
-fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, ub : Vec<Vec<f64>>) -> f64
+fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, ub : &Vec<Vec<f64>>) -> f64
 {
     match side{
         North   => return ub[(i - 1) as usize][j as usize],
@@ -188,7 +285,7 @@ fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, ub : Vec<Vec<f
     }
 }
 
-fn is_source(p : Point, radius : i32, source_active : bool, s : Scenario) -> (bool, Scenario)
+fn is_source(p : Point, radius : i32, source_active : bool, s : &Scenario) -> bool
 {  
     let Point(x, y) = p;
     let mut val : f64;
@@ -198,15 +295,15 @@ fn is_source(p : Point, radius : i32, source_active : bool, s : Scenario) -> (bo
     val = val.sqrt();
 
     if !source_active{
-        return (false, s);
+        return false;
     } else if val as i32 <= radius {
-        return (true, s);
+        return true;
     }
 
-    return (false, s);
+    return false;
 }
 
-fn pulse_source(radius : i32, step : i32, amp : f64, s : Scenario, uc : &mut Vec<Vec<f64>>)
+fn pulse_source(radius : i32, step : i32, amp : f64, s : &Scenario, uc : &mut Vec<Vec<f64>>)
 {
     // Note -> this should modify the argument
     let n_x = s.nx;
@@ -215,9 +312,7 @@ fn pulse_source(radius : i32, step : i32, amp : f64, s : Scenario, uc : &mut Vec
 
     for i in 0..n_x{
         for j in 0..n_y{
-            let new_s = s.clone();
-
-            let (is_src, _) = is_source(Point(i as i32, j as i32), radius, true, new_s);
+            let is_src = is_source(Point(i as i32, j as i32), radius, true, s);
             // s = t;
             if is_src{
                 uc[i as usize][j as usize] = amp * ((step as f64) * PI / 4.).sin();
@@ -239,27 +334,22 @@ pub fn s_compute_acoustics(s : &Scenario,
     let n_x = s.nx;
     let n_y = s.ny;
 
-    // println!("nx={}", n_x);
-    // println!("ny={}", n_y);
-    // println!("radius={}", radius);
-    // println!("s.max_time={}", s.max_time as f64);
-    // println!("s.dt={}", s.dt);
-    // println!("comparand={}", (s.max_time as f64 / s.dt) as i32);
-
-    while (step < (s.max_time as f64 / s.dt) as i32)
+    while (step < 60 as i32)
     {
+        println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
+
         let copy_p_amp = s.source.p_amp;
-        let copy_s = s.clone();
+        // let copy_s = s.clone();
         
         if step < (s.max_time as f64 / s.dt) as i32 / 2{
-            pulse_source(radius, step, copy_p_amp, copy_s, uc);
+            pulse_source(radius, step, copy_p_amp, &s, uc);
         } else if source_active{
             for i in 0..n_x{
                 for j in 0..n_y{
                     let source_active_copy = source_active.clone();
-                    let copy_2s = s.clone();
+                    // let copy_2s = s.clone();
 
-                    if is_source(Point(i, j), radius, source_active_copy, copy_2s).0{
+                    if is_source(Point(i, j), radius, source_active_copy, &s){
                         (*ua)[i as usize][j as usize] = 0 as f64;
                         (*ub)[i as usize][j as usize] = 0 as f64;
                         (*uc)[i as usize][j as usize] = 0 as f64;
@@ -273,57 +363,67 @@ pub fn s_compute_acoustics(s : &Scenario,
 
 
         for i in 0..n_x{
+            // println!("nx and ny {} {}", n_x, n_y);
+            // println!("i is {}", i);
             for j in 0..n_y{
-                let copy_s = s.clone();
-                let copy_s2 = s.clone();
-                let copy_s3 = s.clone();
-                let copy_s4 = s.clone();
-                let copy_s5 = s.clone();
-                let copy_s6 = s.clone();
+                // let copy_s = s.clone();
+                // let copy_s2 = s.clone();
+                // let copy_s3 = s.clone();
+                // let copy_s4 = s.clone();
+                // let copy_s5 = s.clone();
+                // let copy_s6 = s.clone();
                 let source_active_copy = source_active.clone();
 
-                let copy_ua = (*ua).clone();
-                let copy_ub = (*ub).clone();
-                let copy_uc = (*uc).clone();
+                // let copy_ua = (*ua).clone();
+                // let copy_ub = (*ub).clone();
+                // let copy_uc = (*uc).clone();
 
-                let copy_ua2 = (*ua).clone();
-                let copy_ub2 = (*ub).clone();
-                let copy_uc2 = (*uc).clone();
+                // let copy_ua2 = (*ua).clone();
+                // let copy_ub2 = (*ub).clone();
+                // let copy_uc2 = (*uc).clone();
 
-                let copy_ub3 = (*ub).clone();
-                let copy_ub4 = (*ub).clone();
-                let copy_ub5 = (*ub).clone();
+                // let copy_ub3 = (*ub).clone();
+                // let copy_ub4 = (*ub).clone();
+                // let copy_ub5 = (*ub).clone();
 
-                let on_corner_res = on_corner(Point(i, j), copy_s);
-                let on_edge_res = on_edge(Point(i, j), copy_s2);
-                let on_structure_edge_res = on_structure_edge(Point(i, j), copy_s3);
-                let on_structure_corner_res = on_structure_corner(Point(i, j), copy_s4);
-                let in_structure_res = in_structure(Point(i, j), copy_s5);
+                let on_corner_res = on_corner(Point(i, j), &s);
+                let on_edge_res = on_edge(Point(i, j), &s);
+                let on_structure_edge_res = on_structure_edge(Point(i, j), &s);
+                let on_structure_corner_res = on_structure_corner(Point(i, j), &s);
+                let in_structure_res = in_structure(Point(i, j), &s);
 
-                let is_source_res = is_source(Point(i, j), radius, source_active_copy, copy_s6).0;
+                let is_source_res = is_source(Point(i, j), radius, source_active_copy, &s);
                 
                 let gain = (s.dx * s.dx) / (s.dt * s.dt);
                 match (on_corner_res, on_edge_res, on_structure_corner_res,
                          on_structure_edge_res, in_structure_res, is_source_res){
                     (None, None, None, None, false, false) =>
-                        (*uc)[i as usize][j as usize] = compute_node(Point(i, j), copy_ub, copy_ua, gain),
+                        (*uc)[i as usize][j as usize] = compute_node(Point(i, j), &ub, &ua, gain),
                     (_, Some(t), _, _, _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_edge_node(i, j, t, copy_ub2),
+                        (*uc)[i as usize][j as usize] = compute_edge_node(i, j, t, &ub),
                     (Some(t), _, _, _, _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_corner_node(i, j, t, copy_ub3),
+                        (*uc)[i as usize][j as usize] = compute_corner_node(i, j, t, &ub),
                     (_, _, _, Some(t), _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_structure_edge_node(i, j, t, copy_ub4),
+                        (*uc)[i as usize][j as usize] = compute_structure_edge_node(i, j, t, &ub),
                     (_, _, Some(t), _, _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_structure_corner_node(i, j, t, copy_ub5),
+                        (*uc)[i as usize][j as usize] = compute_structure_corner_node(i, j, t, &ub),
                     _ => (),
                 }
 
                 (*ua)[i as usize][j as usize] = 0.;
             }
+
+            // println!("end: nx and ny {} {}", n_x, n_y);
+            // println!("end: i is {}", i);
+
+            // if i==n_x - 1{
+            //     println!("Hurra");
+            //     break;
+            // }
         }
 
         if (step % s.save_time == 0){
-            export_to_vdk();
+            export_to_vtk(s, n_x, n_y, uc, step);
         }
 
         let xchg = (*ua).clone();
