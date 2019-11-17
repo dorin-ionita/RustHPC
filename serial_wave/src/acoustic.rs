@@ -334,7 +334,7 @@ pub fn s_compute_acoustics(s : &Scenario,
     let n_x = s.nx;
     let n_y = s.ny;
 
-    while (step < 60 as i32)
+    while (step < (s.max_time as f64 / s.dt) as i32)
     {
         println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
 
