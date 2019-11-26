@@ -239,59 +239,101 @@ fn in_structure(p : Point, s : &Scenario) -> bool
     return false;
 }
 
-fn compute_node(p : Point, ub : &Vec<Vec<f64>>, ua : &Vec<Vec<f64>>, gain : f64) -> f64
+//fn compute_node(p : Point, ub : &Vec<Vec<f64>>, ua : &Vec<Vec<f64>>, gain : f64) -> f64
+fn compute_node(p : Point,
+     ubc : f64, ub_xp_y : f64, ub_xm_y : f64, ub_x_yp : f64, ub_x_ym : f64, uac : f64, ucc : f64,
+    gain : f64) -> f64
 {
     let Point(x, y) = p;
 
     let mut aux : f64;
     let mut aux2 : f64;
-    aux = 2. * ub[x as usize][y as usize] - ua[x as usize][y as usize];
-    aux2 = ub[(x + 1) as usize][y as usize] - 4. * ub[(x + 1) as usize][y as usize];
-    aux2 += ub[(x - 1) as usize][y as usize] + ub[x as usize][(y + 1) as usize];
-    aux2 += ub[x as usize][(y - 1) as usize];
+    aux = 2. * ubc - uac;
+    aux2 = ub_xp_y - 4. * ub_xp_y; // TODO: bug here?
+    aux2 += ub_xm_y + ub_x_yp;
+    aux2 += ub_x_ym;
     aux2 *= gain;
-    aux += aux2;
+    aux+aux2;
     aux
+    // aux = 2. * ub[x as usize][y as usize] - ua[x as usize][y as usize];
+    // aux2 = ub[(x + 1) as usize][y as usize] - 4. * ub[(x + 1) as usize][y as usize];
+    // aux2 += ub[(x - 1) as usize][y as usize] + ub[x as usize][(y + 1) as usize];
+    // aux2 += ub[x as usize][(y - 1) as usize];
+    // aux2 *= gain;
+    // aux += aux2;
+    // aux
 }
 
-fn compute_edge_node(i : i32, j : i32, side : EdgeType, ub : &Vec<Vec<f64>>) -> f64
+// fn compute_edge_node(i : i32, j : i32, side : EdgeType, ub : &Vec<Vec<f64>>) -> f64
+fn compute_edge_node(i : i32, j : i32, side : EdgeType,
+    ubc : f64, ub_xp_y : f64, ub_xm_y : f64, ub_x_yp : f64, ub_x_ym : f64, uac : f64, ucc : f64) -> f64
 {
-    match side{
-        North    => return ub[(i + 1) as usize][j as usize],
-        East     => return ub[i as usize][(j - 1) as usize],
-        South    => return ub[(i - 1) as usize][j as usize],
-        West     => return ub[i as usize][(j + 1) as usize],
+    match side {
+        North   => return ub_xp_y,
+        East    => return ub_x_ym,
+        South   => return ub_xm_y,
+        West    => return ub_x_yp,
     }
+    // match side{
+    //     North    => return ub[(i + 1) as usize][j as usize],
+    //     East     => return ub[i as usize][(j - 1) as usize],
+    //     South    => return ub[(i - 1) as usize][j as usize],
+    //     West     => return ub[i as usize][(j + 1) as usize],
+    // }
 }
 
-fn compute_corner_node(i : i32, j : i32, corner : CornerType, ub : &Vec<Vec<f64>>) -> f64
+// fn compute_corner_node(i : i32, j : i32, corner : CornerType, ub : &Vec<Vec<f64>>) -> f64
+fn compute_corner_node(i : i32, j : i32, corner : CornerType,
+    ubc : f64, ub_xp_y : f64, ub_xm_y : f64, ub_x_yp : f64, ub_x_ym : f64, uac : f64, ucc : f64) -> f64
 {
-    match corner{
-        NorthWest   => return ub[i as usize][(j + 1) as usize] + ub[(i + 1) as usize][j as usize] / 2.,
-        NortEast    => return ub[(i + 1) as usize][j as usize] + ub[i as usize][(j - 1) as usize] / 2.,
-        SouthEast   => return ub[i as usize][(j - 1) as usize] + ub[(i -1) as usize][j as usize] / 2.,
-        SouthWest   => return ub[(i - 1) as usize][j as usize] + ub[i as usize][(j + 1) as usize] / 2.,
+    match corner {
+        NorthWest      => return ub_x_yp + ub_xp_y / 2.,
+        NorthEast      => return ub_xp_y + ub_x_ym / 2.,
+        SouthEast      => return ub_x_ym + ub_xm_y / 2.,
+        SouthWest      => return ub_xm_y + ub_x_yp / 2.,
     }
+    // match corner{
+    //     NorthWest   => return ub[i as usize][(j + 1) as usize] + ub[(i + 1) as usize][j as usize] / 2.,
+    //     NortEast    => return ub[(i + 1) as usize][j as usize] + ub[i as usize][(j - 1) as usize] / 2.,
+    //     SouthEast   => return ub[i as usize][(j - 1) as usize] + ub[(i -1) as usize][j as usize] / 2.,
+    //     SouthWest   => return ub[(i - 1) as usize][j as usize] + ub[i as usize][(j + 1) as usize] / 2.,
+    // }
 }
 
-fn compute_structure_corner_node(i : i32, j : i32, corner : CornerType, ub: &Vec<Vec<f64>>) -> f64
+// fn compute_structure_corner_node(i : i32, j : i32, corner : CornerType, ub: &Vec<Vec<f64>>) -> f64
+fn compute_structure_corner_node(i : i32, j : i32, corner : CornerType, 
+    ubc : f64, ub_xp_y : f64, ub_xm_y : f64, ub_x_yp : f64, ub_x_ym : f64, uac : f64, ucc : f64) -> f64
 {
-    match corner{
-        NorthWest   => return ub[i as usize][(j - 1) as usize] + ub[(i - 1) as usize][j as usize] / 2.,
-        NorthEast   => return ub[(i - 1) as usize][j as usize] + ub[i as usize][(j + 1) as usize] / 2.,
-        SouthEast   => return ub[i as usize][(j + 1) as usize] + ub[(i + 1) as usize][j as usize] / 2.,
-        SouthWest   => return ub[(i + 1) as usize][j as usize] + ub[i as usize][(j - 1) as usize] / 2.,
+    match corner {
+        NorthWest   => return ub_x_ym + ub_xm_y / 2.,
+        NortEast    => return ub_xm_y + ub_x_yp / 2.,
+        SouthEast   => return ub_x_yp + ub_xp_y / 2.,
+        SouthWest   => return ub_xp_y + ub_x_ym / 2.,
     }
+    // match corner{
+    //     NorthWest   => return ub[i as usize][(j - 1) as usize] + ub[(i - 1) as usize][j as usize] / 2.,
+    //     NorthEast   => return ub[(i - 1) as usize][j as usize] + ub[i as usize][(j + 1) as usize] / 2.,
+    //     SouthEast   => return ub[i as usize][(j + 1) as usize] + ub[(i + 1) as usize][j as usize] / 2.,
+    //     SouthWest   => return ub[(i + 1) as usize][j as usize] + ub[i as usize][(j - 1) as usize] / 2.,
+    // }
 }
 
-fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, ub : &Vec<Vec<f64>>) -> f64
+// fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, ub : &Vec<Vec<f64>>) -> f64
+fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, 
+    ubc : f64, ub_xp_y : f64, ub_xm_y : f64, ub_x_yp : f64, ub_x_ym : f64, uac : f64, ucc : f64) -> f64
 {
-    match side{
-        North   => return ub[(i - 1) as usize][j as usize],
-        East    => return ub[i as usize][(j + 1) as usize],
-        South   => return ub[(i + 1) as usize][j as usize],
-        West    => return ub[i as usize][(j - 1) as usize],
+    match side {
+        North   => return ub_xm_y,
+        East    => return ub_x_yp,
+        South   => return ub_xp_y,
+        West    => return ub_x_ym,
     }
+    // match side{
+    //     North   => return ub[(i - 1) as usize][j as usize],
+    //     East    => return ub[i as usize][(j + 1) as usize],
+    //     South   => return ub[(i + 1) as usize][j as usize],
+    //     West    => return ub[i as usize][(j - 1) as usize],
+    // }
 }
 
 fn is_source(p : Point, radius : i32, source_active : &bool, s : &Scenario) -> bool
@@ -331,10 +373,10 @@ fn pulse_source(radius : i32, step : i32, amp : f64, s : &Scenario, uc : &mut Ve
     }
 }
 
-pub fn s_compute_acoustics(s : &Scenario, 
-                        uc : &mut Vec<Vec<f64>>,
-                        ub : &mut Vec<Vec<f64>>,
-                        ua : &mut Vec<Vec<f64>>)
+pub fn s_compute_acoustics(s : & Scenario, 
+                        uc : & mut Vec<Vec<f64>>,
+                        ub : & mut Vec<Vec<f64>>,
+                        ua : & mut Vec<Vec<f64>>)
 {
     let mut step : i32 = 0;
     let mut source_active : bool = true;
@@ -379,38 +421,65 @@ pub fn s_compute_acoustics(s : &Scenario,
 
         for i in 0..n_x{
             for j in 0..n_y{
-                thread::spawn(|| {
-                    let on_corner_res = on_corner(Point(i, j), &s);
-                    let on_edge_res = on_edge(Point(i, j), &s);
-                    let on_structure_edge_res = on_structure_edge(Point(i, j), &s);
-                    let on_structure_corner_res = on_structure_corner(Point(i, j), &s);
-                    let in_structure_res = in_structure(Point(i, j), &s);
-                    let is_source_res = is_source(Point(i, j), radius, &source_active, &s);
+                let tx_clone = tx.clone();
+
+                // println!("AAAA");
+                let ubc = ub[i as usize][j as usize];
+                let ub_xp_y = ub[(i + 1) as usize][j as usize];
+                // println!("BBBB");
+                let ub_xm_y = if (i >= 1) {
+                                ub[(i - 1) as usize][j as usize]         
+                                }   else {0.};
+                // println!("CCCC");
+                let ub_x_yp = ub[i as usize][(j + 1) as usize];
+                // println!("DDDD");
+                let ub_x_ym = if (j >= 1) {
+                                ub[i as usize][(j - 1) as usize]
+                            } else {0.};
+                // println!("EEEEE");
+                let uac = ua[i as usize][j as usize];
+                let ucc = uc[i as usize][j as usize];
+                let ss = s.clone();
+                // println!("FFFF");
+
+                thread::spawn(move || {
+                    let on_corner_res = on_corner(Point(i, j), &ss);
+                    let on_edge_res = on_edge(Point(i, j), &ss);
+                    let on_structure_edge_res = on_structure_edge(Point(i, j), &ss);
+                    let on_structure_corner_res = on_structure_corner(Point(i, j), &ss);
+                    let in_structure_res = in_structure(Point(i, j), &ss);
+                    let is_source_res = is_source(Point(i, j), radius, &source_active, &ss);
                     
-                    let gain = (s.dx * s.dx) / (s.dt * s.dt);
+                    let gain = (ss.dx * ss.dx) / (ss.dt * ss.dt);
                     match (on_corner_res, on_edge_res, on_structure_corner_res,
                             on_structure_edge_res, in_structure_res, is_source_res){
                         (None, None, None, None, false, false) =>
-                            tx.send((i, j, compute_node(Point(i, j), &ub, &ua, gain))).unwrap(),
+                            tx_clone.send((i, j, 
+                                compute_node(Point(i, j), ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc, gain))).unwrap(),
+                            //tx_clone.send((i, j, compute_node(Point(i, j), &ub, &ua, gain))).unwrap(),
                             // (*uc)[i as usize][j as usize] = compute_node(Point(i, j), &ub, &ua, gain),
                         (_, Some(t), _, _, _, _) =>
-                            tx.send((i, j, compute_edge_node(i, j, t, &ub))).unwrap(),
+                            tx_clone.send((i, j, 
+                                compute_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                            // tx_clone.send((i, j, compute_edge_node(i, j, t, &ub))).unwrap(),
                             // (*uc)[i as usize][j as usize] = compute_edge_node(i, j, t, &ub),
                         (Some(t), _, _, _, _, _) =>
-                            tx.send((i, j, compute_corner_node(i, j, t, &ub))).unwrap(),
+                            tx_clone.send((i, j,
+                                 compute_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),    
+                            // tx_clone.send((i, j, compute_corner_node(i, j, t, &ub))).unwrap(),
                             // (*uc)[i as usize][j as usize] = compute_corner_node(i, j, t, &ub),
                         (_, _, _, Some(t), _, _) =>
-                            tx.send((i, j, compute_structure_edge_node(i, j, t, &ub))).unwrap(),
+                            tx_clone.send((i, j, 
+                                compute_structure_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                            // tx_clone.send((i, j, compute_structure_edge_node(i, j, t, &ub))).unwrap(),
                             // (*uc)[i as usize][j as usize] = compute_structure_edge_node(i, j, t, &ub),
                         (_, _, Some(t), _, _, _) =>
-                            tx.send((i, j, compute_structure_corner_node(i, j, t, &ub))).unwrap(),
+                            tx_clone.send((i, j,
+                                 compute_structure_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                            // tx_clone.send((i, j, compute_structure_corner_node(i, j, t, &ub))).unwrap(),
                             // (*uc)[i as usize][j as usize] = compute_structure_corner_node(i, j, t, &ub),
                         _ => (),
                     }
-
-                    // tx.send((-1, -1, 0.); 
-                    // let val = String::from("hi");
-                    // tx.send(val).unwrap();
                 });
             }
         }
@@ -419,47 +488,6 @@ pub fn s_compute_acoustics(s : &Scenario,
             for j in 0..n_y{
                 let (ii, jj, v) = rx.recv().unwrap();
                 (*uc)[ii as usize][jj as usize] = v;
-            }
-        }
-
-        // for i in 0..n_x * n_y * 2{
-        //     // let received = rx.recv().unwrap();
-        //     // match received{
-        //     //     (-1, -1, )
-        //     // }
-        // }
-
-        
-
-        /* SERIAL VERSION */
-        for i in 0..n_x{
-            for j in 0..n_y{
-
-                let on_corner_res = on_corner(Point(i, j), &s);
-                let on_edge_res = on_edge(Point(i, j), &s);
-                let on_structure_edge_res = on_structure_edge(Point(i, j), &s);
-                let on_structure_corner_res = on_structure_corner(Point(i, j), &s);
-                let in_structure_res = in_structure(Point(i, j), &s);
-
-                let is_source_res = is_source(Point(i, j), radius, &source_active, &s);
-                
-                let gain = (s.dx * s.dx) / (s.dt * s.dt);
-                match (on_corner_res, on_edge_res, on_structure_corner_res,
-                         on_structure_edge_res, in_structure_res, is_source_res){
-                    (None, None, None, None, false, false) =>
-                        (*uc)[i as usize][j as usize] = compute_node(Point(i, j), &ub, &ua, gain),
-                    (_, Some(t), _, _, _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_edge_node(i, j, t, &ub),
-                    (Some(t), _, _, _, _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_corner_node(i, j, t, &ub),
-                    (_, _, _, Some(t), _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_structure_edge_node(i, j, t, &ub),
-                    (_, _, Some(t), _, _, _) =>
-                        (*uc)[i as usize][j as usize] = compute_structure_corner_node(i, j, t, &ub),
-                    _ => (),
-                }
-
-                (*ua)[i as usize][j as usize] = 0.;
             }
         }
 
