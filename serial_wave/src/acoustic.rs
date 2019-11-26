@@ -442,6 +442,7 @@ pub fn s_compute_acoustics(s : & Scenario,
                 let ss = s.clone();
                 // println!("FFFF");
 
+                let start_critical_path = SystemTime::now();
                 thread::spawn(move || {
                     let on_corner_res = on_corner(Point(i, j), &ss);
                     let on_edge_res = on_edge(Point(i, j), &ss);
@@ -480,9 +481,13 @@ pub fn s_compute_acoustics(s : & Scenario,
                             // (*uc)[i as usize][j as usize] = compute_structure_corner_node(i, j, t, &ub),
                         _ => (),
                     }
+                    // println!("Thread closure time: {:?}", start_critical_path.elapsed());
                 });
+                println!("Thread spawning: {:?}", start_critical_path.elapsed());
             }
         }
+
+        println!("Inner complicated loop: {:?}", start.elapsed());
 
         for i in 0..n_x{
             for j in 0..n_y{
