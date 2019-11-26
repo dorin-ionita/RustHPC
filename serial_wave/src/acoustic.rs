@@ -6,9 +6,12 @@ use std::io::Write;
 use std::error::Error;
 use std::time::{SystemTime, UNIX_EPOCH};
 
+use std::thread;
+use std::sync::mpsc;
 // mod vtk;
 // mod vtk;
-// use vtk::export_to_vdk;
+// use vtk::export_to_vdk
+//;
 
 use std::f64::consts::PI;
 
@@ -370,6 +373,65 @@ pub fn s_compute_acoustics(s : &Scenario,
 
         println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
         let start = SystemTime::now();
+
+        /*  PARALELL VERSION */
+        let (tx, rx) = mpsc::channel();
+
+        for i in 0..n_x{
+            for j in 0..n_y{
+                thread::spawn(|| {
+                    let on_corner_res = on_corner(Point(i, j), &s);
+                    let on_edge_res = on_edge(Point(i, j), &s);
+                    let on_structure_edge_res = on_structure_edge(Point(i, j), &s);
+                    let on_structure_corner_res = on_structure_corner(Point(i, j), &s);
+                    let in_structure_res = in_structure(Point(i, j), &s);
+                    let is_source_res = is_source(Point(i, j), radius, &source_active, &s);
+                    
+                    let gain = (s.dx * s.dx) / (s.dt * s.dt);
+                    match (on_corner_res, on_edge_res, on_structure_corner_res,
+                            on_structure_edge_res, in_structure_res, is_source_res){
+                        (None, None, None, None, false, false) =>
+                            tx.send((i, j, compute_node(Point(i, j), &ub, &ua, gain))).unwrap(),
+                            // (*uc)[i as usize][j as usize] = compute_node(Point(i, j), &ub, &ua, gain),
+                        (_, Some(t), _, _, _, _) =>
+                            tx.send((i, j, compute_edge_node(i, j, t, &ub))).unwrap(),
+                            // (*uc)[i as usize][j as usize] = compute_edge_node(i, j, t, &ub),
+                        (Some(t), _, _, _, _, _) =>
+                            tx.send((i, j, compute_corner_node(i, j, t, &ub))).unwrap(),
+                            // (*uc)[i as usize][j as usize] = compute_corner_node(i, j, t, &ub),
+                        (_, _, _, Some(t), _, _) =>
+                            tx.send((i, j, compute_structure_edge_node(i, j, t, &ub))).unwrap(),
+                            // (*uc)[i as usize][j as usize] = compute_structure_edge_node(i, j, t, &ub),
+                        (_, _, Some(t), _, _, _) =>
+                            tx.send((i, j, compute_structure_corner_node(i, j, t, &ub))).unwrap(),
+                            // (*uc)[i as usize][j as usize] = compute_structure_corner_node(i, j, t, &ub),
+                        _ => (),
+                    }
+
+                    // tx.send((-1, -1, 0.); 
+                    // let val = String::from("hi");
+                    // tx.send(val).unwrap();
+                });
+            }
+        }
+
+        for i in 0..n_x{
+            for j in 0..n_y{
+                let (ii, jj, v) = rx.recv().unwrap();
+                (*uc)[ii as usize][jj as usize] = v;
+            }
+        }
+
+        // for i in 0..n_x * n_y * 2{
+        //     // let received = rx.recv().unwrap();
+        //     // match received{
+        //     //     (-1, -1, )
+        //     // }
+        // }
+
+        
+
+        /* SERIAL VERSION */
         for i in 0..n_x{
             for j in 0..n_y{
 
