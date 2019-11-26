@@ -4,6 +4,7 @@ use std::fs::File;
 use std::path::Path;
 use std::io::Write;
 use std::error::Error;
+use std::time::{SystemTime, UNIX_EPOCH};
 
 // mod vtk;
 // mod vtk;
@@ -290,7 +291,7 @@ fn compute_structure_edge_node(i : i32, j : i32, side : EdgeType, ub : &Vec<Vec<
     }
 }
 
-fn is_source(p : Point, radius : i32, source_active : bool, s : &Scenario) -> bool
+fn is_source(p : Point, radius : i32, source_active : &bool, s : &Scenario) -> bool
 {  
     let Point(x, y) = p;
     let mut val : f64;
@@ -313,11 +314,12 @@ fn pulse_source(radius : i32, step : i32, amp : f64, s : &Scenario, uc : &mut Ve
     // Note -> this should modify the argument
     let n_x = s.nx;
     let n_y = s.ny;
+    let active = true;
 
 
     for i in 0..n_x{
         for j in 0..n_y{
-            let is_src = is_source(Point(i as i32, j as i32), radius, true, s);
+            let is_src = is_source(Point(i as i32, j as i32), radius, &active, s);
             // s = t;
             if is_src{
                 uc[i as usize][j as usize] = amp * ((step as f64) * PI / 4.).sin();
@@ -344,21 +346,17 @@ pub fn s_compute_acoustics(s : &Scenario,
         println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
 
         let copy_p_amp = s.source.p_amp;
-        // let copy_s = s.clone();
+        let start = SystemTime::now();
         
         if step < (s.max_time as f64 / s.dt) as i32 / 2{
             pulse_source(radius, step, copy_p_amp, &s, uc);
         } else if source_active{
             for i in 0..n_x{
                 for j in 0..n_y{
-                    let source_active_copy = source_active.clone();
-                    // let copy_2s = s.clone();
-
-                    if is_source(Point(i, j), radius, source_active_copy, &s){
+                    if is_source(Point(i, j), radius, &source_active, &s){
                         (*ua)[i as usize][j as usize] = 0 as f64;
                         (*ub)[i as usize][j as usize] = 0 as f64;
                         (*uc)[i as usize][j as usize] = 0 as f64;
-                        // (*uc)[i as usize][j as usize] = (*ub)[i as usize][j as usize] = (*ua)[i as usize][j as usize];
                     }
                 }
             }
@@ -366,30 +364,14 @@ pub fn s_compute_acoustics(s : &Scenario,
             source_active = false;
         }
 
+        println!("Simple loop: {:?}", start.elapsed());
 
+        println!("bla bla");
+
+        println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
+        let start = SystemTime::now();
         for i in 0..n_x{
-            // println!("nx and ny {} {}", n_x, n_y);
-            // println!("i is {}", i);
             for j in 0..n_y{
-                // let copy_s = s.clone();
-                // let copy_s2 = s.clone();
-                // let copy_s3 = s.clone();
-                // let copy_s4 = s.clone();
-                // let copy_s5 = s.clone();
-                // let copy_s6 = s.clone();
-                let source_active_copy = source_active.clone();
-
-                // let copy_ua = (*ua).clone();
-                // let copy_ub = (*ub).clone();
-                // let copy_uc = (*uc).clone();
-
-                // let copy_ua2 = (*ua).clone();
-                // let copy_ub2 = (*ub).clone();
-                // let copy_uc2 = (*uc).clone();
-
-                // let copy_ub3 = (*ub).clone();
-                // let copy_ub4 = (*ub).clone();
-                // let copy_ub5 = (*ub).clone();
 
                 let on_corner_res = on_corner(Point(i, j), &s);
                 let on_edge_res = on_edge(Point(i, j), &s);
@@ -397,7 +379,7 @@ pub fn s_compute_acoustics(s : &Scenario,
                 let on_structure_corner_res = on_structure_corner(Point(i, j), &s);
                 let in_structure_res = in_structure(Point(i, j), &s);
 
-                let is_source_res = is_source(Point(i, j), radius, source_active_copy, &s);
+                let is_source_res = is_source(Point(i, j), radius, &source_active, &s);
                 
                 let gain = (s.dx * s.dx) / (s.dt * s.dt);
                 match (on_corner_res, on_edge_res, on_structure_corner_res,
@@ -417,30 +399,25 @@ pub fn s_compute_acoustics(s : &Scenario,
 
                 (*ua)[i as usize][j as usize] = 0.;
             }
-
-            // println!("end: nx and ny {} {}", n_x, n_y);
-            // println!("end: i is {}", i);
-
-            // if i==n_x - 1{
-            //     println!("Hurra");
-            //     break;
-            // }
         }
+
+        println!("Complicated loop: {:?}", start.elapsed());
+
+        let start = SystemTime::now();
 
         if (step % s.save_time == 0){
             export_to_vtk(s, n_x, n_y, uc, step);
         }
+        println!("Export: {:?}", start.elapsed());
+
+        let start = SystemTime::now();
 
         let xchg = (*ua).clone();
         (*ua) = (*ub).clone();
         (*ub) = (*uc).clone();
         (*uc) = xchg; 
-        // std::mem::swap(&mut ua, &mut ub);
-        // std::mem::swap(&mut ub, &mut uc);
-        // let xchg : &mut Vec<Vec<f64>> = ua;
-        // let ua = ub;
-        // let ub = uc;
-        // let uc = xchg;
+
+        println!("Semantics: {:?}", start.elapsed());
 
         step += 1;
     }
