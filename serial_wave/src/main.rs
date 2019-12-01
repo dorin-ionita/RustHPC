@@ -201,14 +201,19 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
     sim
 }
 
-fn main()
+fn main() -> std::io::Result<()>
 {
     let args: Vec<String> = env::args().collect();
     assert_eq!(args.len(), 2);
     let max_threads : i32 = args[1].parse::<i32>().unwrap();
 
     // let path = String::from("/home/dorin/rust/serial_wave/input");
-    let path = String::from("/home/dorin/temapp/serial_wave/input");
+
+    let path = env::current_dir()?;
+    println!("The current directory is {}", path.display());
+
+    let path = String::from("./input");
+    // let path = String::from("/home/dorin/temapp/serial_wave/input");
     let mut sim = Simulation {
         scenaries : Vec::new(),
         scenario_idx : 0,
@@ -227,4 +232,6 @@ fn main()
     //                     uc : &mut Vec<Vec<f64>>,
     //                     ub : &mut Vec<Vec<f64>>,
     //                     ua : &mut Vec<Vec<f64>>)
+
+    Ok(())
 }
