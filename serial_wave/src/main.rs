@@ -203,6 +203,10 @@ fn import_data(filename : String, mut sim : Simulation) -> Simulation
 
 fn main()
 {
+    let args: Vec<String> = env::args().collect();
+    assert_eq!(args.len(), 2);
+    let max_threads : i32 = args[1].parse::<i32>().unwrap();
+
     // let path = String::from("/home/dorin/rust/serial_wave/input");
     let path = String::from("/home/dorin/temapp/serial_wave/input");
     let mut sim = Simulation {
@@ -217,7 +221,7 @@ fn main()
     let mut ua : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
 
 
-    s_compute_acoustics(&sim.scenaries[0], &mut uc, &mut ub, &mut ua);
+    s_compute_acoustics(&sim.scenaries[0], &mut uc, &mut ub, &mut ua, max_threads);
 
     // fn s_compute_acoustics(s : Scenario, 
     //                     uc : &mut Vec<Vec<f64>>,

@@ -376,7 +376,8 @@ fn pulse_source(radius : i32, step : i32, amp : f64, s : &Scenario, uc : &mut Ve
 pub fn s_compute_acoustics(s : & Scenario, 
                         uc : & mut Vec<Vec<f64>>,
                         ub : & mut Vec<Vec<f64>>,
-                        ua : & mut Vec<Vec<f64>>)
+                        ua : & mut Vec<Vec<f64>>,
+                        max_threads : i32)
 {
     let mut step : i32 = 0;
     let mut source_active : bool = true;
@@ -419,7 +420,7 @@ pub fn s_compute_acoustics(s : & Scenario,
         /*  PARALELL VERSION */
         let (tx, rx) = mpsc::channel();
 
-        let max_threads = 1;
+        // let max_threads = 1;
         let thread_load = n_x / max_threads;
 
         println!("total loops = {}, current_loop_as parallel = {}",
