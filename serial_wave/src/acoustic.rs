@@ -108,7 +108,7 @@ fn export_to_vtk(s : &Scenario,
 
     match file.write_all(result_string.as_bytes()) {
         Err(why) => panic!("couldn't write to {}: {}", display, why.description()),
-        Ok(_) => println!("successfully wrote to {}", display),
+        Ok(_) => () /*println!("successfully wrote to {}", display)*/,
     }
 }
 
@@ -389,7 +389,7 @@ pub fn s_compute_acoustics(s : & Scenario,
 
     while (step < (s.max_time as f64 / s.dt) as i32)
     {
-        println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
+        // println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
 
         let copy_p_amp = s.source.p_amp;
         let start = SystemTime::now();
@@ -410,11 +410,11 @@ pub fn s_compute_acoustics(s : & Scenario,
             source_active = false;
         }
 
-        println!("Simple loop: {:?}", start.elapsed());
+        // println!("Simple loop: {:?}", start.elapsed());
 
-        println!("bla bla");
+        // println!("bla bla");
 
-        println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
+        // println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
         let start = SystemTime::now();
 
         /*  PARALELL VERSION */
@@ -423,9 +423,9 @@ pub fn s_compute_acoustics(s : & Scenario,
         // let max_threads = 1;
         let thread_load = n_x / max_threads;
 
-        println!("total loops = {}, current_loop_as parallel = {}",
-                    n_x,
-                    max_threads * thread_load);
+        // println!("total loops = {}, current_loop_as parallel = {}",
+        //             n_x,
+        //             max_threads * thread_load);
 
         for thread_count in 0..max_threads{
             let ub = ub.clone();
@@ -551,7 +551,7 @@ pub fn s_compute_acoustics(s : & Scenario,
             }
         }
 
-        println!("Complicated loop: {:?}", start.elapsed());
+        // println!("Complicated loop: {:?}", start.elapsed());
 
         let start = SystemTime::now();
 

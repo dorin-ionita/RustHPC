@@ -4,6 +4,8 @@ use acoustic::s_compute_acoustics;
 use std::env;
 use std::fs;
 
+use std::time::{SystemTime, UNIX_EPOCH};
+
 #[derive(Debug, Clone)]
 pub struct Source {
     x       : i32,  // linia sursei acustice
@@ -225,9 +227,9 @@ fn main() -> std::io::Result<()>
     let mut ub : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
     let mut ua : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
 
-
+    let start = SystemTime::now();
     s_compute_acoustics(&sim.scenaries[0], &mut uc, &mut ub, &mut ua, max_threads);
-
+    println!("N = {}, t = {:?}", max_threads, start.elapsed());
     // fn s_compute_acoustics(s : Scenario, 
     //                     uc : &mut Vec<Vec<f64>>,
     //                     ub : &mut Vec<Vec<f64>>,
