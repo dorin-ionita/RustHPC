@@ -419,9 +419,14 @@ pub fn s_compute_acoustics(s : & Scenario,
         /*  PARALELL VERSION */
         let (tx, rx) = mpsc::channel();
 
-        for i in 0..n_x / 2 {
-            // println!("i={}, n_x={}", i, n_x);
-            // println!("A");
+        let max_threads = 1;
+        let thread_load = n_x / max_threads;
+
+        println!("total loops = {}, current_loop_as parallel = {}",
+                    n_x,
+                    max_threads * thread_load);
+
+        for thread_count in 0..max_threads{
             let ub = ub.clone();
             // println!("B");
             let ua = ua.clone();
@@ -431,176 +436,112 @@ pub fn s_compute_acoustics(s : & Scenario,
             let s = s.clone();
             // println!("E");
             let tx = tx.clone();
-            // println!("F");
-            // thread::spawn(move || {
-                for j in 0..n_y{
-                    let tx_clone = tx.clone();
+            thread::spawn(move || {
+                for i in thread_count * thread_load .. (thread_count + 1) * thread_load{
+                    for j in 0..n_y{
+                        let tx_clone = tx.clone();
 
-                    let ubc = ub[i as usize][j as usize];
-                    let ub_xp_y = ub[(i + 1) as usize][j as usize];
-                    let ub_xm_y = if (i >= 1) {
-                                    ub[(i - 1) as usize][j as usize]         
-                                    }   else {0.};
-                    let ub_x_yp = ub[i as usize][(j + 1) as usize];
-                    let ub_x_ym = if (j >= 1) {
-                                    ub[i as usize][(j - 1) as usize]
-                                } else {0.};
-                    let uac = ua[i as usize][j as usize];
-                    let ucc = uc[i as usize][j as usize];
-                    let ss = s.clone();
+                        let ubc = ub[i as usize][j as usize];
+                        let ub_xp_y = ub[(i + 1) as usize][j as usize];
+                        let ub_xm_y = if (i >= 1) {
+                                        ub[(i - 1) as usize][j as usize]         
+                                        }   else {0.};
+                        let ub_x_yp = ub[i as usize][(j + 1) as usize];
+                        let ub_x_ym = if (j >= 1) {
+                                        ub[i as usize][(j - 1) as usize]
+                                    } else {0.};
+                        let uac = ua[i as usize][j as usize];
+                        let ucc = uc[i as usize][j as usize];
+                        let ss = s.clone();
 
-                    let start_critical_path = SystemTime::now();
+                        let start_critical_path = SystemTime::now();
 
-                    let on_corner_res = on_corner(Point(i, j), &ss);
-                    let on_edge_res = on_edge(Point(i, j), &ss);
-                    let on_structure_edge_res = on_structure_edge(Point(i, j), &ss);
-                    let on_structure_corner_res = on_structure_corner(Point(i, j), &ss);
-                    let in_structure_res = in_structure(Point(i, j), &ss);
-                    let is_source_res = is_source(Point(i, j), radius, &source_active, &ss);
-                    
-                    let gain = (ss.dx * ss.dx) / (ss.dt * ss.dt);
-                    match (on_corner_res, on_edge_res, on_structure_corner_res,
-                            on_structure_edge_res, in_structure_res, is_source_res){
-                        (None, None, None, None, false, false) =>
-                            tx_clone.send((i, j, 
-                                compute_node(Point(i, j), ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc, gain))).unwrap(),
-                        (_, Some(t), _, _, _, _) =>
-                            tx_clone.send((i, j, 
-                                compute_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-                        (Some(t), _, _, _, _, _) =>
-                            tx_clone.send((i, j,
-                                 compute_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),    
-                        (_, _, _, Some(t), _, _) =>
-                            tx_clone.send((i, j, 
-                                compute_structure_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-                        (_, _, Some(t), _, _, _) =>
-                            tx_clone.send((i, j,
-                                 compute_structure_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-                        _ => (),
+                        let on_corner_res = on_corner(Point(i, j), &ss);
+                        let on_edge_res = on_edge(Point(i, j), &ss);
+                        let on_structure_edge_res = on_structure_edge(Point(i, j), &ss);
+                        let on_structure_corner_res = on_structure_corner(Point(i, j), &ss);
+                        let in_structure_res = in_structure(Point(i, j), &ss);
+                        let is_source_res = is_source(Point(i, j), radius, &source_active, &ss);
+                        
+                        let gain = (ss.dx * ss.dx) / (ss.dt * ss.dt);
+                        match (on_corner_res, on_edge_res, on_structure_corner_res,
+                                on_structure_edge_res, in_structure_res, is_source_res){
+                            (None, None, None, None, false, false) =>
+                                tx_clone.send((i, j, 
+                                    compute_node(Point(i, j), ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc, gain))).unwrap(),
+                            (_, Some(t), _, _, _, _) =>
+                                tx_clone.send((i, j, 
+                                    compute_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                            (Some(t), _, _, _, _, _) =>
+                                tx_clone.send((i, j,
+                                    compute_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),    
+                            (_, _, _, Some(t), _, _) =>
+                                tx_clone.send((i, j, 
+                                    compute_structure_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                            (_, _, Some(t), _, _, _) =>
+                                tx_clone.send((i, j,
+                                    compute_structure_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                            _ => (),
+                        }
                     }
                 }
-
-            // });
+            });
         }
 
-        for i in n_x / 2 .. n_x {
-                        // println!("i={}, n_x={}", i, n_x);
-            // println!("A");
-            let ub = ub.clone();
-            // println!("B");
-            let ua = ua.clone();
-            // println!("C");
-            let uc = uc.clone();
-            // println!("D");
-            let s = s.clone();
-            // println!("E");
-            let tx = tx.clone();
-            // println!("F");
-            // thread::spawn(move || {
-                for j in 0..n_y{
-                    let tx_clone = tx.clone();
+        // println!("total loops = {}, current_loop_as parallel = {}",
+        //     n_x,
+        //     max_threads * thread_load);
 
-                    let ubc = ub[i as usize][j as usize];
-                    let ub_xp_y = ub[(i + 1) as usize][j as usize];
-                    let ub_xm_y = if (i >= 1) {
-                                    ub[(i - 1) as usize][j as usize]         
-                                    }   else {0.};
-                    let ub_x_yp = ub[i as usize][(j + 1) as usize];
-                    let ub_x_ym = if (j >= 1) {
-                                    ub[i as usize][(j - 1) as usize]
-                                } else {0.};
-                    let uac = ua[i as usize][j as usize];
-                    let ucc = uc[i as usize][j as usize];
-                    let ss = s.clone();
+        for i in max_threads * thread_load .. n_x{
+            for j in 0..n_y{
+                let tx_clone = tx.clone();
 
-                    let start_critical_path = SystemTime::now();
+                let ubc = ub[i as usize][j as usize];
+                let ub_xp_y = ub[(i + 1) as usize][j as usize];
+                let ub_xm_y = if (i >= 1) {
+                                ub[(i - 1) as usize][j as usize]         
+                                }   else {0.};
+                let ub_x_yp = ub[i as usize][(j + 1) as usize];
+                let ub_x_ym = if (j >= 1) {
+                                ub[i as usize][(j - 1) as usize]
+                            } else {0.};
+                let uac = ua[i as usize][j as usize];
+                let ucc = uc[i as usize][j as usize];
+                let ss = s.clone();
 
-                    let on_corner_res = on_corner(Point(i, j), &ss);
-                    let on_edge_res = on_edge(Point(i, j), &ss);
-                    let on_structure_edge_res = on_structure_edge(Point(i, j), &ss);
-                    let on_structure_corner_res = on_structure_corner(Point(i, j), &ss);
-                    let in_structure_res = in_structure(Point(i, j), &ss);
-                    let is_source_res = is_source(Point(i, j), radius, &source_active, &ss);
-                    
-                    let gain = (ss.dx * ss.dx) / (ss.dt * ss.dt);
-                    match (on_corner_res, on_edge_res, on_structure_corner_res,
-                            on_structure_edge_res, in_structure_res, is_source_res){
-                        (None, None, None, None, false, false) =>
-                            tx_clone.send((i, j, 
-                                compute_node(Point(i, j), ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc, gain))).unwrap(),
-                        (_, Some(t), _, _, _, _) =>
-                            tx_clone.send((i, j, 
-                                compute_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-                        (Some(t), _, _, _, _, _) =>
-                            tx_clone.send((i, j,
-                                 compute_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),    
-                        (_, _, _, Some(t), _, _) =>
-                            tx_clone.send((i, j, 
-                                compute_structure_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-                        (_, _, Some(t), _, _, _) =>
-                            tx_clone.send((i, j,
-                                 compute_structure_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-                        _ => (),
-                    }
+                let start_critical_path = SystemTime::now();
+
+                let on_corner_res = on_corner(Point(i, j), &ss);
+                let on_edge_res = on_edge(Point(i, j), &ss);
+                let on_structure_edge_res = on_structure_edge(Point(i, j), &ss);
+                let on_structure_corner_res = on_structure_corner(Point(i, j), &ss);
+                let in_structure_res = in_structure(Point(i, j), &ss);
+                let is_source_res = is_source(Point(i, j), radius, &source_active, &ss);
+                
+                let gain = (ss.dx * ss.dx) / (ss.dt * ss.dt);
+                match (on_corner_res, on_edge_res, on_structure_corner_res,
+                        on_structure_edge_res, in_structure_res, is_source_res){
+                    (None, None, None, None, false, false) =>
+                        tx_clone.send((i, j, 
+                            compute_node(Point(i, j), ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc, gain))).unwrap(),
+                    (_, Some(t), _, _, _, _) =>
+                        tx_clone.send((i, j, 
+                            compute_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                    (Some(t), _, _, _, _, _) =>
+                        tx_clone.send((i, j,
+                            compute_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),    
+                    (_, _, _, Some(t), _, _) =>
+                        tx_clone.send((i, j, 
+                            compute_structure_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                    (_, _, Some(t), _, _, _) =>
+                        tx_clone.send((i, j,
+                            compute_structure_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
+                    _ => (),
                 }
-
-            // });
-
+            }
         }
 
-        // for i in 0..n_x{
-        //     for j in 0..n_y{
-        //         let tx_clone = tx.clone();
-
-        //         let ubc = ub[i as usize][j as usize];
-        //         let ub_xp_y = ub[(i + 1) as usize][j as usize];
-        //         let ub_xm_y = if (i >= 1) {
-        //                         ub[(i - 1) as usize][j as usize]         
-        //                         }   else {0.};
-        //         let ub_x_yp = ub[i as usize][(j + 1) as usize];
-        //         let ub_x_ym = if (j >= 1) {
-        //                         ub[i as usize][(j - 1) as usize]
-        //                     } else {0.};
-        //         let uac = ua[i as usize][j as usize];
-        //         let ucc = uc[i as usize][j as usize];
-        //         let ss = s.clone();
-
-        //         let start_critical_path = SystemTime::now();
-        //         thread::spawn(move || {
-        //             let on_corner_res = on_corner(Point(i, j), &ss);
-        //             let on_edge_res = on_edge(Point(i, j), &ss);
-        //             let on_structure_edge_res = on_structure_edge(Point(i, j), &ss);
-        //             let on_structure_corner_res = on_structure_corner(Point(i, j), &ss);
-        //             let in_structure_res = in_structure(Point(i, j), &ss);
-        //             let is_source_res = is_source(Point(i, j), radius, &source_active, &ss);
-                    
-        //             let gain = (ss.dx * ss.dx) / (ss.dt * ss.dt);
-        //             match (on_corner_res, on_edge_res, on_structure_corner_res,
-        //                     on_structure_edge_res, in_structure_res, is_source_res){
-        //                 (None, None, None, None, false, false) =>
-        //                     tx_clone.send((i, j, 
-        //                         compute_node(Point(i, j), ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc, gain))).unwrap(),
-        //                 (_, Some(t), _, _, _, _) =>
-        //                     tx_clone.send((i, j, 
-        //                         compute_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-        //                 (Some(t), _, _, _, _, _) =>
-        //                     tx_clone.send((i, j,
-        //                          compute_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),    
-        //                 (_, _, _, Some(t), _, _) =>
-        //                     tx_clone.send((i, j, 
-        //                         compute_structure_edge_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-        //                 (_, _, Some(t), _, _, _) =>
-        //                     tx_clone.send((i, j,
-        //                          compute_structure_corner_node(i, j, t, ubc, ub_xp_y, ub_xm_y, ub_x_yp, ub_x_ym, uac, ucc))).unwrap(),
-        //                 _ => (),
-        //             }
-        //         });
-        //         // println!("Thread spawning: {:?}", start_critical_path.elapsed());
-        //     }
-        // }
-
-        // println!("Inner complicated loop: {:?}", start.elapsed());
-
+  
         for i in 0..n_x{
             for j in 0..n_y{
                 // println!("Waiting for {}", i * n_x + j);
@@ -616,7 +557,7 @@ pub fn s_compute_acoustics(s : & Scenario,
         if (step % s.save_time == 0){
             export_to_vtk(s, n_x, n_y, uc, step);
         }
-        println!("Export: {:?}", start.elapsed());
+        // println!("Export: {:?}", start.elapsed());
 
         let start = SystemTime::now();
 
@@ -625,7 +566,7 @@ pub fn s_compute_acoustics(s : & Scenario,
         (*ub) = (*uc).clone();
         (*uc) = xchg; 
 
-        println!("Semantics: {:?}", start.elapsed());
+        // println!("Semantics: {:?}", start.elapsed());
 
         step += 1;
     }
