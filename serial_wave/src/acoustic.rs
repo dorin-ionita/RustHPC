@@ -4,7 +4,7 @@ use std::fs::File;
 use std::path::Path;
 use std::io::Write;
 use std::error::Error;
-use std::time::{SystemTime, UNIX_EPOCH};
+use std::time::{SystemTime, UNIX_EPOCH, Duration, Instant};
 use threadpool::ThreadPool;
 use std::cmp;
 
@@ -251,7 +251,7 @@ fn compute_node(p : Point,
     let mut aux : f64;
     let mut aux2 : f64;
     aux = 2. * ubc - uac;
-    aux2 = ub_xp_y - 4. * ub_xp_y; // TODO: bug here?
+    aux2 = ub_xp_y - 4. * ubc; // TODO: bug here?
     aux2 += ub_xm_y + ub_x_yp;
     aux2 += ub_x_ym;
     aux2 *= gain;
@@ -289,10 +289,10 @@ fn compute_corner_node(i : i32, j : i32, corner : CornerType,
     ubc : f64, ub_xp_y : f64, ub_xm_y : f64, ub_x_yp : f64, ub_x_ym : f64, uac : f64, ucc : f64) -> f64
 {
     match corner {
-        NorthWest      => return ub_x_yp + ub_xp_y / 2.,
-        NorthEast      => return ub_xp_y + ub_x_ym / 2.,
-        SouthEast      => return ub_x_ym + ub_xm_y / 2.,
-        SouthWest      => return ub_xm_y + ub_x_yp / 2.,
+        NorthWest      => return (ub_x_yp + ub_xp_y) / 2.,
+        NorthEast      => return (ub_xp_y + ub_x_ym) / 2.,
+        SouthEast      => return (ub_x_ym + ub_xm_y) / 2.,
+        SouthWest      => return (ub_xm_y + ub_x_yp) / 2.,
     }
     // match corner{
     //     NorthWest   => return ub[i as usize][(j + 1) as usize] + ub[(i + 1) as usize][j as usize] / 2.,
@@ -307,10 +307,10 @@ fn compute_structure_corner_node(i : i32, j : i32, corner : CornerType,
     ubc : f64, ub_xp_y : f64, ub_xm_y : f64, ub_x_yp : f64, ub_x_ym : f64, uac : f64, ucc : f64) -> f64
 {
     match corner {
-        NorthWest   => return ub_x_ym + ub_xm_y / 2.,
-        NortEast    => return ub_xm_y + ub_x_yp / 2.,
-        SouthEast   => return ub_x_yp + ub_xp_y / 2.,
-        SouthWest   => return ub_xp_y + ub_x_ym / 2.,
+        NorthWest   => return (ub_x_ym + ub_xm_y) / 2.,
+        NortEast    => return (ub_xm_y + ub_x_yp) / 2.,
+        SouthEast   => return (ub_x_yp + ub_xp_y) / 2.,
+        SouthWest   => return (ub_xp_y + ub_x_ym) / 2.,
     }
     // match corner{
     //     NorthWest   => return ub[i as usize][(j - 1) as usize] + ub[(i - 1) as usize][j as usize] / 2.,
@@ -394,6 +394,7 @@ pub fn s_compute_acoustics(s : & Scenario,
 
     while (step < (s.max_time as f64 / s.dt) as i32)
     {
+	//let start = Instant::now();
        // TODO: paralize this 
         if step < (s.max_time as f64 / s.dt) as i32 / 2{
             //pulse_source(radius, step, copy_p_amp, &s, uc);
@@ -412,31 +413,20 @@ pub fn s_compute_acoustics(s : & Scenario,
             source_active = false;
         }
 
+	//let duration = start.elapsed();
+	//println!("Time elapsed 1 is {:?}", duration);
+
+	let new_start = Instant::now();
         /*  PARALELL VERSION */
-        //let (tx, rx) = mpsc::channel();
-
-        // let max_threads = 1;
-
-        // println!("total loops = {}, current_loop_as parallel = {}",
-        //             n_x,
-        //             max_threads * thread_load);
-
         for thread_count in 0..max_threads{
             let ub = ub.clone();
-            // println!("B");
             let ua = ua.clone();
-            // println!("C");
             let uc = uc.clone();
-            // println!("D");
             let s = s.clone();
-            // println!("E");
             let tx = tx.clone();
-	    //println!("after clonning time: {:?}", start.elapsed());
-    //thread::spawn(move || {
 	pool.execute(move || {
 	for i in thread_count * thread_load .. (thread_count + 1) * thread_load{
                     for j in 0..n_y{
-			//let ub = ub;
                         let tx_clone = tx.clone();
 
                         let ubc = ub[i as usize][j as usize];
@@ -451,8 +441,6 @@ pub fn s_compute_acoustics(s : & Scenario,
                         let uac = ua[i as usize][j as usize];
                         let ucc = uc[i as usize][j as usize];
                         let ss = s.clone();
-
-                        //let start_critical_path = SystemTime::now();
 
                         let on_corner_res = on_corner(Point(i, j), &ss);
                         let on_edge_res = on_edge(Point(i, j), &ss);
@@ -486,10 +474,9 @@ pub fn s_compute_acoustics(s : & Scenario,
             });
         }
 
-        // println!("total loops = {}, current_loop_as parallel = {}",
-        //     n_x,
-        //     max_threads * thread_load);
-/*
+	let duration = new_start.elapsed();
+	println!("pre -1 elapsed {:?}", duration);
+
         for i in max_threads * thread_load .. n_x{
             for j in 0..n_y{
                 let tx_clone = tx.clone();
@@ -538,24 +525,30 @@ pub fn s_compute_acoustics(s : & Scenario,
                 }
             }
         }
-*/  
-        for i in 0..(n_x - max_threads * thread_load) * n_y{
-            //for j in 0..n_y{
-                // println!("Waiting for {}", i * n_x + j);
+
+	let duration = new_start.elapsed();
+	println!("Duration 1 is {:?}", duration);
+  
+        for i in 0..n_x{
+	    for j in 0..n_y{
                 let (ii, jj, v) = rx.recv().unwrap();
                 (*uc)[ii as usize][jj as usize] = v;
-            //}
+            }
         }
 
-	//println!("Done recv");
+	let duration = new_start.elapsed();
+	println!("Duration 2 is {:?}", duration);
+
+	//let start = Instant::now();
 
         let xchg = (*ua).clone();
         (*ua) = (*ub).clone();
         (*ub) = (*uc).clone();
         (*uc) = xchg; 
 
-        // println!("Semantics: {:?}", start.elapsed());
-
         step += 1;
+
+	//let duration = start.elapsed();
+	//println!("Duration 3 is {:?}", duration);
     }
 }

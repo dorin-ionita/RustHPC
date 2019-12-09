@@ -223,9 +223,9 @@ fn main() -> std::io::Result<()>
     };
     sim = import_data(path, sim);
 
-    let mut uc : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
-    let mut ub : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
-    let mut ua : Vec<Vec<f64>> = vec![vec![0.;500]; 500];
+    let mut uc : Vec<Vec<f64>> = vec![vec![0.;701]; 701];
+    let mut ub : Vec<Vec<f64>> = vec![vec![0.;701]; 701];
+    let mut ua : Vec<Vec<f64>> = vec![vec![0.;701]; 701];
 
     let start = SystemTime::now();
     s_compute_acoustics(&sim.scenaries[0], &mut uc, &mut ub, &mut ua, max_threads);
