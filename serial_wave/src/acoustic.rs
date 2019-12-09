@@ -5,6 +5,8 @@ use std::path::Path;
 use std::io::Write;
 use std::error::Error;
 use std::time::{SystemTime, UNIX_EPOCH};
+use threadpool::ThreadPool;
+use std::cmp;
 
 use std::thread;
 use std::sync::mpsc;
@@ -386,17 +388,17 @@ pub fn s_compute_acoustics(s : & Scenario,
 
     let n_x = s.nx;
     let n_y = s.ny;
+    let pool = ThreadPool::new(max_threads as usize);
+    let thread_load = n_x / max_threads;
+    let (tx, rx) = mpsc::channel();
 
     while (step < (s.max_time as f64 / s.dt) as i32)
     {
-        // println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
-
-        let copy_p_amp = s.source.p_amp;
-        let start = SystemTime::now();
-        
+       // TODO: paralize this 
         if step < (s.max_time as f64 / s.dt) as i32 / 2{
-            pulse_source(radius, step, copy_p_amp, &s, uc);
-        } else if source_active{
+            //pulse_source(radius, step, copy_p_amp, &s, uc);
+            pulse_source(radius, step, s.source.p_amp, &s, uc);
+	} else if source_active{
             for i in 0..n_x{
                 for j in 0..n_y{
                     if is_source(Point(i, j), radius, &source_active, &s){
@@ -410,18 +412,10 @@ pub fn s_compute_acoustics(s : & Scenario,
             source_active = false;
         }
 
-        // println!("Simple loop: {:?}", start.elapsed());
-
-        // println!("bla bla");
-
-        // println!("step is {} max is {}", step, (s.max_time as f64 / s.dt) as i32);
-        let start = SystemTime::now();
-
         /*  PARALELL VERSION */
-        let (tx, rx) = mpsc::channel();
+        //let (tx, rx) = mpsc::channel();
 
         // let max_threads = 1;
-        let thread_load = n_x / max_threads;
 
         // println!("total loops = {}, current_loop_as parallel = {}",
         //             n_x,
@@ -437,9 +431,12 @@ pub fn s_compute_acoustics(s : & Scenario,
             let s = s.clone();
             // println!("E");
             let tx = tx.clone();
-            thread::spawn(move || {
-                for i in thread_count * thread_load .. (thread_count + 1) * thread_load{
+	    //println!("after clonning time: {:?}", start.elapsed());
+    //thread::spawn(move || {
+	pool.execute(move || {
+	for i in thread_count * thread_load .. (thread_count + 1) * thread_load{
                     for j in 0..n_y{
+			//let ub = ub;
                         let tx_clone = tx.clone();
 
                         let ubc = ub[i as usize][j as usize];
@@ -455,7 +452,7 @@ pub fn s_compute_acoustics(s : & Scenario,
                         let ucc = uc[i as usize][j as usize];
                         let ss = s.clone();
 
-                        let start_critical_path = SystemTime::now();
+                        //let start_critical_path = SystemTime::now();
 
                         let on_corner_res = on_corner(Point(i, j), &ss);
                         let on_edge_res = on_edge(Point(i, j), &ss);
@@ -492,7 +489,7 @@ pub fn s_compute_acoustics(s : & Scenario,
         // println!("total loops = {}, current_loop_as parallel = {}",
         //     n_x,
         //     max_threads * thread_load);
-
+/*
         for i in max_threads * thread_load .. n_x{
             for j in 0..n_y{
                 let tx_clone = tx.clone();
@@ -541,26 +538,16 @@ pub fn s_compute_acoustics(s : & Scenario,
                 }
             }
         }
-
-  
-        for i in 0..n_x{
-            for j in 0..n_y{
+*/  
+        for i in 0..(n_x - max_threads * thread_load) * n_y{
+            //for j in 0..n_y{
                 // println!("Waiting for {}", i * n_x + j);
                 let (ii, jj, v) = rx.recv().unwrap();
                 (*uc)[ii as usize][jj as usize] = v;
-            }
+            //}
         }
 
-        // println!("Complicated loop: {:?}", start.elapsed());
-
-        let start = SystemTime::now();
-
-        if (step % s.save_time == 0){
-            export_to_vtk(s, n_x, n_y, uc, step);
-        }
-        // println!("Export: {:?}", start.elapsed());
-
-        let start = SystemTime::now();
+	//println!("Done recv");
 
         let xchg = (*ua).clone();
         (*ua) = (*ub).clone();

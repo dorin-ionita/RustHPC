@@ -1,1 +1,1 @@
-/home/dorin/temapp/serial_wave/target/release/serial_wave: /home/dorin/temapp/serial_wave/src/acoustic.rs /home/dorin/temapp/serial_wave/src/main.rs
+/export/home/acs/stud/d/dorin_marian.ionita/rust-par/RustHPC/serial_wave/target/release/serial_wave: /export/home/acs/stud/d/dorin_marian.ionita/rust-par/RustHPC/serial_wave/src/acoustic.rs /export/home/acs/stud/d/dorin_marian.ionita/rust-par/RustHPC/serial_wave/src/main.rs
