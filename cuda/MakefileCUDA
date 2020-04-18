@@ -1,0 +1,30 @@
+CC = nvcc
+CFLAGS = -O3 -lm
+OBJ = import_data.o export_data.o acoustics_alg.o utils.o
+
+all: acoustics
+	@mkdir -p export
+
+acoustics: $(OBJ)
+	$(CC) $(CLAGS) $(OBJ) -o acoustics
+
+import_data.o: import_data.cu
+	$(CC) $(CFLAGS) import_data.cu -c import_data.o
+
+export_data.o: export_data.cu
+	$(CC) $(CFLAGS) export_data.cu -c export_data.o
+
+acoustics_alg.o: acoustics_alg.cu
+	$(CC) $(CFLAGS) acoustics_alg.cu -c acoustics_alg.o
+
+utils.o: utils.cu
+	$(CC) $(CFLAGS) utils.cu -c utils.o
+
+clean:
+	rm -f *~ *.o acoustics
+
+
+
+
+
+

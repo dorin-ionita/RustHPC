@@ -1,0 +1,1 @@
+nvcc *cu -o acoustics
