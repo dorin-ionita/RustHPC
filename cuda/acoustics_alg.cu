@@ -194,7 +194,7 @@ void pulse_source(int radius, int step, double amp)
 double P_0;
 double tau;
 double P_r[1000][1000];
-double chi[1000][1000];
+double chi[200][200];
 //__device__ double gpu_chi[1000][1000];
 // TODO: take notes of this
 
@@ -228,6 +228,37 @@ __global__ void free_path_loss_kernel(double amp, double *gpu_chi)
 //	printf("[GPU] gpu_chi[%d][%d]=%lf\n", blockIdx.x, blockIdx.y, gpu_chi[blockIdx.x][blockIdx.y]);
 	printf("[GPU] Exit Free Path Loss Kernel\n");
 }
+
+__device__ int is_source_gpu(int radius, int source_active,
+		int src_x, int src_y)
+{
+	if (!source_active)
+		return 0;
+	if (sqrt(pow(src_x - blockIdx.x, 2) + pow(src_y - blockIdx.y, 2)) <= radius)
+		return 1;
+	return 0;
+}
+
+__global__ void wireless_src_pulse_kernel(int step, double amp,
+	       	double MAX_TIME, double TIME_STEP,
+		int radius, int source_active, int src_x, int src_y,
+		double *ua_gpu, double *ub_gpu, double *uc_gpu)
+{
+	if (step < (int)(MAX_TIME / TIME_STEP) / 2){
+		// Pulse source
+		if (is_source_gpu(radius, 1, src_x, src_y))
+			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = amp * fabs(sin(step * M_PI/4));
+	} else if (source_active){
+		if (is_source_gpu(radius, source_active, src_x, src_y)) {
+			ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+			ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+		}
+		// All threads should reach this point before setting source_active -> need a thread barrier here. Or simply write 2 kernels and syncCPU. CPU should set source_active = 0 after freezing.
+		source_active = 0;	
+	}
+}
+
 
 void free_path_loss()
 {
@@ -264,22 +295,24 @@ void init_power(double amp)
 
 void s_compute_acoustics()
 {
+	printf("nx=%d ny=%d\n", nx, ny);
 	//init_power(scenario[scn_index].source.p_amp);
 	double *gpu_chi;
 	//double **chi = (double **)malloc(1000 * 1000 * sizeof(double));
 	//free_path_loss();
 	cudaError_t cuda_status;
-	cudaMalloc((void **)&gpu_chi, 1000 * 1000 * sizeof(double));
+	cudaMalloc((void **)&gpu_chi, 200 * 200 * sizeof(double));
 	dim3 dimBlock(nx, ny);
 	free_path_loss_kernel<<<dimBlock, 1>>>(scenario[scn_index].source.p_amp, gpu_chi);
 	printf("[CPU] Launched Kernel - Blocking until GPU execution complete\n");
 	cudaDeviceSynchronize();
 
 	printf("[CPU] Execued Kernel\n");
-	cuda_status = cudaMemcpy(chi, gpu_chi, 1000 * 1000 * sizeof(double), cudaMemcpyDeviceToHost);
+	cuda_status = cudaMemcpy(chi, gpu_chi, 200 * 200 * sizeof(double), cudaMemcpyDeviceToHost);
 	if (cudaSuccess != cuda_status){
 		printf("Problem copying from cuda %s\n", cudaGetErrorString(cuda_status));
 	}
+	// TODO: bug here
 	// TODO: don't do useless copy here. Next kernel can reuse the gpu_chi var
 	// Document about paraview
 
