@@ -24,70 +24,14 @@ extern "C" scenario_t scenario[MAX_SCENARIOS];
 extern "C" int num_scenarios;
 extern "C" int scn_index;
 
-int on_edge(int x, int y)
-{
-	if(x == 0 && y != 0 && y != nx-1)
-		return N_EDGE;
-	if(x == ny-1 && y != 0 && y != nx-1)
-		return S_EDGE;
-	if(y == 0 && x != 0 && x != ny-1)
-		return W_EDGE;
-	if(y == nx-1 && x != 0 && x != ny-1)
-		return E_EDGE;
-	return 0;
-}
+double P_0;
+double tau;
+double P_r[1000][1000];
+double chi[200][200];
+//__device__ double gpu_chi[1000][1000];
+// TODO: take notes of this
 
-int on_corner(int x, int y)
-{
-	if(x == 0 && y == 0)
-		return NW_CORNER;
-	if(x == 0 && y == nx-1)
-		return NE_CORNER;
-	if(x == ny-1 && y == 0)
-		return SW_CORNER;
-	if(x == ny-1 && y == nx-1)
-		return SE_CORNER;
-	return 0;
-}
-
-int on_structure_edge(int x, int y)
-{
-	int i;
-	for(i=0;i<scenario[scn_index].nr_struct;i++)
-	{
-		if(y > scenario[scn_index].structure[i].c_points[0][1] && y < scenario[scn_index].structure[i].c_points[1][1])
-			if(x == scenario[scn_index].structure[i].c_points[0][0])
-				return N_EDGE;
-		if(x > scenario[scn_index].structure[i].c_points[1][0] && x < scenario[scn_index].structure[i].c_points[2][0])
-			if(y == scenario[scn_index].structure[i].c_points[1][1])
-				return E_EDGE;
-		if(y > scenario[scn_index].structure[i].c_points[3][1] && y < scenario[scn_index].structure[i].c_points[2][1])
-			if(x == scenario[scn_index].structure[i].c_points[3][0])
-				return S_EDGE;
-		if(x > scenario[scn_index].structure[i].c_points[0][0] && x < scenario[scn_index].structure[i].c_points[3][0])
-			if(y == scenario[scn_index].structure[i].c_points[0][1])
-				return W_EDGE;
-	}
-	return 0;
-}
-
-int on_structure_corner(int x, int y)
-{
-	int i;
-	for(i=0;i<scenario[scn_index].nr_struct;i++)
-	{
-		if(x == scenario[scn_index].structure[i].c_points[0][0] && y == scenario[scn_index].structure[i].c_points[0][1])
-			return NW_CORNER;
-		if(x == scenario[scn_index].structure[i].c_points[1][0] && y == scenario[scn_index].structure[i].c_points[1][1])
-			return NE_CORNER;
-		if(x == scenario[scn_index].structure[i].c_points[2][0] && y == scenario[scn_index].structure[i].c_points[2][1])
-			return SE_CORNER;
-		if(x == scenario[scn_index].structure[i].c_points[3][0] && y == scenario[scn_index].structure[i].c_points[3][1])
-			return SW_CORNER;
-	}
-	return 0;
-}
-
+// TODO: required by the export_to_vtk function
 int in_structure(int x, int y)
 {
 	int i;
@@ -99,104 +43,6 @@ int in_structure(int x, int y)
 	}
 	return 0;
 }
-
-double compute_node(int x, int y)
-{
-	return (2*ub[x][y] - ua[x][y] + gain * (ub[x+1][y] - 4*ub[x][y] + ub[x-1][y] + ub[x][y+1] + ub[x][y-1]));
-}
-
-double compute_edge_node(int i, int j, int side)
-{
-	switch(side)
-	{
-		case N_EDGE:
-			return ub[i+1][j];
-		case E_EDGE:
-			return ub[i][j-1];
-		case S_EDGE:
-			return ub[i-1][j];
-		case W_EDGE:
-			return ub[i][j+1];
-		default:
-			return 0;
-	}
-}
-
-double compute_corner_node(int i, int j, int corner)
-{
-	switch(corner)
-	{
-		case NW_CORNER:
-			return (ub[i][j+1]+ub[i+1][j])/2;
-		case NE_CORNER:
-			return (ub[i+1][j]+ub[i][j-1])/2;
-		case SE_CORNER:
-			return (ub[i][j-1]+ub[i-1][j])/2;
-		case SW_CORNER:
-			return (ub[i-1][j]+ub[i][j+1])/2;
-		default:
-			return 0;
-	}
-}
-
-double compute_structure_corner_node(int i, int j, int corner)
-{
-	switch(corner)
-	{
-		case NW_CORNER:
-			return (ub[i][j-1]+ub[i-1][j])/2;
-		case NE_CORNER:
-			return (ub[i-1][j]+ub[i][j+1])/2;
-		case SE_CORNER:
-			return (ub[i][j+1]+ub[i+1][j])/2;
-		case SW_CORNER:
-			return (ub[i+1][j]+ub[i][j-1])/2;
-		default:
-			return 0;
-	}
-}
-
-double compute_structure_edge_node(int i, int j, int side)
-{
-	switch(side)
-	{
-		case N_EDGE:
-			return ub[i-1][j];
-		case E_EDGE:
-			return ub[i][j+1];
-		case S_EDGE:
-			return ub[i+1][j];
-		case W_EDGE:
-			return ub[i][j-1];
-		default:
-			return 0;
-	}
-}
-
-int is_source(int x, int y, int radius, int source_active)
-{
-	if(!source_active)
-		return 0;
-	if(sqrt(pow(scenario[scn_index].source.x-x,2)+pow(scenario[scn_index].source.y-y,2)) <= radius)
-		return 1;
-	return 0;
-}
-
-void pulse_source(int radius, int step, double amp)
-{
-	int i,j;
-	for(i=0;i<ny;i++)
-	for(j=0;j<nx;j++)
-		if(is_source(i,j,radius,1))
-				uc[i][j] = amp*fabs(sin(step*M_PI/4));
-}
-
-double P_0;
-double tau;
-double P_r[1000][1000];
-double chi[200][200];
-//__device__ double gpu_chi[1000][1000];
-// TODO: take notes of this
 
 __global__ void free_path_loss_kernel(double amp, double *gpu_chi)
 {
@@ -221,6 +67,7 @@ __global__ void free_path_loss_kernel(double amp, double *gpu_chi)
 	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] = sqrt(P_r / P_0);
 	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] /= 10;
 	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] += 0.9;
+	// TODO: check if this kind of addressing is ok. It doesn't seem to be
 	printf("[GPU] gpu_chi[%d][%d]=%lf\n", blockIdx.x, blockIdx.y, gpu_chi[blockIdx.x * blockDim.x + blockIdx.y]);
 //	gpu_chi[blockIdx.x][blockIdx.y] = sqrt(P_r / P_0);
 //	gpu_chi[blockIdx.x][blockIdx.y] /= 10;
@@ -239,24 +86,195 @@ __device__ int is_source_gpu(int radius, int source_active,
 	return 0;
 }
 
+__global__ void set_all_zero_kernel(double **ua_gpu, double **ub_gpu, double **uc_gpu)
+{
+	ua_gpu[blockIdx.x][blockIdx.y] = 0;
+	ub_gpu[blockIdx.x][blockIdx.y] = 0;
+	uc_gpu[blockIdx.x][blockIdx.y] = 0;
+	// TODO: sync CPU after this -> move to utils.cu file
+}
+
 __global__ void wireless_src_pulse_kernel(int step, double amp,
 	       	double MAX_TIME, double TIME_STEP,
 		int radius, int source_active, int src_x, int src_y,
-		double *ua_gpu, double *ub_gpu, double *uc_gpu)
+		double **ua_gpu, double **ub_gpu, double **uc_gpu)
 {
 	if (step < (int)(MAX_TIME / TIME_STEP) / 2){
 		// Pulse source
 		if (is_source_gpu(radius, 1, src_x, src_y))
-			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = amp * fabs(sin(step * M_PI/4));
+			uc_gpu[blockIdx.x][blockIdx.y] = amp * fabs(sin(step * M_PI/4));
 	} else if (source_active){
 		if (is_source_gpu(radius, source_active, src_x, src_y)) {
-			ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
-			ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
-			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+			ua_gpu[blockIdx.x][blockIdx.y] = 0;
+			ub_gpu[blockIdx.x][blockIdx.y] = 0;
+			uc_gpu[blockIdx.x][blockIdx.y] = 0;
 		}
 		// All threads should reach this point before setting source_active -> need a thread barrier here. Or simply write 2 kernels and syncCPU. CPU should set source_active = 0 after freezing.
 		source_active = 0;	
 	}
+}
+
+__device__ int on_edge_gpu()
+{
+	if (0 == blockIdx.x && 0 != blockIdx.y && blockIdx.y != blockDim.x - 1)
+		return N_EDGE;
+	if (blockDim.x == blockIdx.y - 1 && blockIdx.y != 0 && blockIdx.y != blockDim.x - 1)
+		return S_EDGE;
+	if (0 == blockIdx.y && 0 != blockIdx.x && blockIdx.x != blockDim.y - 1)
+		return W_EDGE;
+	if (blockIdx.y == blockDim.x - 1 && blockIdx.x != 0 && blockIdx.x != blockDim.y - 1)
+		return E_EDGE;
+	return 0;
+}
+
+__device__ int on_corner_gpu()
+{
+	if (0 == blockIdx.x && blockIdx.y == 0)
+		return NW_CORNER;
+	if (0 == blockIdx.x && blockIdx.y == blockDim.x - 1)
+		return NE_CORNER;
+	if (blockDim.y - 1 == blockIdx.x && blockIdx.y == 0)
+		return SW_CORNER;
+	if (blockDim.y - 1 == blockIdx.x && blockIdx.y == blockDim.x - 1)
+		return SE_CORNER;
+	return 0;
+}
+
+__device__ int on_structure_edge_gpu()
+{
+	// TODO: this is tricky because we have structure
+	// 		and it needs malloc
+	return 0;
+}
+
+__device__ int in_structure_gpu()
+{
+	return 0;
+}
+
+__device__ int on_structure_corner_gpu()
+{
+	return 0;
+}
+
+__device__ double compute_edge_node_gpu(int side, double **ub_gpu)
+{
+	switch(side)
+	{
+		case N_EDGE:
+			return ub_gpu[blockIdx.x + 1][blockIdx.y];
+		case E_EDGE:
+			return ub_gpu[blockIdx.x][blockIdx.y - 1];
+		case S_EDGE:
+			return ub_gpu[blockIdx.x - 1][blockIdx.y];
+		case W_EDGE:
+			return ub_gpu[blockIdx.x][blockIdx.y + 1];
+		default:
+			return 0;
+	}
+}
+
+__device__ double compute_corner_node_gpu(int corner, double **ub_gpu)
+{
+	switch(corner)
+	{
+		case NW_CORNER:
+			return (ub_gpu[blockIdx.x][blockIdx.y+1] +
+					ub_gpu[blockIdx.x+1][blockIdx.y])/2;
+		case NE_CORNER:
+			return (ub_gpu[blockIdx.x + 1][blockIdx.y] + 
+					ub_gpu[blockIdx.x][blockIdx.y-1])/2;
+		case SE_CORNER:
+			return (ub_gpu[blockIdx.x][blockIdx.y-1] +
+					ub_gpu[blockIdx.x-1][blockIdx.y])/2;
+		case SW_CORNER:
+			return (ub_gpu[blockIdx.x - 1][blockIdx.y] +
+					ub_gpu[blockIdx.x][blockIdx.y + 1])/2;
+		default:
+			return 0;
+	}
+}
+
+__device__ double compute_structure_corner_node_gpu(int corner, double **ub_gpu)
+{
+	switch(corner)
+	{
+		case NW_CORNER:
+			return (ub_gpu[blockIdx.x][blockIdx.y-1] +
+					ub_gpu[blockIdx.x-1][blockIdx.y])/2;
+		case NE_CORNER:
+			return (ub_gpu[blockIdx.x-1][blockIdx.y] +
+					ub_gpu[blockIdx.x][blockIdx.y+1])/2;
+		case SE_CORNER:
+			return (ub_gpu[blockIdx.x][blockIdx.y+1] +
+					ub_gpu[blockIdx.x+1][blockIdx.y])/2;
+		case SW_CORNER:
+			return (ub_gpu[blockIdx.x+1][blockIdx.y] +
+					ub_gpu[blockIdx.x][blockIdx.y-1])/2;
+		default:
+			return 0;
+	}
+}
+
+__device__ double compute_structure_edge_node_gpu(int side, double **ub_gpu)
+{
+	switch(side)
+	{
+		case N_EDGE:
+			return ub_gpu[blockIdx.x-1][blockIdx.y];
+		case E_EDGE:
+			return ub_gpu[blockIdx.x][blockIdx.y+1];
+		case S_EDGE:
+			return ub_gpu[blockIdx.x+1][blockIdx.y];
+		case W_EDGE:
+			return ub_gpu[blockIdx.x][blockIdx.y-1];
+		default:
+			return 0;
+	}
+}
+
+__device__ double compute_node_gpu(double gain,
+		double **ua_gpu, double **ub_gpu, double **uc_gpu)
+{
+	return (2 * ub_gpu[blockIdx.x][blockIdx.y] -
+			ua_gpu[blockIdx.x][blockIdx.y] +
+			gain * (ub_gpu[blockIdx.x + 1][blockIdx.y] -
+				4 * ub_gpu[blockIdx.x][blockIdx.y] +
+				ub_gpu[blockIdx.x - 1][blockIdx.y] +
+				ub_gpu[blockIdx.x][blockIdx.y + 1] +
+				ub_gpu[blockIdx.x][blockIdx.y - 1]));
+}
+
+__global__ void wireless_propagate_kernel(double gain, int radius, int source_active,
+	       	int src_x, int src_y,	
+		double **ua_gpu, double **ub_gpu, double **uc_gpu)
+{
+	int place;
+
+	if (!on_corner_gpu() &&
+		       !on_edge_gpu() &&
+		       !is_source_gpu(radius, source_active, src_x, src_y) &&
+		       !on_structure_edge_gpu() &&
+		       !on_structure_corner_gpu() &&
+		       !in_structure_gpu())
+		uc_gpu[blockIdx.x][blockIdx.y] = compute_node_gpu(
+				gain, ua_gpu, ub_gpu, uc_gpu);
+	else if (place = on_edge_gpu())
+		uc_gpu[blockIdx.x][blockIdx.y] = compute_edge_node_gpu(
+				place, ub_gpu);
+	else if (place = on_corner_gpu())
+		uc_gpu[blockIdx.x][blockIdx.y] = compute_corner_node_gpu(
+				place, ub_gpu);
+	else if (place = on_structure_edge_gpu())
+		uc_gpu[blockIdx.x][blockIdx.y] = compute_structure_edge_node_gpu(
+				place, ub_gpu);
+	else if (place = on_structure_corner_gpu())
+		uc_gpu[blockIdx.x][blockIdx.y] = compute_structure_corner_node_gpu(
+				place, ub_gpu);
+
+	ua_gpu[blockIdx.x][blockIdx.y] = 0;
+
+	// TODO: multiply by chi factor
 }
 
 
@@ -295,17 +313,66 @@ void init_power(double amp)
 
 void s_compute_acoustics()
 {
+	int i;
+	
 	printf("nx=%d ny=%d\n", nx, ny);
-	//init_power(scenario[scn_index].source.p_amp);
 	double *gpu_chi;
-	//double **chi = (double **)malloc(1000 * 1000 * sizeof(double));
-	//free_path_loss();
+	double **ua_gpu, **ub_gpu, **uc_gpu;
 	cudaError_t cuda_status;
-	cudaMalloc((void **)&gpu_chi, 200 * 200 * sizeof(double));
 	dim3 dimBlock(nx, ny);
+
+	// https://stackoverflow.com/questions/5885195/using-cudamalloc-to-allocate-a-matrix	
+	cuda_status = cudaMalloc((void **)&gpu_chi, 200 * 200 * sizeof(double));
+	if (cudaSuccess != cuda_status){
+		printf("Failed cudaMalloc gpu_chi with message %s\n", cudaGetErrorString(cuda_status));
+	}
+	cuda_status = cudaMalloc((void ***)&ua_gpu, nx * sizeof(double *));
+	if (cudaSuccess != cuda_status){
+		printf("Failed cudaMalloc ua_gpu with message %s\n", cudaGetErrorString(cuda_status));
+	}
+	cuda_status = cudaMalloc((void ***)&ub_gpu, nx * sizeof(double *));
+	if (cudaSuccess != cuda_status){
+		printf("Failed cudaMalloc ub_gpu with message %s\n", cudaGetErrorString(cuda_status));
+	}
+	cuda_status = cudaMalloc((void ***)&uc_gpu, nx * sizeof(double *));
+	if (cudaSuccess != cuda_status){
+		printf("Failed cudaMalloc uc_gpu with message %s\n", cudaGetErrorString(cuda_status));
+	}
+	printf("AAAAAA\n");
+	for (i = 0; i < nx; i++){
+		cuda_status = cudaMalloc((void **)&ua_gpu[i], ny * sizeof(double));
+		printf("CCCCCC\n");
+		if (cudaSuccess != cuda_status){
+			printf("Failed cudaMalloc ua_gpu[%d] with message %s\n", i, cudaGetErrorString(cuda_status));
+		}
+		cuda_status = cudaMalloc((void **)&ub_gpu[i], ny * sizeof(double));
+		if (cudaSuccess != cuda_status){
+			printf("Failed cudaMalloc ub_gpu[%d] with message %s\n", i, cudaGetErrorString(cuda_status));
+		}
+		printf("DDDDDD\n");
+		cuda_status = cudaMalloc((void **)&uc_gpu[i], ny * sizeof(double));
+		if (cudaSuccess != cuda_status){
+			printf("Failed cudaMalloc uc_gpu[%d] with message %s\n", i, cudaGetErrorString(cuda_status));
+		}
+
+		printf("EEEEEE\n");
+		// TODO: move this allocation to utils.cu file
+	}
+	printf("BBBBB\n");
+
+	set_all_zero_kernel<<<dimBlock, 1>>>(ua_gpu, ub_gpu, uc_gpu);
+	cuda_status = cudaPeekAtLastError();
+	if (cudaSuccess != cuda_status){
+		printf("Failed launching set_all_zero_kernel  %s\n", cudaGetErrorString(cuda_status));
+	} else {
+		printf("Managed to launch set_all_zero_kernel\n");
+	}
+	// I need to sync GPU with CPU here so that u* vectors are safely zeroized
+	cuda_status = cudaDeviceSynchronize();	
 	free_path_loss_kernel<<<dimBlock, 1>>>(scenario[scn_index].source.p_amp, gpu_chi);
+	cuda_status = cudaPeekAtLastError();
 	printf("[CPU] Launched Kernel - Blocking until GPU execution complete\n");
-	cudaDeviceSynchronize();
+	cuda_status = cudaDeviceSynchronize();
 
 	printf("[CPU] Execued Kernel\n");
 	cuda_status = cudaMemcpy(chi, gpu_chi, 200 * 200 * sizeof(double), cudaMemcpyDeviceToHost);
@@ -316,71 +383,70 @@ void s_compute_acoustics()
 	// TODO: don't do useless copy here. Next kernel can reuse the gpu_chi var
 	// Document about paraview
 
-	int i,j;
 	int step = 0;
 	int source_active = 1;
-	int place;
 	int radius = scenario[scn_index].source.radius;
 	
+	/*
 	for (i = 0; i < nx; i++)
 		for (j = 0; j < ny; j++)
 			printf("chi[%d][%d]=%lf\n", i, j, chi[i][j]);
+	*/
 
 	while(step < (int)(MAX_TIME/TIME_STEP))
 	{
-		if(step < (int)(MAX_TIME/TIME_STEP)/2)
-			pulse_source(radius,step,scenario[scn_index].source.p_amp);
-		else if(source_active)
-		{
-			for(i=0;i<ny;i++)
-			for(j=0;j<nx;j++)
-			{
-				if(is_source(i,j,radius,source_active))
-					uc[i][j] = ub[i][j] = ua[i][j] = 0;
-			}
+		// Pulse source
+		wireless_src_pulse_kernel<<<dimBlock, 1>>>(
+				step,
+				scenario[scn_index].source.p_amp,
+				MAX_TIME,
+				TIME_STEP,
+				radius,
+				source_active,
+				scenario[scn_index].source.x /* src_x */,
+				scenario[scn_index].source.y /* src_y */,
+				ua_gpu,
+				ub_gpu,
+				uc_gpu);
+		if (step >= (int)(MAX_TIME / TIME_STEP) / 2)
 			source_active = 0;
-		}
-		// TODO 4: try to integrate this for in a single loop. Is it possible?
+		cudaDeviceSynchronize();
 		
-		for(i=0;i<ny;i++)
-		for(j=0;j<nx;j++)
-		{
-			// TODO 2: Any pair (i,j) is indepenednt of all others (i, j) pairs
-			// 		=> This means that each (i, j) can be a block 
-			if(!on_corner(i,j) && !on_edge(i,j) && !is_source(i,j,radius,source_active) && !on_structure_edge(i,j) && !on_structure_corner(i,j) && !in_structure(i,j)){
-				uc[i][j] = compute_node(i,j);
-			}
-			else if((place = on_edge(i,j)))
-				uc[i][j] = compute_edge_node(i,j,place);
-			else if((place = on_corner(i,j)))
-				uc[i][j] = compute_corner_node(i,j,place);
-			else if((place = on_structure_edge(i,j)))
-				uc[i][j] = compute_structure_edge_node(i,j,place);
-			else if((place = on_structure_corner(i,j)))
-				uc[i][j] = compute_structure_corner_node(i,j,place);
-			
-			ua[i][j] = 0;
-		}
-	
+		// propagate wave
+		// TODO: include chi factor here
+		wireless_propagate_kernel<<<dimBlock, 1>>>(
+				gain,
+				radius,
+				source_active,
+				scenario[scn_index].source.x,
+				scenario[scn_index].source.y,
+				ua_gpu,
+				ub_gpu,
+				uc_gpu);
+		cudaDeviceSynchronize();
+
 		// TODO 2: save time should be extremely rare here, maybe just once	
-		if(step%SAVE_TIME == 0)
-                        export_to_vtk(step);	
-		
-		for (i = 0; i < nx; i++){
-			for (j = 0; j < ny; j++){
-				uc[i][j] *=  chi[i][j];
-				// TODO 3: move this in the above for -> how about saving the data
+		if(step%SAVE_TIME == 0){
+			int k;
+			for (k = 0; k < ny; k++){
+				//TODO: check error codes
+				cudaMemcpy(ua[i], ua_gpu[i], nx * sizeof(double), cudaMemcpyDeviceToHost);
+			       	cudaMemcpy(ub[i], ub_gpu[i], nx * sizeof(double), cudaMemcpyDeviceToHost);
+				cudaMemcpy(uc[i], uc_gpu[i], nx * sizeof(double), cudaMemcpyDeviceToHost);
 			}
-		}
-		
-		// TODO 2: sync here for cuda
-		xchg = ua;
-		ua = ub;
-		ub = uc;
-		uc = xchg;
+                        export_to_vtk(step);
+		}	
+	
+		xchg = ua_gpu;
+		ua_gpu = ub_gpu;
+		ub_gpu = uc_gpu;
+		uc_gpu = xchg;
 		
 		step++;
 	}
 	
 	cudaFree(gpu_chi);
+	cudaFree(ua_gpu);
+	cudaFree(ub_gpu);
+	cudaFree(uc_gpu);
 }
