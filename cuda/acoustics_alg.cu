@@ -10,7 +10,9 @@
 #include "acoustics.h"
 #include <math.h>
 
-extern "C" double **ua, **ub, **uc, **xchg, gain;
+extern "C" double **ua, **ub, **uc, gain;
+
+double *xchg_gpu;
 
 // Variabile globale pentru rularea unui scenariu
 extern "C" int nx;
@@ -31,7 +33,7 @@ double chi[200][200];
 //__device__ double gpu_chi[1000][1000];
 // TODO: take notes of this
 
-// TODO: required by the export_to_vtk function
+// required by the export_to_vtk function
 int in_structure(int x, int y)
 {
 	int i;
@@ -86,28 +88,28 @@ __device__ int is_source_gpu(int radius, int source_active,
 	return 0;
 }
 
-__global__ void set_all_zero_kernel(double **ua_gpu, double **ub_gpu, double **uc_gpu)
+__global__ void set_all_zero_kernel(double *ua_gpu, double *ub_gpu, double *uc_gpu)
 {
-	ua_gpu[blockIdx.x][blockIdx.y] = 0;
-	ub_gpu[blockIdx.x][blockIdx.y] = 0;
-	uc_gpu[blockIdx.x][blockIdx.y] = 0;
+	ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+	ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+	uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 	// TODO: sync CPU after this -> move to utils.cu file
 }
 
 __global__ void wireless_src_pulse_kernel(int step, double amp,
 	       	double MAX_TIME, double TIME_STEP,
 		int radius, int source_active, int src_x, int src_y,
-		double **ua_gpu, double **ub_gpu, double **uc_gpu)
+		double *ua_gpu, double *ub_gpu, double *uc_gpu)
 {
 	if (step < (int)(MAX_TIME / TIME_STEP) / 2){
 		// Pulse source
 		if (is_source_gpu(radius, 1, src_x, src_y))
-			uc_gpu[blockIdx.x][blockIdx.y] = amp * fabs(sin(step * M_PI/4));
+			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = amp * fabs(sin(step * M_PI/4));
 	} else if (source_active){
 		if (is_source_gpu(radius, source_active, src_x, src_y)) {
-			ua_gpu[blockIdx.x][blockIdx.y] = 0;
-			ub_gpu[blockIdx.x][blockIdx.y] = 0;
-			uc_gpu[blockIdx.x][blockIdx.y] = 0;
+			ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+			ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
+			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 		}
 		// All threads should reach this point before setting source_active -> need a thread barrier here. Or simply write 2 kernels and syncCPU. CPU should set source_active = 0 after freezing.
 		source_active = 0;	
@@ -157,97 +159,97 @@ __device__ int on_structure_corner_gpu()
 	return 0;
 }
 
-__device__ double compute_edge_node_gpu(int side, double **ub_gpu)
+__device__ double compute_edge_node_gpu(int side, double *ub_gpu)
 {
 	switch(side)
 	{
 		case N_EDGE:
-			return ub_gpu[blockIdx.x + 1][blockIdx.y];
+			return ub_gpu[(blockIdx.x + 1) * blockDim.x + blockIdx.y];
 		case E_EDGE:
-			return ub_gpu[blockIdx.x][blockIdx.y - 1];
+			return ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y - 1)];
 		case S_EDGE:
-			return ub_gpu[blockIdx.x - 1][blockIdx.y];
+			return ub_gpu[(blockIdx.x - 1) * blockDim.x + blockIdx.y];
 		case W_EDGE:
-			return ub_gpu[blockIdx.x][blockIdx.y + 1];
+			return ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y + 1)];
 		default:
 			return 0;
 	}
 }
 
-__device__ double compute_corner_node_gpu(int corner, double **ub_gpu)
+__device__ double compute_corner_node_gpu(int corner, double *ub_gpu)
 {
 	switch(corner)
 	{
 		case NW_CORNER:
-			return (ub_gpu[blockIdx.x][blockIdx.y+1] +
-					ub_gpu[blockIdx.x+1][blockIdx.y])/2;
+			return (ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y+1)] +
+					ub_gpu[(blockIdx.x+1) * blockDim.x + blockIdx.y])/2;
 		case NE_CORNER:
-			return (ub_gpu[blockIdx.x + 1][blockIdx.y] + 
-					ub_gpu[blockIdx.x][blockIdx.y-1])/2;
+			return (ub_gpu[(blockIdx.x + 1) * blockDim.x + blockIdx.y] + 
+					ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y-1)])/2;
 		case SE_CORNER:
-			return (ub_gpu[blockIdx.x][blockIdx.y-1] +
-					ub_gpu[blockIdx.x-1][blockIdx.y])/2;
+			return (ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y-1)] +
+					ub_gpu[(blockIdx.x-1) * blockDim.x + blockIdx.y])/2;
 		case SW_CORNER:
-			return (ub_gpu[blockIdx.x - 1][blockIdx.y] +
-					ub_gpu[blockIdx.x][blockIdx.y + 1])/2;
+			return (ub_gpu[(blockIdx.x - 1) * blockDim.x + blockIdx.y] +
+					ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y + 1)])/2;
 		default:
 			return 0;
 	}
 }
 
-__device__ double compute_structure_corner_node_gpu(int corner, double **ub_gpu)
+__device__ double compute_structure_corner_node_gpu(int corner, double *ub_gpu)
 {
 	switch(corner)
 	{
 		case NW_CORNER:
-			return (ub_gpu[blockIdx.x][blockIdx.y-1] +
-					ub_gpu[blockIdx.x-1][blockIdx.y])/2;
+			return (ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y-1)] +
+					ub_gpu[(blockIdx.x-1) * blockDim.x + blockIdx.y])/2;
 		case NE_CORNER:
-			return (ub_gpu[blockIdx.x-1][blockIdx.y] +
-					ub_gpu[blockIdx.x][blockIdx.y+1])/2;
+			return (ub_gpu[(blockIdx.x-1) * blockDim.x + blockIdx.y] +
+					ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y+1)])/2;
 		case SE_CORNER:
-			return (ub_gpu[blockIdx.x][blockIdx.y+1] +
-					ub_gpu[blockIdx.x+1][blockIdx.y])/2;
+			return (ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y+1)] +
+					ub_gpu[(blockIdx.x+1) * blockDim.x + blockIdx.y])/2;
 		case SW_CORNER:
-			return (ub_gpu[blockIdx.x+1][blockIdx.y] +
-					ub_gpu[blockIdx.x][blockIdx.y-1])/2;
+			return (ub_gpu[(blockIdx.x+1) * blockDim.x + blockIdx.y] +
+					ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y-1)])/2;
 		default:
 			return 0;
 	}
 }
 
-__device__ double compute_structure_edge_node_gpu(int side, double **ub_gpu)
+__device__ double compute_structure_edge_node_gpu(int side, double *ub_gpu)
 {
 	switch(side)
 	{
 		case N_EDGE:
-			return ub_gpu[blockIdx.x-1][blockIdx.y];
+			return ub_gpu[(blockIdx.x-1) * blockDim.x + blockIdx.y];
 		case E_EDGE:
-			return ub_gpu[blockIdx.x][blockIdx.y+1];
+			return ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y+1)];
 		case S_EDGE:
-			return ub_gpu[blockIdx.x+1][blockIdx.y];
+			return ub_gpu[(blockIdx.x+1) * blockDim.x + blockIdx.y];
 		case W_EDGE:
-			return ub_gpu[blockIdx.x][blockIdx.y-1];
+			return ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y-1)];
 		default:
 			return 0;
 	}
 }
 
 __device__ double compute_node_gpu(double gain,
-		double **ua_gpu, double **ub_gpu, double **uc_gpu)
+		double *ua_gpu, double *ub_gpu, double *uc_gpu)
 {
-	return (2 * ub_gpu[blockIdx.x][blockIdx.y] -
-			ua_gpu[blockIdx.x][blockIdx.y] +
-			gain * (ub_gpu[blockIdx.x + 1][blockIdx.y] -
-				4 * ub_gpu[blockIdx.x][blockIdx.y] +
-				ub_gpu[blockIdx.x - 1][blockIdx.y] +
-				ub_gpu[blockIdx.x][blockIdx.y + 1] +
-				ub_gpu[blockIdx.x][blockIdx.y - 1]));
+	return (2 * ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] -
+			ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] +
+			gain * (ub_gpu[(blockIdx.x + 1) * blockDim.x + blockIdx.y] -
+				4 * ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] +
+				ub_gpu[(blockIdx.x - 1) * blockDim.x + blockIdx.y] +
+				ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y + 1)] +
+				ub_gpu[blockIdx.x * blockDim.x + (blockIdx.y - 1)]));
 }
 
 __global__ void wireless_propagate_kernel(double gain, int radius, int source_active,
 	       	int src_x, int src_y,	
-		double **ua_gpu, double **ub_gpu, double **uc_gpu)
+		double *ua_gpu, double *ub_gpu, double *uc_gpu)
 {
 	int place;
 
@@ -257,22 +259,22 @@ __global__ void wireless_propagate_kernel(double gain, int radius, int source_ac
 		       !on_structure_edge_gpu() &&
 		       !on_structure_corner_gpu() &&
 		       !in_structure_gpu())
-		uc_gpu[blockIdx.x][blockIdx.y] = compute_node_gpu(
+		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_node_gpu(
 				gain, ua_gpu, ub_gpu, uc_gpu);
 	else if (place = on_edge_gpu())
-		uc_gpu[blockIdx.x][blockIdx.y] = compute_edge_node_gpu(
+		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_edge_node_gpu(
 				place, ub_gpu);
 	else if (place = on_corner_gpu())
-		uc_gpu[blockIdx.x][blockIdx.y] = compute_corner_node_gpu(
+		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_corner_node_gpu(
 				place, ub_gpu);
 	else if (place = on_structure_edge_gpu())
-		uc_gpu[blockIdx.x][blockIdx.y] = compute_structure_edge_node_gpu(
+		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_structure_edge_node_gpu(
 				place, ub_gpu);
 	else if (place = on_structure_corner_gpu())
-		uc_gpu[blockIdx.x][blockIdx.y] = compute_structure_corner_node_gpu(
+		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_structure_corner_node_gpu(
 				place, ub_gpu);
 
-	ua_gpu[blockIdx.x][blockIdx.y] = 0;
+	ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 
 	// TODO: multiply by chi factor
 }
@@ -313,52 +315,30 @@ void init_power(double amp)
 
 void s_compute_acoustics()
 {
-	int i;
-	
 	printf("nx=%d ny=%d\n", nx, ny);
 	double *gpu_chi;
-	double **ua_gpu, **ub_gpu, **uc_gpu;
+	double *ua_gpu, *ub_gpu, *uc_gpu;
 	cudaError_t cuda_status;
 	dim3 dimBlock(nx, ny);
 
 	// https://stackoverflow.com/questions/5885195/using-cudamalloc-to-allocate-a-matrix	
-	cuda_status = cudaMalloc((void **)&gpu_chi, 200 * 200 * sizeof(double));
+	cuda_status = cudaMalloc((void **)&gpu_chi, nx * ny * sizeof(double));
 	if (cudaSuccess != cuda_status){
 		printf("Failed cudaMalloc gpu_chi with message %s\n", cudaGetErrorString(cuda_status));
 	}
-	cuda_status = cudaMalloc((void ***)&ua_gpu, nx * sizeof(double *));
+	cuda_status = cudaMalloc((void **)&ua_gpu, nx * ny * sizeof(double *));
 	if (cudaSuccess != cuda_status){
 		printf("Failed cudaMalloc ua_gpu with message %s\n", cudaGetErrorString(cuda_status));
 	}
-	cuda_status = cudaMalloc((void ***)&ub_gpu, nx * sizeof(double *));
+	cuda_status = cudaMalloc((void **)&ub_gpu, nx * ny * sizeof(double *));
 	if (cudaSuccess != cuda_status){
 		printf("Failed cudaMalloc ub_gpu with message %s\n", cudaGetErrorString(cuda_status));
 	}
-	cuda_status = cudaMalloc((void ***)&uc_gpu, nx * sizeof(double *));
+	cuda_status = cudaMalloc((void **)&uc_gpu, nx * ny * sizeof(double *));
 	if (cudaSuccess != cuda_status){
 		printf("Failed cudaMalloc uc_gpu with message %s\n", cudaGetErrorString(cuda_status));
 	}
 	printf("AAAAAA\n");
-	for (i = 0; i < nx; i++){
-		cuda_status = cudaMalloc((void **)&ua_gpu[i], ny * sizeof(double));
-		printf("CCCCCC\n");
-		if (cudaSuccess != cuda_status){
-			printf("Failed cudaMalloc ua_gpu[%d] with message %s\n", i, cudaGetErrorString(cuda_status));
-		}
-		cuda_status = cudaMalloc((void **)&ub_gpu[i], ny * sizeof(double));
-		if (cudaSuccess != cuda_status){
-			printf("Failed cudaMalloc ub_gpu[%d] with message %s\n", i, cudaGetErrorString(cuda_status));
-		}
-		printf("DDDDDD\n");
-		cuda_status = cudaMalloc((void **)&uc_gpu[i], ny * sizeof(double));
-		if (cudaSuccess != cuda_status){
-			printf("Failed cudaMalloc uc_gpu[%d] with message %s\n", i, cudaGetErrorString(cuda_status));
-		}
-
-		printf("EEEEEE\n");
-		// TODO: move this allocation to utils.cu file
-	}
-	printf("BBBBB\n");
 
 	set_all_zero_kernel<<<dimBlock, 1>>>(ua_gpu, ub_gpu, uc_gpu);
 	cuda_status = cudaPeekAtLastError();
@@ -426,21 +406,18 @@ void s_compute_acoustics()
 		cudaDeviceSynchronize();
 
 		// TODO 2: save time should be extremely rare here, maybe just once	
-		if(step%SAVE_TIME == 0){
-			int k;
-			for (k = 0; k < ny; k++){
-				//TODO: check error codes
-				cudaMemcpy(ua[i], ua_gpu[i], nx * sizeof(double), cudaMemcpyDeviceToHost);
-			       	cudaMemcpy(ub[i], ub_gpu[i], nx * sizeof(double), cudaMemcpyDeviceToHost);
-				cudaMemcpy(uc[i], uc_gpu[i], nx * sizeof(double), cudaMemcpyDeviceToHost);
-			}
+		/*if(step%SAVE_TIME == 0){
+			cudaMemcpy(ua, ua_gpu, nx * ny * sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(ub, ub_gpu, nx * ny * sizeof(double), cudaMemcpyDeviceToHost);
+			cudaMemcpy(uc, uc_gpu, nx * ny * sizeof(double), cudaMemcpyDeviceToHost);
                         export_to_vtk(step);
-		}	
+			// Produces error coz ua is ** and ua_gpu is *
+		}*/	
 	
-		xchg = ua_gpu;
+		xchg_gpu = ua_gpu;
 		ua_gpu = ub_gpu;
 		ub_gpu = uc_gpu;
-		uc_gpu = xchg;
+		uc_gpu = xchg_gpu;
 		
 		step++;
 	}
