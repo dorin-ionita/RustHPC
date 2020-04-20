@@ -195,9 +195,13 @@ double P_0;
 double tau;
 double P_r[1000][1000];
 double chi[1000][1000];
+//__device__ double gpu_chi[1000][1000];
+// TODO: take notes of this
 
-__global__ void free_path_loss_kernel(double *chi, double amp)
+__global__ void free_path_loss_kernel(double amp, double *gpu_chi)
 {
+	printf("[GPU] Enter Free Path Loss Kernel\n");
+
 	double G = 10;
 	double sigma = 1;
 	double L = 0.051; // Initial 1
@@ -206,18 +210,23 @@ __global__ void free_path_loss_kernel(double *chi, double amp)
 	double env_pent = 1.001;
 	double lambda = lightspeed / f;
 	double R;
-
-	double gpu_P_r[1000][1000];
-	double gpu_chi[1000][1000];
+	double P_r;
+	//double gpu_chi[1000][1000];
 	double tau = 1;
 	double P_0 = tau * (amp * amp);	
 
 	R = sqrt((double)(blockIdx.x * blockIdx.x + blockIdx.y * blockIdx.y));
-	gpu_P_r[blockIdx.x][blockIdx.y] = P_0 * G * G * sigma * lambda * lambda;
-	gpu_P_r[blockIdx.x][blockIdx.y] /= (pow(4 * M_PI, 3) * pow(R, env_pent) * L);
-	gpu_chi[blockIdx.x][blockIdx.y] = sqrt((double)gpu_P_r[blockIdx.x][blockIdx.y] / P_0);
-	gpu_chi[blockIdx.x][blockIdx.y] /= 10;
-	gpu_chi[blockIdx.x][blockIdx.y] += 0.9;
+	P_r = P_0 * G * G * sigma * lambda * lambda;
+	P_r /= (pow(4 * M_PI, 3) * pow(R, env_pent) * L);
+	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] = sqrt(P_r / P_0);
+	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] /= 10;
+	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] += 0.9;
+	printf("[GPU] gpu_chi[%d][%d]=%lf\n", blockIdx.x, blockIdx.y, gpu_chi[blockIdx.x * blockDim.x + blockIdx.y]);
+//	gpu_chi[blockIdx.x][blockIdx.y] = sqrt(P_r / P_0);
+//	gpu_chi[blockIdx.x][blockIdx.y] /= 10;
+//	gpu_chi[blockIdx.x][blockIdx.y] += 0.9;
+//	printf("[GPU] gpu_chi[%d][%d]=%lf\n", blockIdx.x, blockIdx.y, gpu_chi[blockIdx.x][blockIdx.y]);
+	printf("[GPU] Exit Free Path Loss Kernel\n");
 }
 
 void free_path_loss()
@@ -232,7 +241,6 @@ void free_path_loss()
 	double R;
 
 	int x, y;
-	// TODO 5: This should be cuda as well
 	for (x = 0; x < nx; x++){
 		for (y = 0; y < ny; y++){
 
@@ -256,9 +264,24 @@ void init_power(double amp)
 
 void s_compute_acoustics()
 {
-	printf("Currently: nx=%d; ny=%d\n", nx, ny);
-	init_power(scenario[scn_index].source.p_amp);
-	free_path_loss();
+	//init_power(scenario[scn_index].source.p_amp);
+	double *gpu_chi;
+	//double **chi = (double **)malloc(1000 * 1000 * sizeof(double));
+	//free_path_loss();
+	cudaError_t cuda_status;
+	cudaMalloc((void **)&gpu_chi, 1000 * 1000 * sizeof(double));
+	dim3 dimBlock(nx, ny);
+	free_path_loss_kernel<<<dimBlock, 1>>>(scenario[scn_index].source.p_amp, gpu_chi);
+	printf("[CPU] Launched Kernel - Blocking until GPU execution complete\n");
+	cudaDeviceSynchronize();
+
+	printf("[CPU] Execued Kernel\n");
+	cuda_status = cudaMemcpy(chi, gpu_chi, 1000 * 1000 * sizeof(double), cudaMemcpyDeviceToHost);
+	if (cudaSuccess != cuda_status){
+		printf("Problem copying from cuda %s\n", cudaGetErrorString(cuda_status));
+	}
+	// TODO: don't do useless copy here. Next kernel can reuse the gpu_chi var
+	// Document about paraview
 
 	int i,j;
 	int step = 0;
@@ -266,6 +289,10 @@ void s_compute_acoustics()
 	int place;
 	int radius = scenario[scn_index].source.radius;
 	
+	for (i = 0; i < nx; i++)
+		for (j = 0; j < ny; j++)
+			printf("chi[%d][%d]=%lf\n", i, j, chi[i][j]);
+
 	while(step < (int)(MAX_TIME/TIME_STEP))
 	{
 		if(step < (int)(MAX_TIME/TIME_STEP)/2)
@@ -303,7 +330,8 @@ void s_compute_acoustics()
 		}
 	
 		// TODO 2: save time should be extremely rare here, maybe just once	
-		
+		if(step%SAVE_TIME == 0)
+                        export_to_vtk(step);	
 		
 		for (i = 0; i < nx; i++){
 			for (j = 0; j < ny; j++){
@@ -320,4 +348,6 @@ void s_compute_acoustics()
 		
 		step++;
 	}
+	
+	cudaFree(gpu_chi);
 }
