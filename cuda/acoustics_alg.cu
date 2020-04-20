@@ -249,7 +249,7 @@ __device__ double compute_node_gpu(double gain,
 
 __global__ void wireless_propagate_kernel(double gain, int radius, int source_active,
 	       	int src_x, int src_y,	
-		double *ua_gpu, double *ub_gpu, double *uc_gpu)
+		double *ua_gpu, double *ub_gpu, double *uc_gpu, double *chi_gpu)
 {
 	int place;
 
@@ -276,7 +276,8 @@ __global__ void wireless_propagate_kernel(double gain, int radius, int source_ac
 
 	ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 
-	// TODO: multiply by chi factor
+	uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] *=
+		chi_gpu[blockIdx.x * blockDim.x + blockIdx.y];
 }
 
 
@@ -321,7 +322,6 @@ void s_compute_acoustics()
 	cudaError_t cuda_status;
 	dim3 dimBlock(nx, ny);
 
-	// https://stackoverflow.com/questions/5885195/using-cudamalloc-to-allocate-a-matrix	
 	cuda_status = cudaMalloc((void **)&gpu_chi, nx * ny * sizeof(double));
 	if (cudaSuccess != cuda_status){
 		printf("Failed cudaMalloc gpu_chi with message %s\n", cudaGetErrorString(cuda_status));
@@ -338,7 +338,6 @@ void s_compute_acoustics()
 	if (cudaSuccess != cuda_status){
 		printf("Failed cudaMalloc uc_gpu with message %s\n", cudaGetErrorString(cuda_status));
 	}
-	printf("AAAAAA\n");
 
 	set_all_zero_kernel<<<dimBlock, 1>>>(ua_gpu, ub_gpu, uc_gpu);
 	cuda_status = cudaPeekAtLastError();
@@ -392,7 +391,7 @@ void s_compute_acoustics()
 			source_active = 0;
 		cudaDeviceSynchronize();
 		
-		// propagate wave
+		// Propagate wave
 		// TODO: include chi factor here
 		wireless_propagate_kernel<<<dimBlock, 1>>>(
 				gain,
@@ -402,10 +401,11 @@ void s_compute_acoustics()
 				scenario[scn_index].source.y,
 				ua_gpu,
 				ub_gpu,
-				uc_gpu);
+				uc_gpu,
+				gpu_chi);
 		cudaDeviceSynchronize();
 
-		// TODO 2: save time should be extremely rare here, maybe just once	
+		// !!!!!! TODO 2: save time should be extremely rare here, maybe just once	
 		/*if(step%SAVE_TIME == 0){
 			cudaMemcpy(ua, ua_gpu, nx * ny * sizeof(double), cudaMemcpyDeviceToHost);
 			cudaMemcpy(ub, ub_gpu, nx * ny * sizeof(double), cudaMemcpyDeviceToHost);
