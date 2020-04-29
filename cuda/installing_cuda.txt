@@ -1,0 +1,3 @@
+sudo apt-get install cuda
+sudo apt install nvidia-cuda-toolkit
+nvcc *cu -o acoustics

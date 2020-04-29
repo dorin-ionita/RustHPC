@@ -112,7 +112,8 @@ __global__ void wireless_src_pulse_kernel(int step, double amp,
 			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 		}
 		// All threads should reach this point before setting source_active -> need a thread barrier here. Or simply write 2 kernels and syncCPU. CPU should set source_active = 0 after freezing.
-		source_active = 0;	
+		source_active = 0;
+		// TODO: delete this variable modification	
 	}
 }
 
@@ -280,40 +281,6 @@ __global__ void wireless_propagate_kernel(double gain, int radius, int source_ac
 		chi_gpu[blockIdx.x * blockDim.x + blockIdx.y];
 }
 
-
-void free_path_loss()
-{
-	double G = 10;
-	double sigma = 1;
-	double L = 0.051; // Initial 1
-	double f = 3 * 1000000;
-	double lightspeed = 3 * 1000000;// missing one zero maybe
-	double env_pent = 1.001;
-	double lambda = lightspeed / f;
-	double R;
-
-	int x, y;
-	for (x = 0; x < nx; x++){
-		for (y = 0; y < ny; y++){
-
-			R = sqrt(x * x + y * y);
-
-			P_r[x][y] = P_0 * G * G * sigma * lambda * lambda;
-			P_r[x][y] /= (pow(4 * M_PI, 3) * pow(R, env_pent) * L) ;
-			chi[x][y] =  sqrt(P_r[x][y] / P_0);
-			chi[x][y] /= 10;
-			chi[x][y] += 0.9;
-			//printf("Chi[%d][%d]=%lf\n", x, y, chi[x][y]);
-		}
-	}
-}
-
-void init_power(double amp)
-{
-	tau = 1;
-	P_0 = tau * (amp * amp);
-}
-
 void s_compute_acoustics()
 {
 	printf("nx=%d ny=%d\n", nx, ny);
@@ -418,7 +385,8 @@ void s_compute_acoustics()
 		ua_gpu = ub_gpu;
 		ub_gpu = uc_gpu;
 		uc_gpu = xchg_gpu;
-		
+	
+		printf("End of step %d\n", step);	
 		step++;
 	}
 	
