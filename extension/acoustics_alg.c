@@ -186,10 +186,10 @@ void free_path_loss()
 {
 	double G = 10;
 	double sigma = 1;
-	double L = 1;
+	double L = 0.051; // Initial 1
 	double f = 3 * 1000000;
-	double lightspeed = 3 * 100000;// missing one zero maybe
-	double env_pent = 2;
+	double lightspeed = 3 * 1000000;// missing one zero maybe
+	double env_pent = 1.001;
 	double lambda = lightspeed / f;
 	double R;
 
@@ -201,7 +201,10 @@ void free_path_loss()
 
 			P_r[x][y] = P_0 * G * G * sigma * lambda * lambda;
 			P_r[x][y] /= (pow(4 * M_PI, 3) * pow(R, env_pent) * L) ;
-			chi[x][y] = sqrt(P_r[x][y] / P_0);
+			chi[x][y] =  sqrt(P_r[x][y] / P_0);
+			chi[x][y] /= 10;
+			chi[x][y] += 0.9;
+			//printf("Chi[%d][%d]=%lf\n", x, y, chi[x][y]);
 		}
 	}
 }
@@ -214,9 +217,12 @@ void init_power(double amp)
 
 void s_compute_acoustics()
 {
-	//init_power(scenario[scn_index].source.p_amp);
-	//free_path_loss();
+	//printf("a\n");
 
+	init_power(scenario[scn_index].source.p_amp);
+	free_path_loss();
+
+	//printf("b\n");
 	int i,j;
 	int step = 0;
 	int source_active = 1;
@@ -241,8 +247,9 @@ void s_compute_acoustics()
 		for(i=0;i<ny;i++)
 		for(j=0;j<nx;j++)
 		{
-			if(!on_corner(i,j) && !on_edge(i,j) && !is_source(i,j,radius,source_active) && !on_structure_edge(i,j) && !on_structure_corner(i,j) && !in_structure(i,j))
+			if(!on_corner(i,j) && !on_edge(i,j) && !is_source(i,j,radius,source_active) && !on_structure_edge(i,j) && !on_structure_corner(i,j) && !in_structure(i,j)){
 				uc[i][j] = compute_node(i,j);
+			}
 			else if((place = on_edge(i,j)))
 				uc[i][j] = compute_edge_node(i,j,place);
 			else if((place = on_corner(i,j)))
@@ -254,15 +261,42 @@ void s_compute_acoustics()
 			
 			ua[i][j] = 0;
 		}
-		
+/*		
+		for (i = 0; i < nx; i++){
+			for (j = 0; j < ny; j++){
+				if (i != 0 || j != 0){
+					//printf("step=%d uc[%d][%d][before]=%lf \n", step, i, j, uc[i][j]);
+					//uc[i][j] *= log(sqrt(i * i + j * j)) <= 200 ? 
+					//	     (log(sqrt(i * i + j * j)) >= 0.1 ? log(sqrt(i * i + j * j)) : 0.1)
+					//	     : 200;
+					uc[i][j] *= log(sqrt(i * i + j * j));
+					uc[i][j] = uc[i][j] >= 0.1 ? (uc[i][j] <= 200 ? uc[i][j] : 200) : 0.1;
+					//printf("uc[%d][%d][after]=%lf\n", i, j, uc[i][j]);
+				}
+			}
+		}
+*/
 		if(step%SAVE_TIME == 0)
 			export_to_vtk(step);
-		
+
 		for (i = 0; i < nx; i++){
 			for (j = 0; j < ny; j++){
 				uc[i][j] *= chi[i][j];
 			}
-		}	
+		}
+
+	/*	
+		for (i = 0; i < nx; i++){
+			for (j = 0; j < ny; j++){
+				//printf("chi[%d][%d]=%f\n", i, j, chi[i][j]); 
+				//uc[i][j] *= chi[i][j];
+				//uc[i][j] /= 1.01;
+				// Note: between 1.1 and 1.0001 seems ok
+				uc[i][j] *=  chi[i][j];
+				// 0.9 * 099
+			}
+		}
+	*/	
 
 		xchg = ua;
 		ua = ub;
