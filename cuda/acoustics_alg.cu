@@ -1,11 +1,13 @@
 /*
- * Student:	Trascau Mihai
+ * Student:	Trascau Mihai, Dorin Ionita
  * Grupa:	344C4
  * 
  * Lucrare:	Ecuatia undelor pentru acustica 2D
  * Fisier:	acoustics_alg.h
  * Descriere:	Fisier sursa care contine implementarile pentru algoritmul utilizat (in cazul nostru MDF pentru ecuatia propagarii undei)
  */ 
+
+// TODO: document CUDA version 9
 
 #include "acoustics.h"
 #include <math.h>
@@ -33,6 +35,10 @@ double chi[200][200];
 //__device__ double gpu_chi[1000][1000];
 // TODO: take notes of this
 
+//__device__ scenario_t scenario_gpu[MAX_SCENARIOS];
+
+/***************************** EXTERNAL REQUIREMENTS ***************************/
+
 // required by the export_to_vtk function
 int in_structure(int x, int y)
 {
@@ -45,6 +51,8 @@ int in_structure(int x, int y)
 	}
 	return 0;
 }
+
+/******************************** DUMPING MODEL ***********************************/
 
 __global__ void free_path_loss_kernel(double amp, double *gpu_chi)
 {
@@ -69,27 +77,23 @@ __global__ void free_path_loss_kernel(double amp, double *gpu_chi)
 	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] = sqrt(P_r / P_0);
 	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] /= 10;
 	gpu_chi[blockIdx.x * blockDim.x + blockIdx.y] += 0.9;
-	// TODO: check if this kind of addressing is ok. It doesn't seem to be
-	printf("[GPU] gpu_chi[%d][%d]=%lf\n", blockIdx.x, blockIdx.y, gpu_chi[blockIdx.x * blockDim.x + blockIdx.y]);
-//	gpu_chi[blockIdx.x][blockIdx.y] = sqrt(P_r / P_0);
-//	gpu_chi[blockIdx.x][blockIdx.y] /= 10;
-//	gpu_chi[blockIdx.x][blockIdx.y] += 0.9;
-//	printf("[GPU] gpu_chi[%d][%d]=%lf\n", blockIdx.x, blockIdx.y, gpu_chi[blockIdx.x][blockIdx.y]);
 	printf("[GPU] Exit Free Path Loss Kernel\n");
 }
+
+/************************ SOURCE VARIATION AND REFLEXION MODEL ********************/
 
 __device__ int is_source_gpu(int radius, int source_active,
 		int src_x, int src_y)
 {
 	if (!source_active)
 		return 0;
-	if (sqrt(pow(src_x - blockIdx.x, 2) + pow(src_y - blockIdx.y, 2)) <= radius)
+	if (sqrt(pow((float)(src_x - blockIdx.x), 2) + pow((float)(src_y - blockIdx.y), 2)) <= radius)
 		return 1;
 	return 0;
 }
 
 __global__ void set_all_zero_kernel(double *ua_gpu, double *ub_gpu, double *uc_gpu)
-{
+	{
 	ua_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 	ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 	uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
@@ -111,12 +115,12 @@ __global__ void wireless_src_pulse_kernel(int step, double amp,
 			ub_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 			uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = 0;
 		}
-		// All threads should reach this point before setting source_active -> need a thread barrier here. Or simply write 2 kernels and syncCPU. CPU should set source_active = 0 after freezing.
-		source_active = 0;
-		// TODO: delete this variable modification	
 	}
+	// All threads should reach this point before setting source_active.
+	// Option 1:  need a thread barrier here -> not done, I chose option 2
+	// Option 2:  simply write 2 kernels and syncCPU -> done, I chose this option
+	//	 	CPU is setting source_active = 0 after this kernel is done executing.
 }
-
 __device__ int on_edge_gpu()
 {
 	if (0 == blockIdx.x && 0 != blockIdx.y && blockIdx.y != blockDim.x - 1)
@@ -143,20 +147,71 @@ __device__ int on_corner_gpu()
 	return 0;
 }
 
-__device__ int on_structure_edge_gpu()
+__device__ int on_structure_edge_gpu(scenario_t scenario)
 {
-	// TODO: this is tricky because we have structure
-	// 		and it needs malloc
+	int i;
+
+	// TODO: generalize to any scenario - see the original C code
+	for (i = 0; i < scenario.nr_struct; i++){
+		if(blockIdx.y > scenario.structure[i].c_points[0][1] &&
+		   blockIdx.y < scenario.structure[i].c_points[1][1])
+			if(blockIdx.x == scenario.structure[i].c_points[0][0])
+				return N_EDGE;
+		if(blockIdx.x > scenario.structure[i].c_points[1][0] &&
+		   blockIdx.x < scenario.structure[i].c_points[2][0])
+			if(blockIdx.y == scenario.structure[i].c_points[1][1])
+				return E_EDGE;
+		if(blockIdx.y > scenario.structure[i].c_points[3][1] &&
+		   blockIdx.y < scenario.structure[i].c_points[2][1])
+			if(blockIdx.x == scenario.structure[i].c_points[3][0])
+				return S_EDGE;
+		if(blockIdx.x > scenario.structure[i].c_points[0][0] &&
+		   blockIdx.x < scenario.structure[i].c_points[3][0])
+			if(blockIdx.y == scenario.structure[i].c_points[0][1])
+				return W_EDGE;
+	}
+
 	return 0;
 }
 
-__device__ int in_structure_gpu()
+__device__ int in_structure_gpu(scenario_t scenario)
 {
+			
+	int i;
+
+	// TODO: generalize to any scenario - see the original C code
+	for (i=0; i < scenario.nr_struct; i++)
+	{
+		if(blockIdx.x > scenario.structure[i].c_points[0][0] &&
+		   blockIdx.x < scenario.structure[i].c_points[3][0])
+		if(blockIdx.y > scenario.structure[i].c_points[0][1] &&
+		   blockIdx.y < scenario.structure[i].c_points[1][1])
+			return 1;
+	}
+
 	return 0;
 }
 
-__device__ int on_structure_corner_gpu()
+__device__ int on_structure_corner_gpu(scenario_t scenario)
 {
+	int i;
+
+	// TODO: generalize to any scenario - see the original C code
+	for(i=0;i<scenario.nr_struct;i++)
+	{
+		if(blockIdx.x == scenario.structure[i].c_points[0][0] &&
+		   blockIdx.y == scenario.structure[i].c_points[0][1])
+			return NW_CORNER;
+		if(blockIdx.x == scenario.structure[i].c_points[1][0] &&
+		   blockIdx.y == scenario.structure[i].c_points[1][1])
+			return NE_CORNER;
+		if(blockIdx.x == scenario.structure[i].c_points[2][0] &&
+		   blockIdx.y == scenario.structure[i].c_points[2][1])
+			return SE_CORNER;
+		if(blockIdx.x == scenario.structure[i].c_points[3][0] &&
+		   blockIdx.y == scenario.structure[i].c_points[3][1])
+			return SW_CORNER;
+	}
 	return 0;
 }
 
@@ -249,17 +304,17 @@ __device__ double compute_node_gpu(double gain,
 }
 
 __global__ void wireless_propagate_kernel(double gain, int radius, int source_active,
-	       	int src_x, int src_y,	
+	       	int src_x, int src_y, scenario_t scenario,	
 		double *ua_gpu, double *ub_gpu, double *uc_gpu, double *chi_gpu)
 {
 	int place;
 
-	if (!on_corner_gpu() &&
-		       !on_edge_gpu() &&
-		       !is_source_gpu(radius, source_active, src_x, src_y) &&
-		       !on_structure_edge_gpu() &&
-		       !on_structure_corner_gpu() &&
-		       !in_structure_gpu())
+	if (!on_corner_gpu() &&								//OK
+		       !on_edge_gpu() &&						//OK
+		       !is_source_gpu(radius, source_active, src_x, src_y) &&		//OK
+		       !on_structure_edge_gpu(scenario) &&				//OK
+		       !on_structure_corner_gpu(scenario) &&				//OK
+		       !in_structure_gpu(scenario))					//OK
 		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_node_gpu(
 				gain, ua_gpu, ub_gpu, uc_gpu);
 	else if (place = on_edge_gpu())
@@ -268,10 +323,10 @@ __global__ void wireless_propagate_kernel(double gain, int radius, int source_ac
 	else if (place = on_corner_gpu())
 		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_corner_node_gpu(
 				place, ub_gpu);
-	else if (place = on_structure_edge_gpu())
+	else if (place = on_structure_edge_gpu(scenario))
 		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_structure_edge_node_gpu(
 				place, ub_gpu);
-	else if (place = on_structure_corner_gpu())
+	else if (place = on_structure_corner_gpu(scenario))
 		uc_gpu[blockIdx.x * blockDim.x + blockIdx.y] = compute_structure_corner_node_gpu(
 				place, ub_gpu);
 
@@ -283,6 +338,8 @@ __global__ void wireless_propagate_kernel(double gain, int radius, int source_ac
 
 void s_compute_acoustics()
 {
+	int i, j;
+
 	printf("nx=%d ny=%d\n", nx, ny);
 	double *gpu_chi;
 	double *ua_gpu, *ub_gpu, *uc_gpu;
@@ -310,35 +367,30 @@ void s_compute_acoustics()
 	cuda_status = cudaPeekAtLastError();
 	if (cudaSuccess != cuda_status){
 		printf("Failed launching set_all_zero_kernel  %s\n", cudaGetErrorString(cuda_status));
-	} else {
-		printf("Managed to launch set_all_zero_kernel\n");
 	}
 	// I need to sync GPU with CPU here so that u* vectors are safely zeroized
-	cuda_status = cudaDeviceSynchronize();	
+	cuda_status = cudaDeviceSynchronize();
+	if (cudaSuccess != cuda_status){
+		printf("Failed synchronizing CPU and GPU after zero kerner launch %s\n", cudaGetErrorString(cuda_status));
+	}	
 	free_path_loss_kernel<<<dimBlock, 1>>>(scenario[scn_index].source.p_amp, gpu_chi);
 	cuda_status = cudaPeekAtLastError();
+	if (cudaSuccess != cuda_status) {
+		printf("Failed launching free_path_loss kernel %s\n", cudaGetErrorString(cuda_status));
+	}
 	printf("[CPU] Launched Kernel - Blocking until GPU execution complete\n");
 	cuda_status = cudaDeviceSynchronize();
+	if (cudaSuccess != cuda_status){
+		printf("Failed synchronizing CPU and GPU after free path loss kernel launch %s\n", cudaGetErrorString(cuda_status));
+	}
 
 	printf("[CPU] Execued Kernel\n");
-	cuda_status = cudaMemcpy(chi, gpu_chi, 200 * 200 * sizeof(double), cudaMemcpyDeviceToHost);
-	if (cudaSuccess != cuda_status){
-		printf("Problem copying from cuda %s\n", cudaGetErrorString(cuda_status));
-	}
-	// TODO: bug here
-	// TODO: don't do useless copy here. Next kernel can reuse the gpu_chi var
-	// Document about paraview
+	// TODO: Document about paraview - How to use, what version
 
 	int step = 0;
 	int source_active = 1;
 	int radius = scenario[scn_index].source.radius;
 	
-	/*
-	for (i = 0; i < nx; i++)
-		for (j = 0; j < ny; j++)
-			printf("chi[%d][%d]=%lf\n", i, j, chi[i][j]);
-	*/
-
 	while(step < (int)(MAX_TIME/TIME_STEP))
 	{
 		// Pulse source
@@ -354,18 +406,18 @@ void s_compute_acoustics()
 				ua_gpu,
 				ub_gpu,
 				uc_gpu);
+		cudaDeviceSynchronize();
 		if (step >= (int)(MAX_TIME / TIME_STEP) / 2)
 			source_active = 0;
-		cudaDeviceSynchronize();
 		
 		// Propagate wave
-		// TODO: include chi factor here
 		wireless_propagate_kernel<<<dimBlock, 1>>>(
 				gain,
 				radius,
 				source_active,
 				scenario[scn_index].source.x,
 				scenario[scn_index].source.y,
+				scenario[0], //TODO: generalize this
 				ua_gpu,
 				ub_gpu,
 				uc_gpu,
