@@ -1,0 +1,70 @@
+<profile>
+
+<section name = "Vivado HLS Report for 's_compute_acoustics'" level="0">
+<item name = "Date">Sun Oct 18 23:04:52 2020
+</item>
+<item name = "Version">2016.4 (Build 1756540 on Mon Jan 23 19:31:01 MST 2017)</item>
+<item name = "Project">wave2</item>
+<item name = "Solution">wave</item>
+<item name = "Product family">zynq</item>
+<item name = "Target device">xc7z020clg484-1</item>
+</section>
+
+<section name = "Performance Estimates" level="0">
+<item name = "Timing (ns)">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="4">Clock, Target, Estimated, Uncertainty</keys>
+<column name="ap_clk">10.00, 9.89, 1.25</column>
+</table>
+</item>
+</section>
+</item>
+<item name = "Latency (clock cycles)">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="6">, min, max, min, max, Type</keys>
+<column name="">?, ?, ?, ?, none</column>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="0">
+<keys size="7">Instance, Module, min, max, min, max, Type</keys>
+<column name="grp_pulse_source_fu_1280">pulse_source, ?, ?, ?, ?, none</column>
+<column name="grp_on_structure_edge_fu_1301">on_structure_edge, ?, ?, ?, ?, none</column>
+<column name="grp_on_structure_corner_fu_1317">on_structure_corner, ?, ?, ?, ?, none</column>
+<column name="grp_in_structure_fu_1333">in_structure, ?, ?, ?, ?, none</column>
+<column name="grp_on_edge_fu_1349">on_edge, 1, 1, 1, 1, none</column>
+</table>
+</item>
+<item name = "Loop"><table name="" hasTotal="0">
+<keys size="8">Loop Name, min, max, Latency, achieved, target, Count, Pipelined</keys>
+<column name="- memset_ua">10099, 10099, 101, -, -, 100, no</column>
+<column name=" + memset_ua">99, 99, 1, -, -, 100, no</column>
+<column name="- memset_ub">10099, 10099, 101, -, -, 100, no</column>
+<column name=" + memset_ub">99, 99, 1, -, -, 100, no</column>
+<column name="- memset_uc">10099, 10099, 101, -, -, 100, no</column>
+<column name=" + memset_uc">99, 99, 1, -, -, 100, no</column>
+<column name="- Loop 4">?, ?, ?, -, -, ?, no</column>
+<column name=" + Loop 4.1">?, ?, ?, -, -, ?, no</column>
+<column name="  ++ Loop 4.1.1">?, ?, 49, -, -, ?, no</column>
+<column name=" + Loop 4.2">?, ?, ?, -, -, ?, no</column>
+<column name="  ++ Loop 4.2.1">?, ?, ?, -, -, ?, no</column>
+<column name=" + Loop 4.3">?, ?, ?, -, -, ?, no</column>
+<column name="  ++ Loop 4.3.1">?, ?, 49, -, -, ?, no</column>
+<column name=" + Loop 4.4">?, ?, ?, -, -, ?, no</column>
+<column name="  ++ Loop 4.4.1">?, ?, ?, -, -, ?, no</column>
+<column name=" + Loop 4.5">?, ?, ?, -, -, ?, no</column>
+<column name="  ++ Loop 4.5.1">?, ?, 49, -, -, ?, no</column>
+<column name=" + Loop 4.6">?, ?, ?, -, -, ?, no</column>
+<column name="  ++ Loop 4.6.1">?, ?, ?, -, -, ?, no</column>
+<column name="- memcpy.result.uc.gep">10001, 10001, 3, 1, 1, 10000, yes</column>
+</table>
+</item>
+</section>
+</item>
+</section>
+</item>
+</section>
+</profile>

@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2016.4 (64-bit)
+# SW Build 1756540 on Mon Jan 23 19:11:19 MST 2017
+# IP Build 1755317 on Mon Jan 23 20:30:07 MST 2017
+# Start of session at: Sun Oct 18 23:05:55 2020
+# Process ID: 17587
+# Current directory: /home/dorin/wave2/wave/impl/ip
+# Command line: vivado -notrace -mode batch -source run_ippack.tcl
+# Log file: /home/dorin/wave2/wave/impl/ip/vivado.log
+# Journal file: /home/dorin/wave2/wave/impl/ip/vivado.jou
+#-----------------------------------------------------------
+source run_ippack.tcl -notrace

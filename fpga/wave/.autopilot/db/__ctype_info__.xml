@@ -1,0 +1,13 @@
+<InterfaceSummary>
+<RtlPorts>
+<name>result</name>
+<CType>
+<TypeName>double</TypeName>
+<TypeWidth>64</TypeWidth>
+<PhysicalWidth>64</PhysicalWidth>
+</CType>
+<CFractionWidth>53</CFractionWidth>
+<InvalidType>0</InvalidType>
+</RtlPorts>
+</InterfaceSummary>
+

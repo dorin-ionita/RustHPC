@@ -1,0 +1,413 @@
+
+
+================================================================
+== Vivado HLS Report for 'on_structure_corner'
+================================================================
+* Date:           Sun Oct 18 23:04:46 2020
+
+* Version:        2016.4 (Build 1756540 on Mon Jan 23 19:31:01 MST 2017)
+* Project:        wave2
+* Solution:       wave
+* Product family: zynq
+* Target device:  xc7z020clg484-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|      7.17|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |    ?|    ?|    ?|    ?|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +----------+-----+-----+----------+-----------+-----------+------+----------+
+        |          |  Latency  | Iteration|  Initiation Interval  | Trip |          |
+        | Loop Name| min | max |  Latency |  achieved |   target  | Count| Pipelined|
+        +----------+-----+-----+----------+-----------+-----------+------+----------+
+        |- Loop 1  |    ?|    ?|         9|          -|          -|     ?|    no    |
+        +----------+-----+-----+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states: 10
+* Pipeline: 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+	2  / true
+2 --> 
+	3  / (tmp)
+	10  / (!tmp)
+3 --> 
+	4  / true
+4 --> 
+	5  / (!tmp_144) | (!tmp_145)
+	10  / (tmp_144 & tmp_145)
+5 --> 
+	6  / true
+6 --> 
+	7  / (!tmp_146) | (!tmp_147)
+	10  / (tmp_146 & tmp_147)
+7 --> 
+	8  / true
+8 --> 
+	9  / (!tmp_148) | (!tmp_149)
+	10  / (tmp_148 & tmp_149)
+9 --> 
+	10  / true
+10 --> 
+	2  / (tmp & !tmp_144 & !tmp_146 & !tmp_148 & !tmp_150) | (tmp & !tmp_144 & !tmp_146 & !tmp_148 & !tmp_151) | (tmp & !tmp_144 & !tmp_146 & !tmp_149 & !tmp_150) | (tmp & !tmp_144 & !tmp_147 & !tmp_148 & !tmp_150) | (tmp & !tmp_145 & !tmp_146 & !tmp_148 & !tmp_150) | (tmp & !tmp_144 & !tmp_146 & !tmp_149 & !tmp_151) | (tmp & !tmp_144 & !tmp_147 & !tmp_148 & !tmp_151) | (tmp & !tmp_144 & !tmp_147 & !tmp_149 & !tmp_150) | (tmp & !tmp_145 & !tmp_146 & !tmp_148 & !tmp_151) | (tmp & !tmp_145 & !tmp_146 & !tmp_149 & !tmp_150) | (tmp & !tmp_145 & !tmp_147 & !tmp_148 & !tmp_150) | (tmp & !tmp_144 & !tmp_147 & !tmp_149 & !tmp_151) | (tmp & !tmp_145 & !tmp_146 & !tmp_149 & !tmp_151) | (tmp & !tmp_145 & !tmp_147 & !tmp_148 & !tmp_151) | (tmp & !tmp_145 & !tmp_147 & !tmp_149 & !tmp_150) | (tmp & !tmp_145 & !tmp_147 & !tmp_149 & !tmp_151)
+* FSM state operations: 
+
+ <State 1>: 1.57ns
+ST_1: y_read (5)  [1/1] 0.00ns
+:0  %y_read = call i32 @_ssdm_op_Read.ap_auto.i32(i32 %y)
+
+ST_1: x_read (6)  [1/1] 0.00ns
+:1  %x_read = call i32 @_ssdm_op_Read.ap_auto.i32(i32 %x)
+
+ST_1: scenario_nr_struct_l (7)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:2  %scenario_nr_struct_l = load i32* @scenario_nr_struct, align 4
+
+ST_1: StgValue_14 (8)  [1/1] 1.57ns  loc: wave2/.apc/main.c:55
+:3  br label %1
+
+
+ <State 2>: 4.46ns
+ST_2: i (10)  [1/1] 0.00ns
+:0  %i = phi i31 [ 0, %0 ], [ %i_7, %._crit_edge10 ]
+
+ST_2: i_cast (11)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:1  %i_cast = zext i31 %i to i32
+
+ST_2: tmp (12)  [1/1] 2.52ns  loc: wave2/.apc/main.c:55
+:2  %tmp = icmp slt i32 %i_cast, %scenario_nr_struct_l
+
+ST_2: i_7 (13)  [1/1] 2.44ns  loc: wave2/.apc/main.c:55
+:3  %i_7 = add i31 %i, 1
+
+ST_2: StgValue_19 (14)  [1/1] 1.94ns  loc: wave2/.apc/main.c:55
+:4  br i1 %tmp, label %2, label %._crit_edge
+
+ST_2: tmp_s (16)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:0  %tmp_s = call i34 @_ssdm_op_BitConcatenate.i34.i31.i3(i31 %i, i3 0)
+
+ST_2: tmp_268 (17)  [1/1] 0.00ns  loc: wave2/.apc/main.c:57
+:1  %tmp_268 = zext i34 %tmp_s to i64
+
+ST_2: scenario_structure_c (18)  [1/1] 0.00ns  loc: wave2/.apc/main.c:57
+:2  %scenario_structure_c = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_268
+
+ST_2: scenario_structure_c_26 (40)  [2/2] 2.71ns  loc: wave2/.apc/main.c:57
+:24  %scenario_structure_c_26 = load i32* %scenario_structure_c, align 8
+
+
+ <State 3>: 5.23ns
+ST_3: tmp_269 (19)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:3  %tmp_269 = or i34 %tmp_s, 1
+
+ST_3: tmp_270 (20)  [1/1] 0.00ns  loc: wave2/.apc/main.c:57
+:4  %tmp_270 = call i64 @_ssdm_op_BitConcatenate.i64.i30.i34(i30 0, i34 %tmp_269)
+
+ST_3: scenario_structure_c_19 (21)  [1/1] 0.00ns  loc: wave2/.apc/main.c:57
+:5  %scenario_structure_c_19 = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_270
+
+ST_3: tmp_271 (22)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:6  %tmp_271 = or i34 %tmp_s, 2
+
+ST_3: tmp_272 (23)  [1/1] 0.00ns  loc: wave2/.apc/main.c:59
+:7  %tmp_272 = call i64 @_ssdm_op_BitConcatenate.i64.i30.i34(i30 0, i34 %tmp_271)
+
+ST_3: scenario_structure_c_20 (24)  [1/1] 0.00ns  loc: wave2/.apc/main.c:59
+:8  %scenario_structure_c_20 = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_272
+
+ST_3: tmp_273 (25)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:9  %tmp_273 = or i34 %tmp_s, 3
+
+ST_3: tmp_274 (26)  [1/1] 0.00ns  loc: wave2/.apc/main.c:59
+:10  %tmp_274 = call i64 @_ssdm_op_BitConcatenate.i64.i30.i34(i30 0, i34 %tmp_273)
+
+ST_3: scenario_structure_c_21 (27)  [1/1] 0.00ns  loc: wave2/.apc/main.c:59
+:11  %scenario_structure_c_21 = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_274
+
+ST_3: tmp_275 (28)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:12  %tmp_275 = or i34 %tmp_s, 4
+
+ST_3: tmp_276 (29)  [1/1] 0.00ns  loc: wave2/.apc/main.c:61
+:13  %tmp_276 = call i64 @_ssdm_op_BitConcatenate.i64.i30.i34(i30 0, i34 %tmp_275)
+
+ST_3: scenario_structure_c_22 (30)  [1/1] 0.00ns  loc: wave2/.apc/main.c:61
+:14  %scenario_structure_c_22 = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_276
+
+ST_3: tmp_277 (31)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:15  %tmp_277 = or i34 %tmp_s, 5
+
+ST_3: tmp_278 (32)  [1/1] 0.00ns  loc: wave2/.apc/main.c:61
+:16  %tmp_278 = call i64 @_ssdm_op_BitConcatenate.i64.i30.i34(i30 0, i34 %tmp_277)
+
+ST_3: scenario_structure_c_23 (33)  [1/1] 0.00ns  loc: wave2/.apc/main.c:61
+:17  %scenario_structure_c_23 = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_278
+
+ST_3: tmp_279 (34)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:18  %tmp_279 = or i34 %tmp_s, 6
+
+ST_3: tmp_280 (35)  [1/1] 0.00ns  loc: wave2/.apc/main.c:63
+:19  %tmp_280 = call i64 @_ssdm_op_BitConcatenate.i64.i30.i34(i30 0, i34 %tmp_279)
+
+ST_3: scenario_structure_c_24 (36)  [1/1] 0.00ns  loc: wave2/.apc/main.c:63
+:20  %scenario_structure_c_24 = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_280
+
+ST_3: tmp_281 (37)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+:21  %tmp_281 = or i34 %tmp_s, 7
+
+ST_3: tmp_282 (38)  [1/1] 0.00ns  loc: wave2/.apc/main.c:63
+:22  %tmp_282 = call i64 @_ssdm_op_BitConcatenate.i64.i30.i34(i30 0, i34 %tmp_281)
+
+ST_3: scenario_structure_c_25 (39)  [1/1] 0.00ns  loc: wave2/.apc/main.c:63
+:23  %scenario_structure_c_25 = getelementptr [80 x i32]* @scenario_structure_c, i64 0, i64 %tmp_282
+
+ST_3: scenario_structure_c_26 (40)  [1/2] 2.71ns  loc: wave2/.apc/main.c:57
+:24  %scenario_structure_c_26 = load i32* %scenario_structure_c, align 8
+
+ST_3: tmp_144 (41)  [1/1] 2.52ns  loc: wave2/.apc/main.c:57
+:25  %tmp_144 = icmp eq i32 %scenario_structure_c_26, %x_read
+
+ST_3: StgValue_47 (42)  [1/1] 0.00ns  loc: wave2/.apc/main.c:57
+:26  br i1 %tmp_144, label %3, label %._crit_edge1
+
+ST_3: scenario_structure_c_27 (44)  [2/2] 2.71ns  loc: wave2/.apc/main.c:57
+:0  %scenario_structure_c_27 = load i32* %scenario_structure_c_19, align 4
+
+
+ <State 4>: 7.17ns
+ST_4: scenario_structure_c_27 (44)  [1/2] 2.71ns  loc: wave2/.apc/main.c:57
+:0  %scenario_structure_c_27 = load i32* %scenario_structure_c_19, align 4
+
+ST_4: tmp_145 (45)  [1/1] 2.52ns  loc: wave2/.apc/main.c:57
+:1  %tmp_145 = icmp eq i32 %scenario_structure_c_27, %y_read
+
+ST_4: StgValue_51 (46)  [1/1] 1.94ns  loc: wave2/.apc/main.c:57
+:2  br i1 %tmp_145, label %._crit_edge, label %._crit_edge1
+
+ST_4: scenario_structure_c_28 (48)  [2/2] 2.71ns  loc: wave2/.apc/main.c:59
+._crit_edge1:0  %scenario_structure_c_28 = load i32* %scenario_structure_c_20, align 8
+
+
+ <State 5>: 5.23ns
+ST_5: scenario_structure_c_28 (48)  [1/2] 2.71ns  loc: wave2/.apc/main.c:59
+._crit_edge1:0  %scenario_structure_c_28 = load i32* %scenario_structure_c_20, align 8
+
+ST_5: tmp_146 (49)  [1/1] 2.52ns  loc: wave2/.apc/main.c:59
+._crit_edge1:1  %tmp_146 = icmp eq i32 %scenario_structure_c_28, %x_read
+
+ST_5: StgValue_55 (50)  [1/1] 0.00ns  loc: wave2/.apc/main.c:59
+._crit_edge1:2  br i1 %tmp_146, label %4, label %._crit_edge4
+
+ST_5: scenario_structure_c_29 (52)  [2/2] 2.71ns  loc: wave2/.apc/main.c:59
+:0  %scenario_structure_c_29 = load i32* %scenario_structure_c_21, align 4
+
+
+ <State 6>: 7.17ns
+ST_6: scenario_structure_c_29 (52)  [1/2] 2.71ns  loc: wave2/.apc/main.c:59
+:0  %scenario_structure_c_29 = load i32* %scenario_structure_c_21, align 4
+
+ST_6: tmp_147 (53)  [1/1] 2.52ns  loc: wave2/.apc/main.c:59
+:1  %tmp_147 = icmp eq i32 %scenario_structure_c_29, %y_read
+
+ST_6: StgValue_59 (54)  [1/1] 1.94ns  loc: wave2/.apc/main.c:59
+:2  br i1 %tmp_147, label %._crit_edge, label %._crit_edge4
+
+ST_6: scenario_structure_c_30 (56)  [2/2] 2.71ns  loc: wave2/.apc/main.c:61
+._crit_edge4:0  %scenario_structure_c_30 = load i32* %scenario_structure_c_22, align 8
+
+
+ <State 7>: 5.23ns
+ST_7: scenario_structure_c_30 (56)  [1/2] 2.71ns  loc: wave2/.apc/main.c:61
+._crit_edge4:0  %scenario_structure_c_30 = load i32* %scenario_structure_c_22, align 8
+
+ST_7: tmp_148 (57)  [1/1] 2.52ns  loc: wave2/.apc/main.c:61
+._crit_edge4:1  %tmp_148 = icmp eq i32 %scenario_structure_c_30, %x_read
+
+ST_7: StgValue_63 (58)  [1/1] 0.00ns  loc: wave2/.apc/main.c:61
+._crit_edge4:2  br i1 %tmp_148, label %5, label %._crit_edge7
+
+ST_7: scenario_structure_c_31 (60)  [2/2] 2.71ns  loc: wave2/.apc/main.c:61
+:0  %scenario_structure_c_31 = load i32* %scenario_structure_c_23, align 4
+
+
+ <State 8>: 7.17ns
+ST_8: scenario_structure_c_31 (60)  [1/2] 2.71ns  loc: wave2/.apc/main.c:61
+:0  %scenario_structure_c_31 = load i32* %scenario_structure_c_23, align 4
+
+ST_8: tmp_149 (61)  [1/1] 2.52ns  loc: wave2/.apc/main.c:61
+:1  %tmp_149 = icmp eq i32 %scenario_structure_c_31, %y_read
+
+ST_8: StgValue_67 (62)  [1/1] 1.94ns  loc: wave2/.apc/main.c:61
+:2  br i1 %tmp_149, label %._crit_edge, label %._crit_edge7
+
+ST_8: scenario_structure_c_32 (64)  [2/2] 2.71ns  loc: wave2/.apc/main.c:63
+._crit_edge7:0  %scenario_structure_c_32 = load i32* %scenario_structure_c_24, align 8
+
+
+ <State 9>: 5.23ns
+ST_9: scenario_structure_c_32 (64)  [1/2] 2.71ns  loc: wave2/.apc/main.c:63
+._crit_edge7:0  %scenario_structure_c_32 = load i32* %scenario_structure_c_24, align 8
+
+ST_9: tmp_150 (65)  [1/1] 2.52ns  loc: wave2/.apc/main.c:63
+._crit_edge7:1  %tmp_150 = icmp eq i32 %scenario_structure_c_32, %x_read
+
+ST_9: StgValue_71 (66)  [1/1] 0.00ns  loc: wave2/.apc/main.c:63
+._crit_edge7:2  br i1 %tmp_150, label %6, label %._crit_edge10
+
+ST_9: scenario_structure_c_33 (68)  [2/2] 2.71ns  loc: wave2/.apc/main.c:63
+:0  %scenario_structure_c_33 = load i32* %scenario_structure_c_25, align 4
+
+
+ <State 10>: 7.17ns
+ST_10: scenario_structure_c_33 (68)  [1/2] 2.71ns  loc: wave2/.apc/main.c:63
+:0  %scenario_structure_c_33 = load i32* %scenario_structure_c_25, align 4
+
+ST_10: tmp_151 (69)  [1/1] 2.52ns  loc: wave2/.apc/main.c:63
+:1  %tmp_151 = icmp eq i32 %scenario_structure_c_33, %y_read
+
+ST_10: StgValue_75 (70)  [1/1] 1.94ns  loc: wave2/.apc/main.c:63
+:2  br i1 %tmp_151, label %._crit_edge, label %._crit_edge10
+
+ST_10: StgValue_76 (72)  [1/1] 0.00ns  loc: wave2/.apc/main.c:55
+._crit_edge10:0  br label %1
+
+ST_10: p_0 (74)  [1/1] 0.00ns
+._crit_edge:0  %p_0 = phi i4 [ 0, %1 ], [ 5, %3 ], [ 6, %4 ], [ 7, %5 ], [ -8, %6 ]
+
+ST_10: StgValue_78 (75)  [1/1] 0.00ns  loc: wave2/.apc/main.c:67
+._crit_edge:1  ret i4 %p_0
+
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 1.57ns
+The critical path consists of the following:
+	multiplexor before 'phi' operation ('i') with incoming values : ('i', wave2/.apc/main.c:55) [10]  (1.57 ns)
+
+ <State 2>: 4.46ns
+The critical path consists of the following:
+	'phi' operation ('i') with incoming values : ('i', wave2/.apc/main.c:55) [10]  (0 ns)
+	'icmp' operation ('tmp', wave2/.apc/main.c:55) [12]  (2.52 ns)
+	multiplexor before 'phi' operation ('p_0') [74]  (1.94 ns)
+
+ <State 3>: 5.23ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_26', wave2/.apc/main.c:57) on array 'scenario_structure_c' [40]  (2.71 ns)
+	'icmp' operation ('tmp_144', wave2/.apc/main.c:57) [41]  (2.52 ns)
+
+ <State 4>: 7.17ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_27', wave2/.apc/main.c:57) on array 'scenario_structure_c' [44]  (2.71 ns)
+	'icmp' operation ('tmp_145', wave2/.apc/main.c:57) [45]  (2.52 ns)
+	multiplexor before 'phi' operation ('p_0') [74]  (1.94 ns)
+
+ <State 5>: 5.23ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_28', wave2/.apc/main.c:59) on array 'scenario_structure_c' [48]  (2.71 ns)
+	'icmp' operation ('tmp_146', wave2/.apc/main.c:59) [49]  (2.52 ns)
+
+ <State 6>: 7.17ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_29', wave2/.apc/main.c:59) on array 'scenario_structure_c' [52]  (2.71 ns)
+	'icmp' operation ('tmp_147', wave2/.apc/main.c:59) [53]  (2.52 ns)
+	multiplexor before 'phi' operation ('p_0') [74]  (1.94 ns)
+
+ <State 7>: 5.23ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_30', wave2/.apc/main.c:61) on array 'scenario_structure_c' [56]  (2.71 ns)
+	'icmp' operation ('tmp_148', wave2/.apc/main.c:61) [57]  (2.52 ns)
+
+ <State 8>: 7.17ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_31', wave2/.apc/main.c:61) on array 'scenario_structure_c' [60]  (2.71 ns)
+	'icmp' operation ('tmp_149', wave2/.apc/main.c:61) [61]  (2.52 ns)
+	multiplexor before 'phi' operation ('p_0') [74]  (1.94 ns)
+
+ <State 9>: 5.23ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_32', wave2/.apc/main.c:63) on array 'scenario_structure_c' [64]  (2.71 ns)
+	'icmp' operation ('tmp_150', wave2/.apc/main.c:63) [65]  (2.52 ns)
+
+ <State 10>: 7.17ns
+The critical path consists of the following:
+	'load' operation ('scenario_structure_c_33', wave2/.apc/main.c:63) on array 'scenario_structure_c' [68]  (2.71 ns)
+	'icmp' operation ('tmp_151', wave2/.apc/main.c:63) [69]  (2.52 ns)
+	multiplexor before 'phi' operation ('p_0') [74]  (1.94 ns)
+	'phi' operation ('p_0') [74]  (0 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+	State 8
+	State 9
+	State 10
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

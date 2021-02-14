@@ -1,0 +1,695 @@
+
+
+================================================================
+== Vivado HLS Report for 'big_mult_v3small'
+================================================================
+* Date:           Sun Oct 18 23:04:44 2020
+
+* Version:        2016.4 (Build 1756540 on Mon Jan 23 19:31:01 MST 2017)
+* Project:        wave2
+* Solution:       wave
+* Product family: zynq
+* Target device:  xc7z020clg484-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|      8.47|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |  169|  169|  169|  169|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +----------+-----+-----+----------+-----------+-----------+------+----------+
+        |          |  Latency  | Iteration|  Initiation Interval  | Trip |          |
+        | Loop Name| min | max |  Latency |  achieved |   target  | Count| Pipelined|
+        +----------+-----+-----+----------+-----------+-----------+------+----------+
+        |- Loop 1  |  136|  136|        17|          -|          -|     8|    no    |
+        |- Loop 2  |   14|   14|         2|          -|          -|     7|    no    |
+        |- Loop 3  |   14|   14|         2|          -|          -|     7|    no    |
+        +----------+-----+-----+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states: 24
+* Pipeline: 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+	2  / true
+2 --> 
+	3  / (!exitcond1)
+	19  / (exitcond1)
+3 --> 
+	4  / true
+4 --> 
+	5  / true
+5 --> 
+	6  / true
+6 --> 
+	7  / true
+7 --> 
+	8  / true
+8 --> 
+	9  / true
+9 --> 
+	10  / true
+10 --> 
+	11  / true
+11 --> 
+	12  / true
+12 --> 
+	13  / true
+13 --> 
+	14  / true
+14 --> 
+	15  / true
+15 --> 
+	16  / true
+16 --> 
+	17  / true
+17 --> 
+	18  / true
+18 --> 
+	2  / true
+19 --> 
+	20  / true
+20 --> 
+	21  / (!exitcond2)
+	22  / (exitcond2)
+21 --> 
+	20  / true
+22 --> 
+	23  / (!exitcond)
+	24  / (exitcond)
+23 --> 
+	22  / true
+24 --> 
+* FSM state operations: 
+
+ <State 1>: 1.57ns
+ST_1: b_V_read (3)  [1/1] 0.00ns
+.preheader142.preheader:0  %b_V_read = call i53 @_ssdm_op_Read.ap_auto.i53(i53 %b_V)
+
+ST_1: a_V_read (4)  [1/1] 0.00ns
+.preheader142.preheader:1  %a_V_read = call i125 @_ssdm_op_Read.ap_auto.i125(i125 %a_V)
+
+ST_1: pp_V (5)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:258
+.preheader142.preheader:2  %pp_V = alloca [8 x i70], align 8
+
+ST_1: pps_V (6)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266
+.preheader142.preheader:3  %pps_V = alloca [8 x i70], align 8
+
+ST_1: tmp (7)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+.preheader142.preheader:4  %tmp = zext i53 %b_V_read to i70
+
+ST_1: StgValue_30 (8)  [1/1] 1.57ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260
+.preheader142.preheader:5  br label %.preheader142
+
+
+ <State 2>: 3.25ns
+ST_2: i (10)  [1/1] 0.00ns
+.preheader142:0  %i = phi i4 [ %i_9, %_ifconv ], [ 0, %.preheader142.preheader ]
+
+ST_2: exitcond1 (11)  [1/1] 1.88ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260
+.preheader142:1  %exitcond1 = icmp eq i4 %i, -8
+
+ST_2: empty (12)  [1/1] 0.00ns
+.preheader142:2  %empty = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 8, i64 8, i64 8)
+
+ST_2: i_9 (13)  [1/1] 0.80ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260
+.preheader142:3  %i_9 = add i4 %i, 1
+
+ST_2: StgValue_35 (14)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260
+.preheader142:4  br i1 %exitcond1, label %arrayctor.loop1.preheader, label %_ifconv
+
+ST_2: tmp_s (16)  [1/1] 1.88ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261
+_ifconv:0  %tmp_s = icmp eq i4 %i, 7
+
+ST_2: tmp_320 (17)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260
+_ifconv:1  %tmp_320 = trunc i4 %i to i3
+
+ST_2: Lo_assign (18)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261
+_ifconv:2  %Lo_assign = call i7 @_ssdm_op_BitConcatenate.i7.i3.i4(i3 %tmp_320, i4 %i)
+
+ST_2: tmp_172 (19)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261
+_ifconv:3  %tmp_172 = add i7 16, %Lo_assign
+
+ST_2: Ui (20)  [1/1] 1.37ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261
+_ifconv:4  %Ui = select i1 %tmp_s, i7 -4, i7 %tmp_172
+
+ST_2: pp_V_addr (42)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267
+arrayctor.loop1.preheader:0  %pp_V_addr = getelementptr [8 x i70]* %pp_V, i64 0, i64 0
+
+ST_2: pp_V_load (43)  [2/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267
+arrayctor.loop1.preheader:1  %pp_V_load = load i70* %pp_V_addr, align 16
+
+
+ <State 3>: 6.99ns
+ST_3: tmp_321 (22)  [1/1] 1.97ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261
+_ifconv:6  %tmp_321 = icmp ugt i7 %Lo_assign, %Ui
+
+ST_3: tmp_322 (23)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (grouped into LUT with out node tmp_332)
+_ifconv:7  %tmp_322 = call i125 @llvm.part.select.i125(i125 %a_V_read, i32 124, i32 0)
+
+ST_3: tmp_323 (24)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:8  %tmp_323 = sub i7 %Lo_assign, %Ui
+
+ST_3: tmp_324 (25)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:9  %tmp_324 = sub i7 -4, %Lo_assign
+
+ST_3: tmp_325 (26)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:10  %tmp_325 = sub i7 %Ui, %Lo_assign
+
+ST_3: tmp_326 (27)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (grouped into LUT with out node tmp_329)
+_ifconv:11  %tmp_326 = select i1 %tmp_321, i7 %tmp_323, i7 %tmp_325
+
+ST_3: tmp_327 (28)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261 (grouped into LUT with out node tmp_332)
+_ifconv:12  %tmp_327 = select i1 %tmp_321, i125 %tmp_322, i125 %a_V_read
+
+ST_3: tmp_328 (29)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261 (grouped into LUT with out node tmp_332)
+_ifconv:13  %tmp_328 = select i1 %tmp_321, i7 %tmp_324, i7 %Lo_assign
+
+ST_3: tmp_329 (30)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (out node of the LUT)
+_ifconv:14  %tmp_329 = sub i7 -4, %tmp_326
+
+ST_3: tmp_330 (31)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (grouped into LUT with out node tmp_332)
+_ifconv:15  %tmp_330 = zext i7 %tmp_328 to i125
+
+ST_3: tmp_331 (32)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (grouped into LUT with out node p_Result_15)
+_ifconv:16  %tmp_331 = zext i7 %tmp_329 to i125
+
+ST_3: tmp_332 (33)  [1/1] 3.65ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (out node of the LUT)
+_ifconv:17  %tmp_332 = lshr i125 %tmp_327, %tmp_330
+
+ST_3: tmp_333 (34)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (grouped into LUT with out node p_Result_15)
+_ifconv:18  %tmp_333 = lshr i125 -1, %tmp_331
+
+ST_3: p_Result_15 (35)  [1/1] 1.37ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 (out node of the LUT)
+_ifconv:19  %p_Result_15 = and i125 %tmp_332, %tmp_333
+
+ST_3: tmp_335 (36)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:20  %tmp_335 = trunc i125 %p_Result_15 to i70
+
+
+ <State 4>: 6.08ns
+ST_4: tmp_175 (37)  [15/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 5>: 6.08ns
+ST_5: tmp_175 (37)  [14/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 6>: 6.08ns
+ST_6: tmp_175 (37)  [13/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 7>: 6.08ns
+ST_7: tmp_175 (37)  [12/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 8>: 6.08ns
+ST_8: tmp_175 (37)  [11/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 9>: 6.08ns
+ST_9: tmp_175 (37)  [10/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 10>: 6.08ns
+ST_10: tmp_175 (37)  [9/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 11>: 6.08ns
+ST_11: tmp_175 (37)  [8/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 12>: 6.08ns
+ST_12: tmp_175 (37)  [7/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 13>: 6.08ns
+ST_13: tmp_175 (37)  [6/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 14>: 6.08ns
+ST_14: tmp_175 (37)  [5/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 15>: 6.08ns
+ST_15: tmp_175 (37)  [4/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 16>: 6.08ns
+ST_16: tmp_175 (37)  [3/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 17>: 6.08ns
+ST_17: tmp_175 (37)  [2/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+
+ <State 18>: 8.47ns
+ST_18: tmp_173 (21)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:5  %tmp_173 = zext i4 %i to i64
+
+ST_18: tmp_175 (37)  [1/15] 6.08ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:21  %tmp_175 = mul i70 %tmp, %tmp_335
+
+ST_18: pp_V_addr_2 (38)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:22  %pp_V_addr_2 = getelementptr [8 x i70]* %pp_V, i64 0, i64 %tmp_173
+
+ST_18: StgValue_75 (39)  [1/1] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262
+_ifconv:23  store i70 %tmp_175, i70* %pp_V_addr_2, align 16
+
+ST_18: StgValue_76 (40)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260
+_ifconv:24  br label %.preheader142
+
+
+ <State 19>: 4.78ns
+ST_19: pp_V_load (43)  [1/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267
+arrayctor.loop1.preheader:1  %pp_V_load = load i70* %pp_V_addr, align 16
+
+ST_19: pps_V_addr (44)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267
+arrayctor.loop1.preheader:2  %pps_V_addr = getelementptr [8 x i70]* %pps_V, i64 0, i64 0
+
+ST_19: StgValue_79 (45)  [1/1] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267
+arrayctor.loop1.preheader:3  store i70 %pp_V_load, i70* %pps_V_addr, align 16
+
+ST_19: StgValue_80 (46)  [1/1] 1.57ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:269
+arrayctor.loop1.preheader:4  br label %0
+
+
+ <State 20>: 3.19ns
+ST_20: i_1 (48)  [1/1] 0.00ns
+:0  %i_1 = phi i4 [ 1, %arrayctor.loop1.preheader ], [ %i_10, %_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit ]
+
+ST_20: exitcond2 (49)  [1/1] 1.88ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:269
+:1  %exitcond2 = icmp eq i4 %i_1, -8
+
+ST_20: empty_57 (50)  [1/1] 0.00ns
+:2  %empty_57 = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 7, i64 7, i64 7)
+
+ST_20: StgValue_84 (51)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:269
+:3  br i1 %exitcond2, label %.preheader.preheader, label %_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit
+
+ST_20: tmp_176 (53)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:0  %tmp_176 = zext i4 %i_1 to i64
+
+ST_20: tmp_177 (54)  [1/1] 0.80ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:1  %tmp_177 = add i4 %i_1, -1
+
+ST_20: tmp_178 (55)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:2  %tmp_178 = zext i4 %tmp_177 to i64
+
+ST_20: pps_V_addr_1 (56)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:3  %pps_V_addr_1 = getelementptr [8 x i70]* %pps_V, i64 0, i64 %tmp_178
+
+ST_20: pps_V_load (57)  [2/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:4  %pps_V_load = load i70* %pps_V_addr_1, align 16
+
+ST_20: pp_V_addr_1 (61)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:8  %pp_V_addr_1 = getelementptr [8 x i70]* %pp_V, i64 0, i64 %tmp_176
+
+ST_20: pp_V_load_1 (62)  [2/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:9  %pp_V_load_1 = load i70* %pp_V_addr_1, align 16
+
+ST_20: i_10 (65)  [1/1] 0.80ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:269
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:12  %i_10 = add i4 %i_1, 1
+
+ST_20: StgValue_93 (68)  [1/1] 1.57ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275
+.preheader.preheader:0  br label %.preheader
+
+
+ <State 21>: 8.42ns
+ST_21: pps_V_load (57)  [1/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:4  %pps_V_load = load i70* %pps_V_addr_1, align 16
+
+ST_21: r_V (58)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:5  %r_V = call i53 @_ssdm_op_PartSelect.i53.i70.i32.i32(i70 %pps_V_load, i32 17, i32 69)
+
+ST_21: r_V_7 (59)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:6  %r_V_7 = zext i53 %r_V to i70
+
+ST_21: pps_V_addr_2 (60)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:7  %pps_V_addr_2 = getelementptr [8 x i70]* %pps_V, i64 0, i64 %tmp_176
+
+ST_21: pp_V_load_1 (62)  [1/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:9  %pp_V_load_1 = load i70* %pp_V_addr_1, align 16
+
+ST_21: tmp_179 (63)  [1/1] 3.64ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:10  %tmp_179 = add i70 %pp_V_load_1, %r_V_7
+
+ST_21: StgValue_100 (64)  [1/1] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:11  store i70 %tmp_179, i70* %pps_V_addr_2, align 16
+
+ST_21: StgValue_101 (66)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:269
+_ZrsILi70ELb0EE11ap_int_baseIXT_EXT0_EXleT_Li64EEERKS1_i.exit:13  br label %0
+
+
+ <State 22>: 2.39ns
+ST_22: p_Val2_s (70)  [1/1] 0.00ns
+.preheader:0  %p_Val2_s = phi i178 [ %p_Result_14, %._crit_edge143 ], [ undef, %.preheader.preheader ]
+
+ST_22: i_2 (71)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275
+.preheader:1  %i_2 = phi i3 [ %tmp_181, %._crit_edge143 ], [ 0, %.preheader.preheader ]
+
+ST_22: exitcond (72)  [1/1] 1.62ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275
+.preheader:2  %exitcond = icmp eq i3 %i_2, -1
+
+ST_22: empty_58 (73)  [1/1] 0.00ns
+.preheader:3  %empty_58 = call i32 (...)* @_ssdm_op_SpecLoopTripCount(i64 7, i64 7, i64 7)
+
+ST_22: tmp_181 (74)  [1/1] 0.80ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275
+.preheader:4  %tmp_181 = add i3 %i_2, 1
+
+ST_22: StgValue_107 (75)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275
+.preheader:5  br i1 %exitcond, label %1, label %._crit_edge143
+
+ST_22: tmp_180 (79)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280
+._crit_edge143:2  %tmp_180 = zext i3 %i_2 to i64
+
+ST_22: pps_V_addr_4 (80)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280
+._crit_edge143:3  %pps_V_addr_4 = getelementptr [8 x i70]* %pps_V, i64 0, i64 %tmp_180
+
+ST_22: p_Val2_33 (81)  [2/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280
+._crit_edge143:4  %p_Val2_33 = load i70* %pps_V_addr_4, align 16
+
+ST_22: pps_V_addr_3 (107)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:287
+:0  %pps_V_addr_3 = getelementptr [8 x i70]* %pps_V, i64 0, i64 7
+
+ST_22: pps_V_load_1 (108)  [2/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:287
+:1  %pps_V_load_1 = load i70* %pps_V_addr_3, align 16
+
+
+ <State 23>: 6.53ns
+ST_23: Li (77)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:276
+._crit_edge143:0  %Li = call i7 @_ssdm_op_BitConcatenate.i7.i3.i1.i3(i3 %i_2, i1 false, i3 %i_2)
+
+ST_23: Ui_1 (78)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:278
+._crit_edge143:1  %Ui_1 = add i7 16, %Li
+
+ST_23: p_Val2_33 (81)  [1/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280
+._crit_edge143:4  %p_Val2_33 = load i70* %pps_V_addr_4, align 16
+
+ST_23: tmp_337 (82)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node tmp_349)
+._crit_edge143:5  %tmp_337 = trunc i70 %p_Val2_33 to i17
+
+ST_23: loc_V (83)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node tmp_349)
+._crit_edge143:6  %loc_V = zext i17 %tmp_337 to i178
+
+ST_23: tmp_338 (84)  [1/1] 1.97ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:276
+._crit_edge143:7  %tmp_338 = icmp ugt i7 %Li, -17
+
+ST_23: tmp_339 (85)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280
+._crit_edge143:8  %tmp_339 = zext i7 %Li to i8
+
+ST_23: tmp_340 (86)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280
+._crit_edge143:9  %tmp_340 = zext i7 %Ui_1 to i8
+
+ST_23: tmp_341 (87)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280
+._crit_edge143:10  %tmp_341 = sub i8 -79, %tmp_339
+
+ST_23: tmp_342 (88)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:276 (grouped into LUT with out node tmp_345)
+._crit_edge143:11  %tmp_342 = select i1 %tmp_338, i8 %tmp_339, i8 %tmp_340
+
+ST_23: tmp_343 (89)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:276 (grouped into LUT with out node p_demorgan)
+._crit_edge143:12  %tmp_343 = select i1 %tmp_338, i8 %tmp_340, i8 %tmp_339
+
+ST_23: tmp_344 (90)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:276 (grouped into LUT with out node tmp_349)
+._crit_edge143:13  %tmp_344 = select i1 %tmp_338, i8 %tmp_341, i8 %tmp_339
+
+ST_23: tmp_345 (91)  [1/1] 1.72ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (out node of the LUT)
+._crit_edge143:14  %tmp_345 = sub i8 -79, %tmp_342
+
+ST_23: tmp_346 (92)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node tmp_349)
+._crit_edge143:15  %tmp_346 = zext i8 %tmp_344 to i178
+
+ST_23: tmp_347 (93)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_demorgan)
+._crit_edge143:16  %tmp_347 = zext i8 %tmp_343 to i178
+
+ST_23: tmp_348 (94)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_demorgan)
+._crit_edge143:17  %tmp_348 = zext i8 %tmp_345 to i178
+
+ST_23: tmp_349 (95)  [1/1] 2.77ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (out node of the LUT)
+._crit_edge143:18  %tmp_349 = shl i178 %loc_V, %tmp_346
+
+ST_23: tmp_350 (96)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_Result_14)
+._crit_edge143:19  %tmp_350 = call i178 @llvm.part.select.i178(i178 %tmp_349, i32 177, i32 0)
+
+ST_23: tmp_351 (97)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:276 (grouped into LUT with out node p_Result_14)
+._crit_edge143:20  %tmp_351 = select i1 %tmp_338, i178 %tmp_350, i178 %tmp_349
+
+ST_23: tmp_352 (98)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_demorgan)
+._crit_edge143:21  %tmp_352 = shl i178 -1, %tmp_347
+
+ST_23: tmp_353 (99)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_demorgan)
+._crit_edge143:22  %tmp_353 = lshr i178 -1, %tmp_348
+
+ST_23: p_demorgan (100)  [1/1] 1.37ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (out node of the LUT)
+._crit_edge143:23  %p_demorgan = and i178 %tmp_352, %tmp_353
+
+ST_23: tmp_354 (101)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_Result_14)
+._crit_edge143:24  %tmp_354 = xor i178 %p_demorgan, -1
+
+ST_23: tmp_355 (102)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_Result_14)
+._crit_edge143:25  %tmp_355 = and i178 %p_Val2_s, %tmp_354
+
+ST_23: tmp_356 (103)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (grouped into LUT with out node p_Result_14)
+._crit_edge143:26  %tmp_356 = and i178 %tmp_351, %p_demorgan
+
+ST_23: p_Result_14 (104)  [1/1] 1.37ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280 (out node of the LUT)
+._crit_edge143:27  %p_Result_14 = or i178 %tmp_355, %tmp_356
+
+ST_23: StgValue_139 (105)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275
+._crit_edge143:28  br label %.preheader
+
+
+ <State 24>: 2.39ns
+ST_24: pps_V_load_1 (108)  [1/2] 2.39ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:287
+:1  %pps_V_load_1 = load i70* %pps_V_addr_3, align 16
+
+ST_24: tmp_336 (109)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:287
+:2  %tmp_336 = trunc i70 %pps_V_load_1 to i59
+
+ST_24: p_Result_s (110)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:287
+:3  %p_Result_s = call i178 @llvm.part.set.i178.i59(i178 %p_Val2_s, i59 %tmp_336, i32 119, i32 177)
+
+ST_24: StgValue_143 (111)  [1/1] 0.00ns  loc: /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:289
+:4  ret i178 %p_Result_s
+
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 1.57ns
+The critical path consists of the following:
+	multiplexor before 'phi' operation ('i') with incoming values : ('i', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260) [10]  (1.57 ns)
+
+ <State 2>: 3.25ns
+The critical path consists of the following:
+	'phi' operation ('i') with incoming values : ('i', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:260) [10]  (0 ns)
+	'icmp' operation ('tmp_s', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261) [16]  (1.88 ns)
+	'select' operation ('Ui', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261) [20]  (1.37 ns)
+
+ <State 3>: 6.99ns
+The critical path consists of the following:
+	'icmp' operation ('tmp_321', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261) [22]  (1.97 ns)
+	'select' operation ('tmp_327', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:261) [28]  (0 ns)
+	'lshr' operation ('tmp_332', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [33]  (3.65 ns)
+	'and' operation ('__Result__', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [35]  (1.37 ns)
+
+ <State 4>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 5>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 6>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 7>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 8>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 9>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 10>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 11>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 12>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 13>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 14>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 15>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 16>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 17>: 6.08ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+
+ <State 18>: 8.47ns
+The critical path consists of the following:
+	'mul' operation ('tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) [37]  (6.08 ns)
+	'store' operation (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262) of variable 'tmp_175', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:262 on array 'pp.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:258 [39]  (2.39 ns)
+
+ <State 19>: 4.78ns
+The critical path consists of the following:
+	'load' operation ('pp_V_load', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267) on array 'pp.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:258 [43]  (2.39 ns)
+	'store' operation (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267) of variable 'pp_V_load', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:267 on array 'pps.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266 [45]  (2.39 ns)
+
+ <State 20>: 3.19ns
+The critical path consists of the following:
+	'phi' operation ('i') with incoming values : ('i', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:269) [48]  (0 ns)
+	'add' operation ('tmp_177', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270) [54]  (0.8 ns)
+	'getelementptr' operation ('pps_V_addr_1', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270) [56]  (0 ns)
+	'load' operation ('pps_V_load', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270) on array 'pps.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266 [57]  (2.39 ns)
+
+ <State 21>: 8.42ns
+The critical path consists of the following:
+	'load' operation ('pps_V_load', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:270) on array 'pps.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266 [57]  (2.39 ns)
+	'add' operation ('tmp_179', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271) [63]  (3.64 ns)
+	'store' operation (/wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271) of variable 'tmp_179', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:271 on array 'pps.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266 [64]  (2.39 ns)
+
+ <State 22>: 2.39ns
+The critical path consists of the following:
+	'phi' operation ('i_2', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275) with incoming values : ('tmp_181', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:275) [71]  (0 ns)
+	'getelementptr' operation ('pps_V_addr_4', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280) [80]  (0 ns)
+	'load' operation ('__Val2__', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280) on array 'pps.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266 [81]  (2.39 ns)
+
+ <State 23>: 6.53ns
+The critical path consists of the following:
+	'load' operation ('__Val2__', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280) on array 'pps.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266 [81]  (2.39 ns)
+	'shl' operation ('tmp_349', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280) [95]  (2.77 ns)
+	'select' operation ('tmp_351', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:276) [97]  (0 ns)
+	'and' operation ('tmp_356', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280) [103]  (0 ns)
+	'or' operation ('__Result__', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:280) [104]  (1.37 ns)
+
+ <State 24>: 2.39ns
+The critical path consists of the following:
+	'load' operation ('pps_V_load_1', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:287) on array 'pps.V', /wrk/2016.4/nightly/2017_01_23_1756540/src/products/hls/hls_lib/src/hls/hls_big_mult.h:266 [108]  (2.39 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+	State 8
+	State 9
+	State 10
+	State 11
+	State 12
+	State 13
+	State 14
+	State 15
+	State 16
+	State 17
+	State 18
+	State 19
+	State 20
+	State 21
+	State 22
+	State 23
+	State 24
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

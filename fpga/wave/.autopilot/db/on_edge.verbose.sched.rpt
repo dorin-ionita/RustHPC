@@ -1,0 +1,216 @@
+
+
+================================================================
+== Vivado HLS Report for 'on_edge'
+================================================================
+* Date:           Sun Oct 18 23:04:46 2020
+
+* Version:        2016.4 (Build 1756540 on Mon Jan 23 19:31:01 MST 2017)
+* Project:        wave2
+* Solution:       wave
+* Product family: zynq
+* Target device:  xc7z020clg484-1
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |  10.00|      7.70|        1.25|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |    1|    1|    1|    1|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states: 2
+* Pipeline: 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+	2  / true
+2 --> 
+* FSM state operations: 
+
+ <State 1>: 7.70ns
+ST_1: y_read (5)  [1/1] 0.00ns
+_ifconv:0  %y_read = call i32 @_ssdm_op_Read.ap_auto.i32(i32 %y)
+
+ST_1: x_read (6)  [1/1] 0.00ns
+_ifconv:1  %x_read = call i32 @_ssdm_op_Read.ap_auto.i32(i32 %x)
+
+ST_1: tmp (7)  [1/1] 2.52ns  loc: wave2/.apc/main.c:7
+_ifconv:2  %tmp = icmp ne i32 %x_read, 0
+
+ST_1: tmp_s (8)  [1/1] 2.52ns  loc: wave2/.apc/main.c:7
+_ifconv:3  %tmp_s = icmp eq i32 %y_read, 0
+
+ST_1: or_cond (9)  [1/1] 1.37ns  loc: wave2/.apc/main.c:7
+_ifconv:4  %or_cond = or i1 %tmp, %tmp_s
+
+ST_1: nx_load (10)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7
+_ifconv:5  %nx_load = load i32* @nx, align 4
+
+ST_1: tmp_152 (11)  [1/1] 2.44ns  loc: wave2/.apc/main.c:7
+_ifconv:6  %tmp_152 = add nsw i32 %nx_load, -1
+
+ST_1: tmp_153 (12)  [1/1] 2.52ns  loc: wave2/.apc/main.c:7
+_ifconv:7  %tmp_153 = icmp eq i32 %tmp_152, %y_read
+
+ST_1: ny_load (13)  [1/1] 0.00ns  loc: wave2/.apc/main.c:9
+_ifconv:8  %ny_load = load i32* @ny, align 4
+
+ST_1: tmp_154 (14)  [1/1] 2.44ns  loc: wave2/.apc/main.c:9
+_ifconv:9  %tmp_154 = add nsw i32 %ny_load, -1
+
+ST_1: tmp_155 (15)  [1/1] 2.52ns  loc: wave2/.apc/main.c:9
+_ifconv:10  %tmp_155 = icmp ne i32 %tmp_154, %x_read
+
+ST_1: tmp_156 (16)  [1/1] 2.52ns  loc: wave2/.apc/main.c:11
+_ifconv:11  %tmp_156 = icmp ne i32 %y_read, 0
+
+ST_1: tmp_157 (17)  [1/1] 2.52ns  loc: wave2/.apc/main.c:11
+_ifconv:12  %tmp_157 = icmp eq i32 %x_read, 0
+
+ST_1: tmp_158 (18)  [1/1] 2.52ns  loc: wave2/.apc/main.c:11
+_ifconv:13  %tmp_158 = icmp eq i32 %tmp_154, %x_read
+
+ST_1: tmp20 (19)  [1/1] 1.37ns  loc: wave2/.apc/main.c:11
+_ifconv:14  %tmp20 = or i1 %tmp_157, %tmp_158
+
+ST_1: or_cond4 (20)  [1/1] 0.00ns  loc: wave2/.apc/main.c:11 (grouped into LUT with out node sel_tmp7)
+_ifconv:15  %or_cond4 = or i1 %tmp20, %tmp_156
+
+ST_1: tmp_159 (21)  [1/1] 2.52ns  loc: wave2/.apc/main.c:13
+_ifconv:16  %tmp_159 = icmp ne i32 %tmp_152, %y_read
+
+ST_1: tmp22 (24)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7 (grouped into LUT with out node sel_tmp)
+_ifconv:19  %tmp22 = or i1 %tmp_s, %tmp_153
+
+ST_1: sel_tmp (25)  [1/1] 1.37ns  loc: wave2/.apc/main.c:7 (out node of the LUT)
+_ifconv:20  %sel_tmp = or i1 %tmp22, %tmp_155
+
+ST_1: sel_tmp2 (26)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7 (grouped into LUT with out node sel_tmp7)
+_ifconv:21  %sel_tmp2 = and i1 %or_cond, %sel_tmp
+
+ST_1: sel_tmp6 (27)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7 (grouped into LUT with out node sel_tmp7)
+_ifconv:22  %sel_tmp6 = or i1 %sel_tmp2, %tmp_153
+
+ST_1: sel_tmp7 (28)  [1/1] 1.37ns  loc: wave2/.apc/main.c:7 (out node of the LUT)
+_ifconv:23  %sel_tmp7 = and i1 %sel_tmp6, %or_cond4
+
+ST_1: sel_tmp11_demorgan (30)  [1/1] 1.37ns  loc: wave2/.apc/main.c:7
+_ifconv:25  %sel_tmp11_demorgan = or i1 %or_cond, %tmp_153
+
+
+ <State 2>: 1.37ns
+ST_2: or_cond5 (22)  [1/1] 0.00ns  loc: wave2/.apc/main.c:13 (grouped into LUT with out node UnifiedRetVal)
+_ifconv:17  %or_cond5 = or i1 %tmp20, %tmp_159
+
+ST_2: p_s (23)  [1/1] 0.00ns  loc: wave2/.apc/main.c:13 (grouped into LUT with out node UnifiedRetVal)
+_ifconv:18  %p_s = select i1 %or_cond5, i3 0, i3 -4
+
+ST_2: sel_tmp8 (29)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7 (grouped into LUT with out node UnifiedRetVal)
+_ifconv:24  %sel_tmp8 = select i1 %sel_tmp7, i3 %p_s, i3 2
+
+ST_2: sel_tmp1 (31)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7 (grouped into LUT with out node UnifiedRetVal)
+_ifconv:26  %sel_tmp1 = select i1 %sel_tmp11_demorgan, i3 %sel_tmp8, i3 1
+
+ST_2: sel_tmp3 (32)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7 (grouped into LUT with out node UnifiedRetVal)
+_ifconv:27  %sel_tmp3 = xor i1 %sel_tmp, true
+
+ST_2: sel_tmp4 (33)  [1/1] 0.00ns  loc: wave2/.apc/main.c:7 (grouped into LUT with out node UnifiedRetVal)
+_ifconv:28  %sel_tmp4 = and i1 %sel_tmp11_demorgan, %sel_tmp3
+
+ST_2: UnifiedRetVal (34)  [1/1] 1.37ns  loc: wave2/.apc/main.c:7 (out node of the LUT)
+_ifconv:29  %UnifiedRetVal = select i1 %sel_tmp4, i3 3, i3 %sel_tmp1
+
+ST_2: StgValue_33 (35)  [1/1] 0.00ns  loc: wave2/.apc/main.c:16
+_ifconv:30  ret i3 %UnifiedRetVal
+
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 1.25ns.
+
+ <State 1>: 7.7ns
+The critical path consists of the following:
+	'load' operation ('nx_load', wave2/.apc/main.c:7) on global variable 'nx' [10]  (0 ns)
+	'add' operation ('tmp_152', wave2/.apc/main.c:7) [11]  (2.44 ns)
+	'icmp' operation ('tmp_153', wave2/.apc/main.c:7) [12]  (2.52 ns)
+	'or' operation ('tmp22', wave2/.apc/main.c:7) [24]  (0 ns)
+	'or' operation ('sel_tmp', wave2/.apc/main.c:7) [25]  (1.37 ns)
+	'and' operation ('sel_tmp2', wave2/.apc/main.c:7) [26]  (0 ns)
+	'or' operation ('sel_tmp6', wave2/.apc/main.c:7) [27]  (0 ns)
+	'and' operation ('sel_tmp7', wave2/.apc/main.c:7) [28]  (1.37 ns)
+
+ <State 2>: 1.37ns
+The critical path consists of the following:
+	'or' operation ('or_cond5', wave2/.apc/main.c:13) [22]  (0 ns)
+	'select' operation ('p_s', wave2/.apc/main.c:13) [23]  (0 ns)
+	'select' operation ('sel_tmp8', wave2/.apc/main.c:7) [29]  (0 ns)
+	'select' operation ('sel_tmp1', wave2/.apc/main.c:7) [31]  (0 ns)
+	'select' operation ('UnifiedRetVal', wave2/.apc/main.c:7) [34]  (1.37 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A
